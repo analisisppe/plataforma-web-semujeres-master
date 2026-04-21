@@ -1,0 +1,206 @@
+{%extends 'main.html' %}
+{% block content%}
+<div class="container-home">
+    
+    {{ include('navbar.html') }}
+
+    <div class="container-entregable">
+        <div class="content-entregable">
+            <form method="POST">
+         
+                {% for n in indicadores %}
+                {% if id_indicadores == n.id_indicadores %}
+                <h3 class="subtitle">INDICADORES</h3>
+                {% if message%}
+
+                {%if class == 'red'%}
+                <label class="alert alert-danger">{{message}}</label>
+                {%endif%}
+               {% endif%}
+                <label>{{input}}</label>
+               <div class="container-form-indicador">
+                   <div class="content-form-indicador">
+                        <div class="label-indicador">
+                          
+                            <label>Responsable del Seguimiento</label>
+                            
+                            <input class="form-control" type="text" name="responsable-indicador" value="{{n.responsable}}" required> 
+                       
+                        </div>
+
+                        
+                        <div class="label-indicador">
+                            <label>Corresponsable del Seguimiento</label>
+                          
+                            
+                            <input class="form-control"  type="text" name="corresponsable-indicador" value="{{n.corresponsable}}"> 
+                      
+                        </div>
+                    </div>
+
+                   <div class="content-form-indicador"> 
+                       <div class="container-info-indicador-dos" >
+
+                        <div class="content-info-indicador">
+                           <div class="label-indicador">
+
+                               <label>No. Indicador</label>
+                {%for in in indicador%}
+                {% if in.id_indicador == id_indicador%}
+                               <select class="form-control " data-is-pp="{{pp|json_encode}}" data-is-indicador="{{indicador|json_encode}}" data-is-variables="{{variables|json_encode}}" aria-label="Default select example" name="numeroindicador" id="select-indicadorid"  onchange="return showInfoIndicador(this.value)" required>
+                                <option value="{{id_indicador}}" selected>{{in.numero}}</option>                
+                        
+                            </select>
+                            {%endif%}
+                            {%endfor%}
+                           </div>
+                        </div>
+                        {% for i in indicador%}
+                        {% if id_indicador == i.id_indicador  %}
+                        {%for v in variables%}
+                        {% if v.fk_indicador == id_indicador%}
+                        {% if v.variable == 'A'%}
+                        {% for b in baseMeta%}
+                        {% if b.fk_indicador == id_indicador %}
+                           <div class="content-info-indicador">
+                          
+                                <div class="label-line-indicador"> 
+                                   
+                                
+
+                                    <label>Linea Base</label>
+                                    <input class="form-control indicador" type="number" name="linea-base" id="linea-base" value="{{b.linea_base}}" readonly>
+                                </div>
+
+                                <div class="label-line-indicador">
+                                    <label>Linea Meta</label>
+                                    <input class="form-control indicador" type="number" name="linea-meta" id="linea-meta" value="{{b.meta}}" readonly>
+                                </div>
+                           </div>
+                           {%endif%}
+                           {%endfor%}
+                       </div>
+
+                       <div class="container-info-indicador" >
+                        <div class="label-indicador" >
+                            <label>Nombre Indicador</label>
+                            <textarea class="textarea-style"  type="text" name="nombre-indicador" id="nombre-indicador" readonly>{{v.nombre}}</textarea>
+                        </div>   
+                        <div  class="label-indicador" >
+                            <label>Definición</label>
+                            <textarea class="textarea-style"  type="text" name="definicion-indicador" id="definicion-indicador" readonly>{{i.definicion}}</textarea>
+                        </div> 
+                          
+                        <div  class="label-indicador" >
+                            <label>Programa Presupuestario</label>
+                            {% for p in pp%}
+                            {% if i.fk_pp == p.id_pp%}
+                            <textarea class="textarea-style"  type="text" name="pp" id="programa-presupuestario" readonly>{{p.pp}}</textarea>
+                            {%endif%}
+                            {%endfor%}
+                        </div> 
+                        </div>
+                        {%endif%}
+                        {%endif%}
+                        {%endfor%}
+                        {%endif%}
+                        {%endfor%}
+                   </div>
+
+                   <div>
+                    <h3 class="subtitle">CAPTURA DE LA VARIABLE</h3>
+                    <div class="content-form-indicador">
+                        <div class="label-line-indicador">
+                            <label>MES</label>
+                            <select class="col-form-control" name="mes-indicador" id="mes-indicadores" data-is-numero="{{id_indicadores|json_encode}}" data-is-indicadores="{{indicadores|json_encode}}" data-is-indicador="{{id_indicador|json_encode}}" onchange="return indicadorValores(this.value)" required>
+                                <option value="{{a.mes}}" selected>{{a.mes}}</option>
+                                <option value="ENERO">ENERO</option>
+                                <option value="FEBRERO">FEBRERO</option>
+                                <option value="MARZO">MARZO</option>
+                                <option value="ABRIL">ABRIL</option>
+                                <option value="MAYO">MAYO</option>
+                                <option value="JUNIO">JUNIO</option>
+                                <option value="JULIO">JULIO</option>
+                                <option value="AGOSTO">AGOSTO</option>
+                                <option value="SEPTIEMBRE">SEPTIEMBRE</option>
+                                <option value="OCTUBRE">OCTUBRE</option>
+                                <option value="NOVIEMBRE">NOVIEMBRE</option>
+                                <option value="DICIEMBRE">DICIEMBRE</option>
+                            </select>    
+
+                            <label>AÑO</label>
+                            <input class="col-form-control" id="año" name="año-indicador" type="text" value="{{año}}">
+                        </div>
+
+                        <div class="container-form-indicador">
+                            <div class="container-descripcion-indicador">
+                                <div class="label-descripcion-indicador">
+                                   
+                                    <label>Nombre de Variable B</label>
+                                    {% for i in indicador%}
+                                    {% if id_indicador == i.id_indicador  %}
+                                    {%for v in variables%}
+                                    {% if v.fk_indicador == id_indicador%}
+                                    {% if v.variable == 'B'%}
+                                    <textarea class="textarea-style" id="variable-b" readonly name="variable-b" >{{v.nombre}}</textarea>
+                                    {%endif%}
+                                    {%endif%}
+                                    {%endfor%}
+                                    {%endif%}
+                                    {%endfor%}
+                                </div>
+
+                                <div class="label-line-indicador">
+                                    <label >Valor de Variable B</label>
+                                    <input class="form-control" id="valor-b" name="valor-b" type="number" required>
+                                </div>
+                                </div>
+
+                                <div class="container-descripcion-indicador">
+                                <div class="label-descripcion-indicador">
+                                    <label>Nombre de Variable C</label>
+                                    {% for i in indicador%}
+                                    {% if id_indicador == i.id_indicador  %}
+                                    {%for v in variables%}
+                                    {% if v.fk_indicador == id_indicador%}
+                                    {% if v.variable == 'C'%}
+                                    <textarea class="textarea-style" id="variable-c" name="variable-c" readonly>{{v.nombre}}</textarea>
+                                    {%endif%}
+                                    {%endif%}
+                                    {%endfor%}
+                                    {%endif%}
+                                    {%endfor%}
+                                </div>
+                            
+                                <div class="label-line-indicador">
+                                    <label  >Valor de Variable C</label>
+                                    <input class="form-control" id="valor-c" name="valor-c" type="number" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                   </div>
+               
+                   
+                  
+                  
+               </div>
+
+               <div class="btn-container" id="buttons-indicadores">
+                <a type="button" class="btn btn-back" href="{{url_for('indicadores')}}">REGRESAR</a>
+
+                <input type="hidden" name="_METHOD" value="PUT"/>
+               <button type="submit" class="btn btn-save">GUARDAR</button>
+               <a type="button" id="btn-delete-indicadores" class="btn delete-indicadores" onclick="deleteData()" title="ELIMINAR"></a>
+                
+            </div>
+            {%endif%}
+            {%endfor%}
+        
+        </form>
+        
+        </div>    
+        {{ include('table_indicador.html')}} 
+    </div>  
+</div>
+{% endblock%}

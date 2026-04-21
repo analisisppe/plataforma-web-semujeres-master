@@ -1,0 +1,658 @@
+{% block avancedatosgenerales %}
+<div class="subcontainer-card">
+       
+    <button class="btn btn-primary btn-card dropdown-toggle" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+        DATOS GENERALES
+      </button>
+    
+    <div class="collapse show" id="collapseExample">
+      <div class="card">
+        {% if message%}
+        {%if class == 'blue'%}
+         <div class="alert alert-primary">{{message}}</div>
+         {%elseif class == 'red'%}
+         <div class="alert alert-danger">{{message}}</div>
+         {%endif%}
+        {% endif%}
+      
+        
+        <form class="form-row" method="POST" onchange="buscarNumero()">
+         
+            {%if identregable and id_avance%}
+           
+            {% for a in avance%}
+           
+            {%if identregable == a.fk_id_entregable and id_avance == a.id_avance%}
+            <div class="col-form">
+              
+                <div class="col-form-data">
+                  
+                    <label class="form-label">Mes de Corte</label>
+                    <select class="col-form-control" aria-label="Default select example" name="mes" id="mes" required>
+                        <option value="{{a.mes}}" selected>{{a.mes}}</option>
+                        <option value="ENERO">ENERO</option>
+                        <option value="FEBRERO">FEBRERO</option>
+                        <option value="MARZO">MARZO</option>
+                        <option value="ABRIL">ABRIL</option>
+                        <option value="MAYO">MAYO</option>
+                        <option value="JUNIO">JUNIO</option>
+                        <option value="JULIO">JULIO</option>
+                        <option value="AGOSTO">AGOSTO</option>
+                        <option value="SEPTIEMBRE">SEPTIEMBRE</option>
+                        <option value="OCTUBRE">OCTUBRE</option>
+                        <option value="NOVIEMBRE">NOVIEMBRE</option>
+                        <option value="DICIEMBRE">DICIEMBRE</option>
+                    </select>
+                    </div>
+                    {% for e in entregable%}
+                    {% if e.id_entregable == identregable %}
+                    {% if e.municipalizable == 'on' %}
+                    <div class="col-form-data">
+                        <label class="form-label">Municipio</label>
+                        <select class="col-form-control" aria-label="Default select example" name="municipio" id="municipio" required>
+                            <option value="{{a.municipio}}" selected>{{a.municipio}}</option>
+                           {% for m in municipios%}
+                            <option value="{{m.nombre}}">{{m.nombre}}</option>
+                            {% endfor%}
+                        </select>
+                        
+                        </div>
+                        {%endif%}
+                        {%endif%}
+                        {%endfor%}
+                    <div class="col-form-data" >
+                            <label  class="form-label">Avance del Entregable</label>
+                            <input type="number" class="form-control" value="{{a.avance_entregable}}" min="0" id="avance_entregable" name="avance_entregable">
+                    </div>
+                  
+                  
+                  <div class="section">
+                     
+              <div class="col-form-section">
+                    <div class="col-form-data" >
+                        <label  class="form-label">Monto Ejercido $</label>
+                        <input type="number" min="0" step="0.001" class="form-control" value="{{a.monto}}" id="monto" name="monto" required>
+                </div>
+
+                <div class="col-form-data" >
+                    <label class="form-label">Proyecto Federal</label>
+                    <select class="col-form-control " aria-label="Default select example" name="proyecto" id="proyecto" required>
+                        <option value="{{a.proyecto}}" selected>{{a.proyecto}}</option>
+                        <option value="ESTATAL">ESTATAL</option>
+                        <option value="PAIMEF">PAIMEF</option>
+                        <option value="PFTPG">PFTPG</option>
+                        <option value="FOBAM">FOBAM</option>
+                    </select>
+                    </div>
+                
+                <div class="col-form-data" >
+                    <label class="form-label">Descripción</label>
+                   <textarea class="form-control-descripcion"  id="descripcion" name="descripcion">{{a.descripcion}}</textarea>
+                </div>
+
+                <div class="col-form-data">
+                    <label class="form-label">¿La Actividad se Realizó con otra Institución? Nombre de la Institución</label>
+                    <input class="form-control activity" type="text" value="{{a.institucion}}" id="institucion" name="institucion">
+                </div>
+
+            
+            </div>
+
+          
+        </div>
+           </div>
+       
+        <div class="people-container">
+
+            <div id="advertencia" class="warning">
+                <label class="alert alert-danger">La población con discapacidad y población hablante de lengua indígena no puede ser mayor a la población total</label>
+            </div>
+            <div class="label-ped">
+                <label>Población Primera Vez</label>
+            </div>
+          
+        <div class="form-row form-people">
+        
+            <div class="people-gpa">
+                <div class="label-people">
+                <label> Población Total</label>
+    
+            </div>
+            <div class="container-input-gpa">
+                <label class="label-gpa">M</label> <input class="input-people" min="0" value="{{a.m_t1}}" type="number" id="m_t1" name="m_t1">
+                </div>
+                <div class="container-input-gpa">
+                    <label class="label-gpa">H</label>  <input class="input-people" min="0" value="{{a.h_t1}}" type="number" id="h_t1" name="h_t1">
+                </div>
+            </div>
+            
+            <div class="people-gpa">
+                <div class="label-people">
+                <label> Población con Discapacidad</label>
+        
+            </div>
+            <div class="container-input-gpa">
+                <label class="label-gpa">M</label>  <input class="input-people" min="0" type="number" value="{{a.m_d1}}" id="m_d1" onkeyup="buscarNumero()" name="m_d1"  >
+            </div>
+            <div class="container-input-gpa">
+                <label class="label-gpa">H</label> <input class="input-people" min="0" type="number" value="{{a.h_d1}}" id="h_d1" name="h_d1">
+            </div>
+            </div>
+    
+            <div class="people-gpa">
+                <div class="label-people">
+                <label>Población Hablante<br>de Lengua Indigena </label>
+            </div>
+            <div class="container-input-gpa">
+                <label class="label-gpa">M</label> <input class="input-people" min="0" type="number" value="{{a.m_i1}}" id="m_i1" name="m_i1">
+            </div>
+            <div class="container-input-gpa">
+                <label class="label-gpa">H</label> <input class="input-people" min="0" type="number" value="{{a.h_i1}}" id="h_i1" name="h_i1">
+            </div>
+            </div>
+        
+        
+        </div>
+        
+        <div class="label-ped">
+            <label>Población Seguimiento</label>
+        </div>
+     
+        <div class="form-row form-people">
+        
+            <div class="people-gpa">
+                <div class="label-people">
+                <label> Población Total</label>
+    
+            </div>
+            <div class="container-input-gpa">
+                <label class="label-gpa">M</label> <input class="input-people" min="0" type="number" value="{{a.m_ts}}" id="m_ts" name="m_ts">
+                </div>
+                <div class="container-input-gpa">
+                    <label class="label-gpa">H</label>  <input class="input-people" min="0" type="number" value="{{a.h_ts}}" id="h_ts" name="h_ts">
+                </div>
+            </div>
+            
+            <div class="people-gpa">
+                <div class="label-people">
+                <label> Población con Discapacidad</label>
+               
+            </div>
+            <div class="container-input-gpa">
+                <label class="label-gpa">M</label>  <input class="input-people" min="0" type="number" value="{{a.m_ds}}" id="m_ds" name="m_ds">
+            </div>
+            <div class="container-input-gpa">
+                <label class="label-gpa">H</label> <input class="input-people" min="0" type="number" id="h_ds" value="{{a.h_ds}}" name="h_ds">
+            </div>
+            </div>
+    
+            <div class="people-gpa">
+                <div class="label-people">
+                <label>Población Hablante<br>de Lengua Indígena </label>
+            </div>
+            <div class="container-input-gpa">
+                <label class="label-gpa">M</label> <input class="input-people" min="0" type="number" id="m_is" value="{{a.m_is}}" name="m_is">
+            </div>
+            <div class="container-input-gpa">
+                <label class="label-gpa">H</label> <input class="input-people" min="0" type="number" id="h_is" value="{{a.h_is}}" name="h_is">
+            </div>
+            </div>
+        
+        
+        </div>
+     
+           
+        {% if rol == 'Enlace Externo' %}
+        {{include('avance_poblacion_gpa.html')}} 
+        {%endif%}
+    </div>
+   
+        <div class="btn-save-avance">
+        <input type="hidden" name="_METHOD" value="PUT"/>
+    <button type="submit" class="btn-save">GUARDAR</button>
+</div>
+{% endif %}
+{% endfor %}
+
+</form>
+{% else %}
+<form class="form-row" name="avance-datos"  method="POST" onchange="buscarNumero()">
+  
+    <div class="col-form">
+        <div class="col-form-data">
+            <label class="form-label">Mes de Corte</label>
+            <select class="col-form-control" aria-label="Default select example" name="mes" id="mes" required>
+                <option value="{{a.mes}}" selected>{{a.mes}}</option>
+                <option value="ENERO">ENERO</option>
+                <option value="FEBRERO">FEBRERO</option>
+                <option value="MARZO">MARZO</option>
+                <option value="ABRIL">ABRIL</option>
+                <option value="MAYO">MAYO</option>
+                <option value="JUNIO">JUNIO</option>
+                <option value="JULIO">JULIO</option>
+                <option value="AGOSTO">AGOSTO</option>
+                <option value="SEPTIEMBRE">SEPTIEMBRE</option>
+                <option value="OCTUBRE">OCTUBRE</option>
+                <option value="NOVIEMBRE">NOVIEMBRE</option>
+                <option value="DICIEMBRE">DICIEMBRE</option>
+            </select>
+            </div>
+            {% for e in entregable%}
+            {% if e.id_entregable == identregable %}
+            {% if e.municipalizable == 'on' %}
+            <div class="col-form-data">
+                <label class="form-label">Municipio</label>
+                <select class="col-form-control" aria-label="Default select example" name="municipio" id="municipio" required>
+                    <option disabled selected>Seleccione...</option>
+                    {% for m in municipios%}
+                            <option value="{{m.nombre}}">{{m.nombre}}</option>
+                    {% endfor%}
+                </select>
+                </div>
+                {%endif%}
+                        {%endif%}
+                        {%endfor%}
+            <div class="col-form-data" >
+                    <label  class="form-label">Avance del Entregable</label>
+                    <input type="number" class="form-control" id="avance_entregable" name="avance_entregable" min="0">
+            </div>
+          
+          
+              <div class="col-form-section">
+            <div class="col-form-data" >
+                <label  class="form-label">Monto Ejercido $</label>
+                <input type="number" step="0.001" min="0" class="form-control" id="monto" name="monto">
+        </div>
+
+        <div class="col-form-data" >
+            <label class="form-label">Proyecto Federal</label>
+            <select class="col-form-control " aria-label="Default select example" name="proyecto" id="proyecto" required>
+                <option value="Seleccione..." selected>Seleccione...</option>
+                <option value="ESTATAL">ESTATAL</option>
+                <option value="PAIMEF">PAIMEF</option>
+                <option value="PFTPG">PFTPG</option>
+                <option value="FOBAM">FOBAM</option>
+            </select>
+            </div>
+        
+        <div class="col-form-data">
+            <label class="form-label">Descripción</label>
+           <textarea class="form-control-descripcion" id="descripcion" name="descripcion"></textarea>
+        </div>
+
+        <div class="col-form-data">
+            <label class="form-label">¿La Actividad se Realizó con Otra Institución? Nombre de la Institución</label>
+            <input class="form-control activity" type="text" id="institucion" name="institucion">
+        </div>
+ 
+    </div>
+ 
+
+</div>
+    
+    <div class="people-container">
+        <div id="advertencia" class="warning">
+            <label class="alert alert-danger">La población con discapacidad y población hablante de lengua indígena no puede ser mayor a la población total</label>
+        </div>
+        <div class="label-ped">
+            <label>Población Primera Vez</label>
+        </div>
+       
+    <div class="form-row form-people">
+ 
+        <div class="people-gpa">
+            <div class="label-people">
+            <label> Población Total</label>
+
+        </div>
+        <div class="container-input-gpa">
+            <label class="label-gpa">M</label> <input  class="input-people" min="0" type="number" id="m_t1" name="m_t1">
+            </div>
+            <div class="container-input-gpa">
+                <label class="label-gpa">H</label>  <input class="input-people" min="0" type="number" id="h_t1" name="h_t1">
+            </div>
+        </div>
+        
+        <div class="people-gpa">
+            <div class="label-people">
+            <label> Población con Discapacidad</label>
+           
+        </div>
+        <div class="container-input-gpa">
+            <label class="label-gpa">M</label>  <input  class="input-people" min="0" type="number" id="m_d1" name="m_d1">
+        </div>
+        <div class="container-input-gpa">
+            <label class="label-gpa">H</label> <input  class="input-people" min="0" type="number" id="h_d1" name="h_d1">
+        </div>
+        </div>
+
+        <div class="people-gpa">
+            <div class="label-people">
+            <label>Población Hablante de Lengua Indigena</label>
+        </div>
+        <div class="container-input-gpa">
+            <label class="label-gpa">M</label> <input  class="input-people" min="0" type="number" id="m_i1" name="m_i1">
+        </div>
+        <div class="container-input-gpa">
+            <label class="label-gpa">H</label> <input  class="input-people" min="0" type="number" id="h_i1" name="h_i1">
+        </div>
+        </div>
+    
+    
+    </div>
+
+    {% if rol == 'Enlace Externo' %}
+    <div class="form-row form-people">
+
+        <div class="people-gpa">
+            <div class="label-people">
+            <label> Población 10-14 Años </label>
+        </div>
+        <div class="container-input-gpa">
+        <label class="label-gpa">M</label><input class="input-people" min="0" value="{{a.m_10}}" type="number" id="m_10" name="m_10">
+        </div>
+        <div class="container-input-gpa">
+        <label class="label-gpa">H</label><input class="input-people" min="0" type="number" value="{{a.h_10}}" id="h_10" name="h_10">
+        </div>
+        </div>
+        
+        
+        <div class="people-gpa">
+            <div class="label-people">
+            <label> Población 15-19 Años </label>
+        
+        </div>
+        <div class="container-input-gpa">
+           <label class="label-gpa">M</label><input class="input-people" min="0" value="{{a.m_15}}" type="number" id="m_15" name="m_15">
+        </div>
+           <div class="container-input-gpa">
+           <label class="label-gpa">H</label><input class="input-people" min="0" type="number" value="{{a.h_15}}" id="h_15" name="h_15">
+           </div>
+        </div>
+        
+        <div class="people-gpa">
+            <div class="label-people">
+            <label> Servidoras/es</label>
+           
+        </div>
+        <div class="container-input-gpa">
+        <label class="label-gpa">M</label><input class="input-people" min="0" type="number" value="{{a.m_ser}}" id="m_ser" name="m_ser">
+        </div>
+        <div class="container-input-gpa">
+        <label class="label-gpa">H</label><input class="input-people" min="0" type="number" value="{{a.m_ser}}" id="h_ser" name="h_ser">
+        </div>
+        </div>
+        
+        <div class="people-gpa">
+            <div class="label-people">
+            <label> Madres, Padres y/o Tutores</label>
+        </div>
+        <div class="container-input-gpa">
+        <label class="label-gpa">M</label><input class="input-people" min="0" type="number" value="{{a.m_padres}}" id="m_padres" name="m_padres">
+        </div>
+        <div class="container-input-gpa">
+        <label class="label-gpa">H</label><input class="input-people" min="0" type="number" value="{{a.h_padres}}" id="h_padres" name="h_padres">
+        </div>
+        </div>
+        
+        </div>
+
+{%endif%}
+
+{% if rol == 'Administrador'%}
+
+{% for t in entregable%}
+    {% if t.id_entregable == identregable %}
+        {% for o in programa%}
+            {% if o.id_programa == t.fk_id_programa%}
+                   
+                      {% if o.rol_usuario == 'Enlace Externo'%}
+
+                      <div class="form-row form-people">
+
+                        <div class="people-gpa">
+                            <div class="label-people">
+                            <label> Población 10-14 Años </label>
+                        </div>
+                        <div class="container-input-gpa">
+                        <label class="label-gpa">M</label><input class="input-people" min="0" value="{{a.m_10}}" type="number" id="m_10" name="m_10">
+                        </div>
+                        <div class="container-input-gpa">
+                        <label class="label-gpa">H</label><input class="input-people" min="0" type="number" value="{{a.h_10}}" id="h_10" name="h_10">
+                        </div>
+                        </div>
+                        
+                        
+                        <div class="people-gpa">
+                            <div class="label-people">
+                            <label> Población 15-19 Años </label>
+                        
+                        </div>
+                        <div class="container-input-gpa">
+                           <label class="label-gpa">M</label><input class="input-people" min="0" value="{{a.m_15}}" type="number" id="m_15" name="m_15">
+                        </div>
+                           <div class="container-input-gpa">
+                           <label class="label-gpa">H</label><input class="input-people" min="0" type="number" value="{{a.h_15}}" id="h_15" name="h_15">
+                           </div>
+                        </div>
+                        
+                        <div class="people-gpa">
+                            <div class="label-people">
+                            <label> Servidoras/es</label>
+                           
+                        </div>
+                        <div class="container-input-gpa">
+                        <label class="label-gpa">M</label><input class="input-people" min="0" type="number" value="{{a.m_ser}}" id="m_ser" name="m_ser">
+                        </div>
+                        <div class="container-input-gpa">
+                        <label class="label-gpa">H</label><input class="input-people" min="0" type="number" value="{{a.m_ser}}" id="h_ser" name="h_ser">
+                        </div>
+                        </div>
+                        
+                        <div class="people-gpa">
+                            <div class="label-people">
+                            <label> Madres, Padres y/o Tutores</label>
+                        </div>
+                        <div class="container-input-gpa">
+                        <label class="label-gpa">M</label><input class="input-people" min="0" type="number" value="{{a.m_padres}}" id="m_padres" name="m_padres">
+                        </div>
+                        <div class="container-input-gpa">
+                        <label class="label-gpa">H</label><input class="input-people" min="0" type="number" value="{{a.h_padres}}" id="h_padres" name="h_padres">
+                        </div>
+                        </div>
+                        
+                        </div>
+                
+                    {% endif%}
+
+            {%endif%}
+        {% endfor %}
+    {% endif %}
+{%endfor%}
+{%endif%}
+
+
+
+    <div class="label-ped">
+        <label>Población Seguimiento</label>
+    </div>
+    <div class="form-row form-people">
+    
+        <div class="people-gpa">
+            <div class="label-people">
+            <label> Población Total</label>
+
+        </div>
+        <div class="container-input-gpa">
+            <label class="label-gpa">M</label> <input class="input-people" min="0" type="number" id="m_ts" name="m_ts">
+            </div>
+            <div class="container-input-gpa">
+                <label class="label-gpa">H</label>  <input class="input-people" min="0" type="number" id="h_ts" name="h_ts">
+            </div>
+        </div>
+        
+        <div class="people-gpa">
+            <div class="label-people">
+            <label> Población con Discapacidad</label>
+           
+        </div>
+        <div class="container-input-gpa">
+            <label class="label-gpa">M</label>  <input class="input-people" min="0" type="number" id="m_ds" name="m_ds">
+        </div>
+        <div class="container-input-gpa">
+            <label class="label-gpa">H</label> <input class="input-people" min="0" type="number" id="h_ds" name="h_ds">
+        </div>
+        </div>
+
+        <div class="people-gpa">
+            <div class="label-people">
+            <label>Población Hablante de Lengua Indigena</label>
+        </div>
+        <div class="container-input-gpa">
+            <label class="label-gpa">M</label> <input class="input-people" min="0" type="number" id="m_is" name="m_is">
+        </div>
+        <div class="container-input-gpa">
+            <label class="label-gpa">H</label> <input class="input-people" min="0" type="number" id="h_is" name="h_is">
+        </div>
+        </div>
+    
+    
+    </div>
+
+{%if rol == 'Enlace Externo'%}
+<div class="form-row form-people">
+
+    <div class="people-gpa">
+        <div class="label-people">
+        <label> Población 10-14 Años </label>
+    
+    </div>
+    <div class="container-input-gpa">
+    <label class="label-gpa">M</label><input class="input-people" min="0" type="number" value="{{a.ms_10}}" id="ms_10" name="ms_10">
+    </div>
+    <div class="container-input-gpa">
+    <label class="label-gpa">H</label><input class="input-people" min="0" type="number" value="{{a.hs_10}}" id="hs_10" name="hs_10">
+    </div>
+    </div>
+    
+    <div class="people-gpa">
+        <div class="label-people">
+        <label> Población 15-19 Años </label>  
+    </div>
+    <div class="container-input-gpa">
+       <label class="label-gpa">M</label><input class="input-people" min="0" type="number" value="{{a.ms_15}}" id="ms_15" name="ms_15">
+    </div>
+    <div class="container-input-gpa">
+       <label class="label-gpa">H</label><input class="input-people" min="0" type="number" value="{{a.hs_15}}" id="hs_15" name="hs_15">
+    </div>
+    </div>
+    
+    <div class="people-gpa">
+        <div class="label-people">
+        <label> Servidoras/es</label>
+       
+    </div>
+    <div class="container-input-gpa">
+    <label class="label-gpa">M</label><input class="input-people" min="0" type="number" value="{{a.ms_ser}}" id="ms_ser" name="ms_ser">
+    </div>
+    <div class="container-input-gpa">
+    <label class="label-gpa">H</label><input class="input-people" min="0" type="number" id="hs_ser" value="{{a.hs_ser}}" name="hs_ser">
+    </div>
+    </div>
+    
+    <div class="people-gpa">
+        <div class="label-people">
+        <label> Madres, Padres y/o Tutores</label>
+    </div>
+    <div class="container-input-gpa">
+    <label class="label-gpa">M</label><input class="input-people" min="0" type="number" id="ms_padres" value="{{a.ms_padres}}" name="ms_padres">
+    </div>
+    <div class="container-input-gpa">
+    <label class="label-gpa">H</label><input class="input-people" min="0" type="number" id="hs_padres" value="{{a.hs_padres}}" name="hs_padres">
+    </div>
+    </div>
+</div>
+{%endif%}
+
+{% if rol == 'Administrador'%}
+
+{% for t in entregable%}
+    {% if t.id_entregable == identregable %}
+        {% for o in programa%}
+            {% if o.id_programa == t.fk_id_programa%}
+                   
+                      {% if o.rol_usuario == 'Enlace Externo'%}
+
+                      <div class="form-row form-people">
+
+                        <div class="people-gpa">
+                            <div class="label-people">
+                            <label> Población 10-14 Años </label>
+                        
+                        </div>
+                        <div class="container-input-gpa">
+                        <label class="label-gpa">M</label><input class="input-people" min="0" type="number" value="{{a.ms_10}}" id="ms_10" name="ms_10">
+                        </div>
+                        <div class="container-input-gpa">
+                        <label class="label-gpa">H</label><input class="input-people" min="0" type="number" value="{{a.hs_10}}" id="hs_10" name="hs_10">
+                        </div>
+                        </div>
+                        
+                        <div class="people-gpa">
+                            <div class="label-people">
+                            <label> Población 15-19 Años </label>  
+                        </div>
+                        <div class="container-input-gpa">
+                           <label class="label-gpa">M</label><input class="input-people" min="0" type="number" value="{{a.ms_15}}" id="ms_15" name="ms_15">
+                        </div>
+                        <div class="container-input-gpa">
+                           <label class="label-gpa">H</label><input class="input-people" min="0" type="number" value="{{a.hs_15}}" id="hs_15" name="hs_15">
+                        </div>
+                        </div>
+                        
+                        <div class="people-gpa">
+                            <div class="label-people">
+                            <label> Servidoras/es</label>
+                           
+                        </div>
+                        <div class="container-input-gpa">
+                        <label class="label-gpa">M</label><input class="input-people" min="0" type="number" value="{{a.ms_ser}}" id="ms_ser" name="ms_ser">
+                        </div>
+                        <div class="container-input-gpa">
+                        <label class="label-gpa">H</label><input class="input-people" min="0" type="number" id="hs_ser" value="{{a.hs_ser}}" name="hs_ser">
+                        </div>
+                        </div>
+                        
+                        <div class="people-gpa">
+                            <div class="label-people">
+                            <label> Madres, Padres y/o Tutores</label>
+                        </div>
+                        <div class="container-input-gpa">
+                        <label class="label-gpa">M</label><input class="input-people" min="0" type="number" id="ms_padres" value="{{a.ms_padres}}" name="ms_padres">
+                        </div>
+                        <div class="container-input-gpa">
+                        <label class="label-gpa">H</label><input class="input-people" min="0" type="number" id="hs_padres" value="{{a.hs_padres}}" name="hs_padres">
+                        </div>
+                        </div>
+                    </div>
+                
+                    {% endif%}
+
+            {%endif%}
+        {% endfor %}
+    {% endif %}
+{%endfor%}
+{%endif%}
+
+</div>
+<div class="btn-save-avance">
+<button type="submit" class="btn-save-data">GUARDAR</button>
+</div>
+
+</form>
+
+{% endif %}
+      </div>
+    </div>
+</div> 
+{% endblock %}

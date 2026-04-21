@@ -1,0 +1,113 @@
+{% block table_indicador%}
+<div class="table-responsive table-container-indicador">
+    <table id="table-indicador" class=" table-bordered table-indicador">
+        <thead>
+            <tr>
+                
+                <th scope="col">NUMERO INDICADOR</th>
+                <th scope="col">VARIABLE</th>
+                <th scope="col">NOMRE DE VARIABLES</th>
+                <th scope="col">ENERO</th>
+                <th scope="col">FEBRERO</th>
+                <th scope="col">MARZO</th>
+                <th scope="col">ABRIL</th>
+                <th scope="col">MAYO</th>
+                <th scope="col">JUNIO</th>
+                <th scope="col">JULIO</th>
+                <th scope="col">AGOSTO</th>
+                <th scope="col">SEPTIEMBRE</th>
+                <th scope="col">OCTUBRE</th>
+                <th scope="col">NOVIEMBRE</th>
+                <th scope="col">DICIEMBRE</th>
+                <th scope="col">ANUAL</th>
+               
+            </tr>
+        </thead>
+        
+        <tbody>
+            {% if indicadores%}
+           {%for i in indicadores%}
+           {% if id_indicadores == i.id_indicadores%}
+            {% for x in indicador%}
+             {% if id_indicador == x.id_indicador%}
+                    {% for v in variables%}
+                    {% if id_indicador == v.fk_indicador%}
+                    
+            <tr>
+
+                <td scope="row">{{x.numero}}</td>
+            
+                <td scope="row">{{v.variable}}</td>
+               
+                <td scope="row">{{v.nombre}}</td>
+           
+                <td scope="row">{{v.variable == 'A' ? i.en_a }} 
+                                {{ v.variable == 'B' ? i.en_b}} {{ v.variable == 'C' ? i.en_c }}</td>
+
+                <td scope="row">{{v.variable == 'A' ? i.feb_a }}
+                    {{ v.variable == 'B' ? i.feb_b}} {{ v.variable == 'C' ? i.feb_c }}</td>
+
+                <td scope="row">{{v.variable == 'A' ? i.mar_a }}
+                    {{ v.variable == 'B' ? i.mar_b}} {{ v.variable == 'C' ? i.mar_c }}</td>
+
+                <td scope="row">{{v.variable == 'A' ? i.ab_a }} 
+                    {{ v.variable == 'B' ? i.ab_b}} {{ v.variable == 'C' ? i.ab_c }}</td>
+
+                <td scope="row">{{v.variable == 'A' ? i.may_a }}
+                    {{ v.variable == 'B' ? i.may_b}} {{ v.variable == 'C' ? i.may_c }}</td>
+
+                <td scope="row">{{v.variable == 'A' ? i.jun_a }} 
+                    {{ v.variable == 'B' ? i.jun_b}} {{ v.variable == 'C' ? i.jun_c }}</td>
+
+                <td scope="row">{{v.variable == 'A' ? i.jul_a }}  
+                    {{ v.variable == 'B' ? i.jul_b}} {{ v.variable == 'C' ? i.jul_c }}</td>
+
+                <td scope="row">{{v.variable == 'A' ? i.ago_a }}  
+                    {{ v.variable == 'B' ? i.ago_b}} {{ v.variable == 'C' ? i.ago_c }}</td>
+
+                <td scope="row">{{v.variable == 'A' ? i.sep_a }}
+                    {{ v.variable == 'B' ? i.sep_b}} {{ v.variable == 'C' ? i.sep_c }}</td>
+
+                <td scope="row">{{v.variable == 'A' ? i.oct_a }}
+                    {{ v.variable == 'B' ? i.oct_b}} {{ v.variable == 'C' ? i.oct_c }}</td>
+
+                <td scope="row">{{v.variable == 'A' ? i.nov_a }}
+                    {{ v.variable == 'B' ? i.nov_b}} {{ v.variable == 'C' ? i.nov_c }}</td>
+
+                <td scope="row">{{v.variable == 'A' ? i.dic_a }} 
+                    {{ v.variable == 'B' ? i.dic_b}} {{ v.variable == 'C' ? i.dic_c }}</td>
+                <td scope="row">
+                  
+                  
+        
+                    {% if v.variable == 'A' %}
+                       
+                    {{i.anual_a}}
+                    {% elseif v.variable == 'B' %}
+                        {{i.anual_b}}
+
+                    {% elseif v.variable == 'C' %}
+                    {{i.anual_c}}
+                    {%endif%}
+
+                  
+                </td>
+                
+               
+            </tr>   
+                  
+                   {% endif %}
+               
+                {% endfor%}
+                {% endif %}
+                {% endfor%}
+                {% endif %}
+                {% endfor%}
+                {% endif %}
+                       
+        </tbody>
+        
+    </table>
+    
+</div>
+{% endblock%}

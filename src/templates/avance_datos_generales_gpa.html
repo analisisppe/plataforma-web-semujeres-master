@@ -1,0 +1,158 @@
+{% block avancedatosgeneralesgpa %}
+<div class="subcontainer-card">
+       
+    <button class="btn btn-primary btn-card dropdown-toggle" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+        DATOS GENERALES
+      </button>
+    
+    <div class="collapse show" id="collapseExample">
+      <div class="card">
+      
+        
+        <form class="form-row" method="POST">
+         
+            {%if identregable and id_avance%}
+           
+            {% for a in avance%}
+           
+            {%if identregable == a.fk_id_entregable and id_avance == a.id_avance%}
+            <div class="col-form">
+              
+                <div class="col-form-data">
+                  
+                    <label class="form-label">Mes de Corte</label>
+                    <select class="col-form-control" aria-label="Default select example" name="mes" id="mes" required>
+                        <option value="{{a.mes}}" selected>{{a.mes}}</option>
+                        <option value="ENERO">ENERO</option>
+                        <option value="FEBRERO">FEBRERO</option>
+                        <option value="MARZO">MARZO</option>
+                        <option value="ABRIL">ABRIL</option>
+                        <option value="MAYO">MAYO</option>
+                        <option value="JUNIO">JUNIO</option>
+                        <option value="JULIO">JULIO</option>
+                        <option value="AGOSTO">AGOSTO</option>
+                        <option value="SEPTIEMBRE">SEPTIEMBRE</option>
+                        <option value="OCTUBRE">OCTUBRE</option>
+                        <option value="NOVIEMBRE">NOVIEMBRE</option>
+                        <option value="DICIEMBRE">DICIEMBRE</option>
+                    </select>
+                    </div>
+                    {% for e in entregable%}
+                    {% if e.id_entregable == identregable %}
+                    {% if e.municipalizable == 'on' %}
+                    <div class="col-form-data">
+                        <label class="form-label">Municipio</label>
+                        <select class="col-form-control" aria-label="Default select example" name="municipio" id="municipio" required>
+                            <option value="{{a.municipio}}" selected>{{a.municipio}}</option>
+                           {% for m in municipios%}
+                            <option value="{{m.nombre}}">{{m.nombre}}</option>
+                            {% endfor%}
+                        </select>
+                        </div>
+                        {%endif%}
+                        {%endif%}
+                        {%endfor%}
+                    <div class="col-form-data" >
+                            <label  class="form-label">Avance del Entregable</label>
+                            <input type="number" class="form-control" value="{{a.avance_entregable}}" id="avance_entregable" name="avance_entregable">
+                    </div>
+                  </div>
+                  
+                  <div class="section">
+                   <div class="col-form">
+                            <div class="col-form-data"  >
+                          <label class="form-label">¿La Actividad se Realizó con Otra Institución? Nombre de la Institución</label>
+                          <input class="form-control" type="text" id="institucion" name="institucion" value="{{a.institucion}}">
+                      </div>
+                      
+                      <div class="col-form-data" >
+                      <label class="form-label">Descripción</label>
+                     <textarea class="form-control-descripcion" id="descripcion" name="descripcion">{{a.descripcion}}</textarea>
+                  </div>
+              </div>
+             
+        </div>
+           
+        
+ 
+        <div class="people-container">
+            <div id="advertencia" class="warning">
+                <label class="alert alert-danger">La población con discapacidad y población hablante de lengua indígena no puede ser mayor a la población total</label>
+            </div>
+    {{include('avance_poblacion_gpa.html')}}
+        </div>
+        <div class="btn-save-avance">
+        <input type="hidden" name="_METHOD" value="PUT"/>
+    <button type="submit" class="btn-save">GUARDAR</button>
+</div>
+{% endif %}
+{% endfor %}
+
+</form>
+{% else %}
+<form class="form-row" method="POST">
+  
+    <div class="col-form">
+        <div class="col-form-data">
+            <label class="form-label">Mes de corte</label>
+            <select class="col-form-control" aria-label="Default select example" name="mes" id="mes" required>
+                <option value="{{a.mes}}" selected>{{a.mes}}</option>
+                <option value="ENERO">ENERO</option>
+                <option value="FEBRERO">FEBRERO</option>
+                <option value="MARZO">MARZO</option>
+                <option value="ABRIL">ABRIL</option>
+                <option value="MAYO">MAYO</option>
+                <option value="JUNIO">JUNIO</option>
+                <option value="JULIO">JULIO</option>
+                <option value="AGOSTO">AGOSTO</option>
+                <option value="SEPTIEMBRE">SEPTIEMBRE</option>
+                <option value="OCTUBRE">OCTUBRE</option>
+                <option value="NOVIEMBRE">NOVIEMBRE</option>
+                <option value="DICIEMBRE">DICIEMBRE</option>
+            </select>
+            </div>
+
+            <div class="col-form-data">
+                <label class="form-label">Municipio</label>
+                <select class="col-form-control" aria-label="Default select example" name="municipio" id="municipio" required>
+                    <option disabled selected>Seleccione...</option>
+                    {% for m in municipios%}
+                            <option value="{{m.nombre}}">{{m.nombre}}</option>
+                    {% endfor%}
+                </select>
+                </div>
+            <div class="col-form-data">
+                    <label  class="form-label">Avance del entregable</label>
+                    <input type="number" class="form-control" id="avance_entregable" name="avance_entregable">
+            </div>
+
+            <div class="col-form-data">
+                <label class="form-label">Descripción</label>
+               <textarea class="form-control" id="descripcion" name="descripcion"></textarea>
+            </div>
+        
+            <div class="col-form-data">
+                <label class="form-label">¿La actividad se realizó con otra institución? Nombre de la institución</label>
+                <input class="form-control " type="text" id="institucion" name="institucion">
+            </div>
+            
+            
+          </div>
+          
+       
+   
+    
+    <div class="people-container">
+        {{include('avance_poblacion_gpa.html')}} 
+</div>
+<div class="btn-save-avance">
+<button type="submit" class="btn-save-data">GUARDAR</button>
+</div>
+
+</form>
+
+{% endif %}
+      </div>
+    </div>
+</div> 
+{% endblock %}

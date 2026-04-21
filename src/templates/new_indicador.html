@@ -1,0 +1,152 @@
+{%extends 'main.html' %}
+
+{% block content %}
+<div class="container-home">
+  {{ include('navbar.html') }}
+  
+  <div class="container-register">
+  
+    <div class="content-register">
+<label class="register-title-web">AGREGAR NUEVO INDICADOR</label>
+{% if message%}
+
+{%if class == 'red'%}
+<label class="alert alert-danger">{{message}}</label>
+{%endif%}
+{% endif%}
+<form method="post" class="container-new-indicador" enctype="multipart/form-data">
+    <div class="label-register">
+        <label>Datos generales</label>   
+    </div>
+
+    <div class="container-content-new-indicador">
+
+        <div class="content-new-indicador">
+            <label>Año</label>
+            <input class="input-descargable" type="number" min="2021" name="año">
+        </div>
+
+
+        <div class="content-new-indicador">
+            <label>Programa Presupuestario</label>
+            <select class="input-descargable pp-indicador" name="pp" required>
+                                    
+                <option selected>Seleccione...</option>
+              
+                <option value="1">430 Prevención del embarazo en adolescentes</option>
+                <option value="2">481 Autonomía y Empoderamiento de las Mujeres</option>
+                <option value="3">482 Prevención y Atención a las Violencias contra las Mujeres</option>
+                <option value="4">No aplica</option>
+               
+            </select>
+            </div>
+    <div class="content-new-indicador">
+    <label>Número de indicador</label>
+    <input class="input-descargable" type="number" min="0" name="numeroindicador" required> 
+    </div>
+
+   
+    <div class="content-new-indicador">
+        <label>Fórmula</label>
+        <select class="form-control" name="formula" required>
+                                
+            <option selected>Seleccione...</option>
+          
+            <option value="(B/C)*100">(B/C)*100</option>
+            <option value="SUM B/C">SUM B/C</option>
+            <option value="((B-C)/C)*100">((B-C)/C)*100</option>
+            <option value="(B/C)*D">(B/C)*D</option>
+           
+        </select>
+       </div>
+ 
+    </div>
+       
+   <div class="container-content-new-indicador">
+
+        <div class="content-new-indicador">
+                <label>Línea Base</label>
+                <input class="input-descargable" step="0.001" type="number" name="linea-base" id="linea-base" >
+        
+
+           
+        </div>
+
+       <div class="content-new-indicador">
+            <label>Línea Meta</label>
+            <input class="input-descargable" step="0.001"type="number" name="linea-meta" id="linea-meta">
+    </div>
+    <div class="content-new-indicador">
+        <label>Definición</label>
+        <textarea class="textarea-style-indicador"  name="definicion"></textarea>
+        </div>
+
+        <div class="content-new-indicador">
+            <label>Ficha (numeroindicador-año.pdf)</label>
+            <input class="input-descargable pp-indicador" type="file" name="ficha-indicador" accept="application/pdf">
+        </div>
+
+</div>
+
+<div class="label-register">
+    <label>Variables</label>   
+</div>
+
+<div class="container-content-new-indicador">
+    <div class="content-new-indicador">
+        <label>Variable A</label>
+        <input class="input-variable-indicador" type="text" value="A" readonly >
+</div>
+
+<div class="content-new-indicador">
+    <label>Nombre</label>
+    <input class="input-variable" type="text" name="nombre-variable-a"  spellcheck="true">
+</div>
+</div>
+<div class="container-content-new-indicador">
+<div class="content-new-indicador">
+    <label>Variable B</label>
+    <input class="input-variable-indicador" type="text" value="B" readonly>
+</div>
+
+<div class="content-new-indicador">
+<label>Nombre</label>
+<input class="input-variable" type="text" name="nombre-variable-b" spellcheck="true" >
+</div>
+</div>
+<div class="container-content-new-indicador">
+<div class="content-new-indicador">
+    <label>Variable C</label>
+    <input class="input-variable-indicador" type="text" value="C" readonly >
+</div>
+
+<div class="content-new-indicador">
+<label>Nombre</label>
+<input class="input-variable" type="text" name="nombre-variable-c" spellcheck="true">
+</div>
+</div>
+<div class="container-content-new-indicador">
+<div class="content-new-indicador">
+    <label>Variable D</label>
+    <input class="input-variable-indicador" type="text" value="D" readonly>
+</div>
+
+<div class="content-new-indicador">
+<label>Nombre</label>
+<input class="input-variable" type="text" name="nombre-variable-d" spellcheck="true"  >
+</div>
+</div>
+</div>
+<div class="btn-container">
+    
+    <button type="submit" class="btn btn-save" >GUARDAR</button>
+</div> 
+</form>
+</div>
+
+    </div>
+</div>
+
+ 
+
+{% endblock %}

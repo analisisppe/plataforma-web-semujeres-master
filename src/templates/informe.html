@@ -1,0 +1,215 @@
+{%extends 'main.html' %}
+
+{% block content%}
+<div class="container-home">
+    {{ include('navbar.html') }}
+
+ <div class="container-entregable">
+     <div class="content-entregable">
+      {% if message%}
+      {%if class == 'blue'%}
+       <div class="alert alert-primary">{{message}}</div>
+       {%elseif class == 'red'%}
+       <div class="alert alert-danger">{{message}}</div>
+       {%endif%}
+      {% endif%}
+         <form method="POST" id="informepage" onsubmit="window.onbeforeunload=null">
+         <h3 class="subtitle">INFORME TRIMESTRAL</p>
+
+            <div class="container-trimestre"> 
+                <p class="subtitle">Seleccione el Trimestre Informado</p>
+                <div class="content-trimestre">
+                  <div class="checkbox-rounded" >
+                    <input name="trimestre" id="trimestre" value="trimestre1" type="radio" required>
+                    <label >TRIMESTRE 1</label>
+                  </div>
+                  <div class="checkbox-rounded" >
+                    <input name="trimestre" id="trimestre" value="trimestre2" type="radio">
+                    <label>TRIMESTRE 2</label>
+                  </div>
+                  <div class="checkbox-rounded" >
+                    <input name="trimestre" id="trimestre" value="trimestre3" type="radio">
+                    <label>TRIMESTRE 3</label>
+                  </div>
+                  <div class="checkbox-rounded" >
+                    <input name="trimestre" id="trimestre" value="trimestre4"  type="radio">
+                    <label>TRIMESTRE 4</label>
+                  </div>
+           
+                </div>
+
+                <div class="container-form-report">
+                    <div class="content-form-report">
+                        <p class="subtitle">Sintaxis</p>
+
+                        <div class="text-report">
+                            <label class="label-text-report">Delimitar Periodo</label>
+                            <textarea id="periodo" name="periodo" class="report-description" required spellcheck="true">{{periodo}}</textarea>
+                        </div>
+
+                        <div class="text-report">
+                            <label class="label-text-report">Acción Realizada</label>
+                            <textarea id="accion" name="accion" class="report-description" required spellcheck="true">{{accion}}</textarea>
+                        </div>
+
+                        <div class="text-report">
+                            <label class="label-text-report">Personas<br> Impactadas<br>
+                                Mujeres /Hombres</label>
+                                <textarea id="personas" name="personas" class="report-description" required spellcheck="true">{{personas}}</textarea>
+                        </div>
+
+                        <div class="text-report">
+                            <label class="label-text-report" >Municipios     </label>
+                            <textarea id="municipios" name="municipios" class="report-description" required spellcheck="true">{{municipio}}</textarea>
+                        </div>
+
+                        <div class="text-report">
+                            <label class="label-text-report">Objetivo Específico de<br> la Acción Realizada</label>
+                            <textarea id="objetivo" name="objetivo" class="report-description" required spellcheck="true">{{objetivo}}</textarea>
+                        </div>
+
+                        <div class="text-report">
+                            <label class="label-text-report">Descripción Cualitativa<br> de la Actividad</label>
+                            <textarea id="descripcion" name="descripcion" class="form-control-descripcion" required spellcheck="true">{{descripcion}}</textarea>
+                        </div>
+
+
+                    </div>
+
+                    <div class="content-description">
+                         <p class="subtitle">Ejemplo</p>
+                        <div class="text-description">
+                            <p>En el periodo que se informa,</p>
+                        </div>
+
+                        <div class="text-description">
+                            <p>se entregaron 3 apoyos para la renta de un bien inmueble,</p>
+                        </div>
+
+                        <div class="text-description">
+                            <p>a 10 mujeres,</p>
+                        </div>
+
+                        <div class="text-description">
+                            <p>de 8 municipios.</p>
+                        </div>
+
+                        <div class="text-description">
+                            <p>Con la finalidad de fomentar la autonomía económica de las mujeres en situación de violencia extrema.</p>
+                        </div>
+
+                        <div class="text-description">
+                            <p>Es la primera vez que el Gobierno del Estado de Yucatán hace entrega de este tipo de apoyo económico para que las mujeres accedan a un lugar seguro. Al tener una gran demanda del apoyo, el Gobernador del Estado ha considerado la importancia de que año con año se incremente el presupuesto para la entrega de más apoyos en beneficio de más mujeres. Del total de beneficiarias 10 mujeres han logrado salir del círculo de violencia y 40 ha logrado incorporarse al ámbito laboral.  </p>
+                        </div>
+
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="btn-container">
+              <button type="button" onclick="mostrarTexto()" class="btn btn-save">MOSTRAR</button>
+              <button type="submit" class="btn btn-save" id="btn-informe">GUARDAR</button>
+               
+                {% for e in entregable %}
+                 {% if e.id_entregable == id%}
+                <a  class="btn btn-back" href="{{url_for('/entregable/{id}',{'id': (e.fk_id_programa)})}}">REGRESAR</a>
+                {% endif %}
+                {% endfor %}
+            </div> 
+        </form>
+     </div>
+    </div>
+
+    <div class="container-card-registro">
+    <div class="subcontainer-card">
+    <div class="container-btn-card">
+    <button class="btn btn-primary btn-card dropdown-toggle" type="button" data-toggle="collapse" data-target="#trimestre1" aria-expanded="false" aria-controls="trimestre1">TRIMESTRE 1</button>
+    <button class="btn btn-primary btn-card dropdown-toggle" type="button" data-toggle="collapse" data-target="#trimestre2" aria-expanded="false" aria-controls="trimestre2">TRIMESTRE 2</button>
+    <button class="btn btn-primary btn-card dropdown-toggle" type="button" data-toggle="collapse" data-target="#trimestre3" aria-expanded="false" aria-controls="trimestre3">TRIMESTRE 3</button>
+    <button class="btn btn-primary btn-card dropdown-toggle" type="button" data-toggle="collapse" data-target="#trimestre4" aria-expanded="false" aria-controls="trimestre4">TRIMESTRE 4</button>
+</div>
+    <div class="card-content">
+    
+      
+        <div class="col">
+          
+            <div class="collapse" id="trimestre1">
+              <div id="resumen1" class="card card-body">
+                {% for i in informe%}
+    
+                {% if i.fk_id_entregable == id %}
+                {% if i.trimestre == 'trimestre1' %}
+                {{i.periodo ~','~ i.accion ~','~ i.personas ~','~ i.municipios ~'.'~ i.objetivo ~'.'~ i.descripcion}}
+              
+              {% endif %}
+              {% endif %}
+              {% endfor %}
+              </div>
+            </div>
+           
+          </div>
+
+        <div class="col">
+       
+          <div class="collapse" id="trimestre2">
+            <div id="resumen2" class="card card-body">
+              
+              {% for i in informe%}
+    
+              {% if i.fk_id_entregable == id %}
+              {% if i.trimestre == 'trimestre2' %}
+              {{i.periodo ~','~ i.accion ~','~ i.personas ~','~ i.municipios ~'.'~ i.objetivo ~'.'~ i.descripcion}}
+            {% endif %}
+            {% endif %}
+            {% endfor %}
+            </div>
+          </div>
+         
+        </div>
+
+        <div class="col">
+          
+            <div class="collapse" id="trimestre3">
+              <div id="resumen3" class="card card-body">
+       
+               
+                {% for i in informe%}
+    
+                {% if i.fk_id_entregable == id %}
+                {% if i.trimestre == 'trimestre3' %}
+                {{i.periodo ~','~ i.accion ~','~ i.personas ~','~ i.municipios ~'.'~ i.objetivo ~'.'~ i.descripcion}}
+              {% endif %}
+              {% endif %}
+              {% endfor %}
+              </div>
+            </div>
+           
+          </div>
+
+          <div class="col">
+           
+            <div class="collapse" id="trimestre4">
+              <div id="resumen4" class="card card-body">
+              
+                {% for i in informe%}
+    
+                {% if i.fk_id_entregable == id %}
+                {% if i.trimestre == 'trimestre4' %}
+                {{i.periodo ~','~ i.accion ~','~ i.personas ~','~ i.municipios ~'.'~ i.objetivo ~'.'~ i.descripcion}}
+              {% endif %}
+              {% endif %}
+              {% endfor %}
+              </div>
+            </div>
+          
+          </div>
+
+     
+      </div>
+</div>    
+    </div>
+
+   
+</div>
+{% endblock %}

@@ -1,0 +1,178 @@
+{% block avancedatosexternos %}
+<div class="subcontainer-card">
+       
+    <button class="btn btn-primary btn-card dropdown-toggle" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+        DATOS GENERALES
+      </button>
+    
+    <div class="collapse show" id="collapseExample">
+      <div class="card">
+        {% if message%}
+        {%if class == 'blue'%}
+         <div class="alert alert-primary">{{message}}</div>
+         {%elseif class == 'red'%}
+         <div class="alert alert-danger">{{message}}</div>
+         {%endif%}
+        {% endif%}
+
+<form class="form-row" method="POST" onchange="buscarNumeroExterno()">
+
+
+<div class="col-form">
+    <div class="col-form-data">
+        <label class="form-label">Mes de corte</label>
+        <select class="col-form-control" aria-label="Default select example" name="mes" id="mes" required>
+            <option value="Seleccione..." selected>Seleccione...</option>
+            <option value="ENERO">ENERO</option>
+            <option value="FEBRERO">FEBRERO</option>
+            <option value="MARZO">MARZO</option>
+            <option value="ABRIL">ABRIL</option>
+            <option value="MAYO">MAYO</option>
+            <option value="JUNIO">JUNIO</option>
+            <option value="JULIO">JULIO</option>
+            <option value="AGOSTO">AGOSTO</option>
+            <option value="SEPTIEMBRE">SEPTIEMBRE</option>
+            <option value="OCTUBRE">OCTUBRE</option>
+            <option value="NOVIEMBRE">NOVIEMBRE</option>
+            <option value="DICIEMBRE">DICIEMBRE</option>
+        </select>
+        </div>
+
+        {% for e in entregable%}
+        {% if e.id_entregable == identregable %}
+        {% if e.municipalizable == 'on' %}
+        <div class="col-form-data">
+            <label class="form-label">Municipio</label>
+            <select class="col-form-control" aria-label="Default select example" name="municipio" id="municipio" required>
+                <option value="Seleccione..." selected>Seleccione</option>
+               {% for m in municipios%}
+                <option value="{{m.nombre}}">{{m.nombre}}</option>
+                {% endfor%}
+            </select>
+            
+            </div>
+            {%endif%}
+            {%endif%}
+            {%endfor%}
+        <div class="col-form-data" >
+                <label  class="form-label">Avance del entregable</label>
+                <input type="number" class="form-control" id="avance_entregable" name="avance_entregable" min="0">
+        </div>
+
+        <div class="col-form-data" >
+            <label class="form-label">Descripción</label>
+           <textarea class="form-control" id="descripcion" name="descripcion"></textarea>
+        </div>
+       
+            <div class="col-form-data"  >
+                <label class="form-label">¿La actividad se realizó con otra institución? Nombre de la institución</label>
+                <input class="form-control" type="text" id="institucion" name="institucion">
+            </div>
+      </div>
+     
+<div class="t-content-entregable">
+<div class="people-container">
+    
+<div class="label-ped">
+    <label>Población</label>
+  
+</div>
+<div id="advertencia" class="warning">
+    <label class="alert alert-danger">La población con discapacidad y población hablante de lengua indígena no puede ser mayor a la población total</label>
+</div>
+  
+<div class="people-gpa">
+    <label class="form-label">Seleccione el tipo de población</label>
+<select class="input-people tipo-poblacion" aria-label="Default select example" id="poblacion-externo" onchange="cellContent()" required>
+    <option disabled selected>Seleccione...</option>
+ 
+            <option value="Población general">Población general</option>
+            <option value="Población 10-14 años">Población 10-14 años</option>
+            <option value="Población 15-19 años">Población 15-19 años</option>
+            <option value="Servidoras/es">Servidoras/es</option>
+            <option value="Madres, padres y/o tutores">Madres, padres y/o tutores</option>
+
+ 
+</select>
+</div>
+
+<div class="form-people-externo">
+   
+    <div class="people-gpa">
+        <div class="label-people">
+        <label> Población<br>Total</label>
+
+    </div>
+    <div class="container-input-gpa">
+        <label class="label-gpa">M</label> <input class="input-people" min="0" value="0" type="number" id="m_t" name="m_t1">
+        </div>
+        <div class="container-input-gpa">
+            <label class="label-gpa">H</label>  <input class="input-people" min="0" value="0" type="number" id="h_t" name="h_t1">
+        </div>
+    </div>
+    
+    <div class="people-gpa">
+        <div class="label-people">
+        <label> Población con<br>Discapacidad</label>
+
+    </div>
+    <div class="container-input-gpa">
+        <label class="label-gpa">M</label>  <input class="input-people" min="0" type="number" value="0"  id="m_d"  name="m_d1"  >
+    </div>
+    <div class="container-input-gpa">
+        <label class="label-gpa">H</label> <input class="input-people" min="0" type="number" value="0" id="h_d" name="h_d1">
+    </div>
+    </div>
+
+    <div class="people-gpa">
+        <div class="label-people">
+        <label>Población Hablante<br>de Lengua Indígena </label>
+    </div>
+    <div class="container-input-gpa">
+        <label class="label-gpa">M</label> <input class="input-people" min="0" type="number" value="0" id="m_i" name="m_i1">
+    </div>
+    <div class="container-input-gpa">
+        <label class="label-gpa">H</label> <input class="input-people" min="0" type="number" value="0" id="h_i" name="h_i1">
+    </div>
+    </div>
+
+    <div class="people-gpa">
+        <button id='add-btn' type="button" class="btn btn-add-table" onclick="return agregarAvance()">AGREGAR</button>
+    </div> 
+
+</div>
+
+<div class="table-container-poblacion table-responsive">
+<table id="tb-poblacion-externo" class="table table-bordered">
+<thead>
+    <tr>
+        <th scope="col">Tipo de<br>Población</th>
+        <th scope="col">Población<br>Total</th>
+        <th scope="col">Población con<br> Discapacidad</th>
+        <th scope="col">Población Hablante<br>de Lengua Indígena</th>
+        <th scope="col"></th>
+    </tr>
+</thead>
+<tbody>
+    <tr>
+      
+    </tr>
+
+</tbody>
+</table>
+</div>
+</div>
+
+
+</div>
+
+<div class="btn-save-avance">
+<button type="submit" class="btn-save-data">GUARDAR</button>
+</div>
+
+</form>
+
+</div>
+</div>
+</div> 
+{%endblock%}

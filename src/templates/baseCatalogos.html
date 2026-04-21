@@ -1,0 +1,69 @@
+{%extends 'main.html' %}
+
+{% block content %}
+<div class="container-home">
+  {{ include('navbar.html') }}
+  {% if rol == 'Administrador'%}
+  <div class="buscador catalogo">
+    {%else%}
+    <div class="buscador catalogo-descargable">
+
+    {%endif%}
+  
+    {% if message%}
+    {%if class == 'blue'%}
+     <div class="alert alert-primary">{{message}}</div>
+     {%elseif class == 'red'%}
+     <div class="alert alert-danger">{{message}}</div>
+     {%endif%}
+    {% endif%}
+<label class="label-buscador">CATÁLOGOS</label>
+
+{% if rol == 'Administrador'%}
+<form method="post" action="{{url_for('subirCatalogo')}}" enctype="multipart/form-data">
+  <div class="label-ped catalogo"><label>Agregar Catálogo</label></div>
+  <div class="buscador-descargable">
+    <div class="col-label-descargable">
+      <label>Nombre de Catálogo</label>
+      <input  class="input-descargable catalogo" name="nombre_catalogo" type="text" required>
+    </div>
+
+ <div class="col-label-descargable">
+<label >Selecciona el Archivo</label>
+<input name="catalogo" type="file" accept="application/pdf" required>
+</div>
+<div >
+<button type="submit" class="btn btn-descargable" >AGREGAR</button> 
+</div>
+</div>
+</form>
+{%endif%}
+
+
+  <form method="post" action="{{url_for('descargarCatalogo')}}" enctype="multipart/form-data">
+    <div class="label-ped catalogo"><label>Descargar Catálogo</label></div>
+    <div class="buscador-descargable subir">
+
+   <div class="col-label-descargable">
+<label >Selecciona el Catálogo</label>
+<select class="input-descargable descargar-catalogo" name="ruta_catalogo" required>
+  <option value="seleccione" disabled selected>Seleccione...</option>
+  {% for c in catalogos%}
+  <option value="{{c.catalogo}}">{{c.nombre_catalogo}}</option>
+  {%endfor%}
+
+</select>
+</div>
+<div class="btn-catalogo-container">
+<button type="submit" class="btn btn-descargable" >DESCARGAR</button> 
+</div>
+</div>
+
+
+</form>
+</div>
+</div>
+</div>
+
+
+{% endblock %}

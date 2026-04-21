@@ -1,0 +1,77 @@
+{%extends 'main.html' %}
+{% block content%}
+<div class="container-home">
+    {{ include('navbar.html') }}
+
+    <div class="buscador">
+       
+        <div class="buscador-container">
+           
+          <div class="year-container">
+            <label class="year-label">Año</label>
+            <input class="input-year" type="text" value="{{año}}">
+           </div>
+          <div class="year-container">
+                   
+            <label class="label-program">Nombre de Indicador</label>
+              <div class="container-searchinput">        
+                  <input id="buscadorprograma" onkeyup="buscador()"  class="input-search" type="search" placeholder="Ingrese Nombre de Indicador" aria-label="Ingrese Nombre de Indicador">
+                  <button class="btn btn-outline-success" type="submit"><i class="fas fa-search"></i></button>
+              </div>
+          </div>
+
+          <div class="container-searchinput">
+            <button type="button" onclick="window.location.href='agregarIndicador';" class="btn btn-add">AGREGAR</button>
+            <button type="button" class="btn btn-add" onclick="window.location.href='inicio';">REGRESAR</button>
+          </div>
+          
+          </div>
+          </div>
+
+          <div class="table-container">
+            <table id="programa-table" name='programa' class="table table-bordered table-home table-striped">
+                <thead>
+                  <th scope="col">NO.INDICADOR</th>
+                  <th scope="col">NOMBRE INDICADOR</th>
+                  <th scope="col">RESPONSABLE</th>
+                  <th scope="col">CORRESPONSABLE</th>
+                  <th scope="col">ACCIONES</th>
+                </thead>
+                <tbody>
+                  {% for i in indicador%}
+                 {%for n in indicadores%}
+               
+                 {% if n.indicador == i.id_indicador%}
+                  {% for v in variable%}
+                  {%if v.fk_indicador == n.indicador%}
+                  {% if v.variable == 'A'%}
+                  <tr>
+                    <td>{{i.numero}}</td>
+                    <td>{{v.nombre}}</td>
+                    <td>{{n.responsable}}</td>
+                    <td>{{n.corresponsable}}</td>
+                    <td>
+                      <a type="button" class="btn btn-edit-entregable" href="{{url_for('editarIndicador',{id_indicadores: (n.id_indicadores), id_indicador:(i.id_indicador)})}}" title="EDITAR"><i class="fas fa-edit entregable"></i></a>
+                      <a type="button" id="pdf" class="btn btn-edit-entregable" href="{{url_for('ficha',{indicador:(n.indicador), fecha:(n.año)})}}"  title="FICHA" target="_blank"><i class="fas fa-file-pdf entregable"></i></a>  
+                      {% if rol == 'Administrador' or rol == 'Admin SEMUJERES-GEPEA'%}
+                      <a href="{{url_for('eliminarIndicador', {'id_indicadores': (n.id_indicadores)})}}" onclick="return confirmDeleteIndicador()" class="btn btn-delete-entregable" title="ELIMINAR"><i class="fas fa-trash-alt entregable"></i></a>
+                      {% endif%}
+                    </td>
+                  </tr>
+                  {%endif%}
+                  {%endif%}
+            {%endfor%}
+                  {%endif%}
+                  {% endfor %}
+                  {% endfor %}
+                 <!-- <tr class='noSearch hide'>
+                    <td colspan="5"></td>
+                </tr>-->
+            </table> 
+            <div id="busca" class='noSearch hide'>
+          
+            </div>
+                </div>
+      
+    </div>
+{% endblock %}

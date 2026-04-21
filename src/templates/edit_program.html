@@ -1,0 +1,209 @@
+{%extends 'main.html' %}
+
+{% block content %}
+<div class="container-home">
+    {{ include('navbar.html') }}
+
+    <div class="container-entregable">
+        <div class="content-entregable">
+{% if programa %}
+{% for p in programa%}
+
+{% if id_programa == p.id_programa%}
+
+<form  method="POST" >
+<h3 class="subtitle">DATOS GENERALES</h3>
+{% if message%}
+
+{%if class == 'red'%}
+<label class="alert alert-danger">{{message}}</label>
+{%endif%}
+{% endif%}
+<div class="form-row justify-content-center">
+   
+    <div class="col-md-5">
+        <label>Nombre de Programa/Acción</label>
+        <input type="text" class="form-control" value="{{p.nombre_programa}}" name="nombre_programa" id="nombre_programa" required>
+    </div>
+
+    <div class="col-md-5">
+        <label>AÑO</label>
+        <input type="number" class="form-control" value="{{p.año}}" name="año" id="año" min="2021" required>
+    </div>
+
+    <div class="col-md-5">
+        <label>Objetivo General</label>
+        <textarea type="text" class="form-control" name="objetivo" id="objectivo" required>{{p.objetivo}}</textarea>
+    </div>
+
+    <div class="col-md-5">
+        <label>Descripción</label>
+        <textarea type="text" class="form-control" name="descripcion" id="descripcion" required>{{p.descripcion}}</textarea>
+    </div>
+
+    <div class="col-md-5">
+        <label>Nombre de la Persona Responsable</label>
+        <input type="text" class="form-control" value="{{p.nombre_responsable}}" name="nombre_responsable" id="nombre_responsable" required>
+    </div>
+
+    <div class="col-md-5">
+        <label>Cargo de la Persona Responsable</label>
+        <input type="text" class="form-control" value="{{p.cargo_responsable}}" name="cargo_responsable" id="cargo_responsable" required>
+    </div>
+
+    <div class="col-md-5">
+        <label>Correo de la Persona Responsable</label>
+        <input type="email" class="form-control" value="{{p.correo_responsable}}" name="correo_responsable" id="correo_responsable" required>
+    </div>
+
+    <div class="col-md-5">
+        <label>Teléfono de la Persona Responsable</label>
+        <input type="tel" class="form-control" value="{{p.tel_responsable}}" name="tel_responsable" id="tel_Responsable" required>
+    </div>
+
+    <div class="col-md-5 checkbox">
+        <label>Acciones para la Igualdad De Género</label>
+        {% if p.brecha_genero == 'on'%}
+            <input class="checkbox-programa" name="brecha_genero" id="brecha_genero" type="checkbox" checked>
+            {%elseif  p.brecha_genero == 0 %}
+            <input class="checkbox-programa" name="brecha_genero" id="brecha_genero" type="checkbox">
+            {%endif%}
+    </div>
+</div>
+
+
+
+
+<div class="t-content-entregable">
+    <div class="label-ped">
+        <label>ALINEACIÓN AL P.E.D.</label>
+    </div>
+
+    <div class="addprogram">
+<div class="col-form-entregable">
+<div class="col-label-entregable">
+    <label>Eje</label>
+  
+    <select id="select-eje" class="form-control " data-is-eje="{{eje|json_encode}}" aria-label="Default select example" name="eje" onchange="return cambio_eje(this.value)">            
+
+        <option value="0" disabled selected>Seleccione...</option>
+        {% for e in eje%}
+        <option id="eje-option" value="{{e.id}}" >{{e.eje}}</option>
+        {% endfor %}
+      
+    </select>
+</div>
+    <div class="col-label-entregable">
+        <label>Política Pública</label>
+        <select class="form-control " data-is-politica="{{politica|json_encode}}" aria-label="Default select example" name="politica" id="select-politica" onchange="return cambio_objped(this.value)">
+            <option  value="0" disabled selected>Seleccione...</option>
+            <option></option>
+          
+        </select>
+    </div>
+</div>
+
+<div class="col-form-entregable">
+<div class="col-label-entregable">
+            <label >Objetivo</label>
+            <select class="form-control " aria-label="Default select example" name="objped" id="select-objped" data-is-objetivoped="{{objetivoped|json_encode}}" onchange="return cambio_estrategia(this.value)" >
+                <option value="0" disabled selected>Seleccione...</option>
+                <option></option>
+            </select>
+</div>
+        
+<div class="col-label-entregable">
+                <label >Estrategia</label>
+                <select class="form-control " aria-label="Default select example" name="estrategiaped" id="select-estrategiaped" data-is-estrategiaped="{{estrategiaped|json_encode}}" onchange="return cambio_lineaccion(this.value)">
+                    <option value="0" disabled selected>Seleccione...</option>
+                    <option></option>
+                
+                </select>
+                </div>
+</div>
+
+<div class="col-form-entregable">
+                <div class="col-label-entregable">
+                    <label >Línea de Acción</label>
+                    <select class="form-control " aria-label="Default select example" name="lineaped" id="select-lineaccion" data-is-lineaaccion="{{lineaccion|json_encode}}">
+                        <option value="0" disabled selected>Seleccione...</option>
+                        <option></option>
+
+                    </select>
+                </div>
+
+                <div>
+                        <button id='signup-btn' type="button" class="btn btn-add-table" onclick="return onSubmitAgregar()">AGREGAR</button>
+                    </div> 
+                </div>
+
+                <div class="table-responsive">
+<table id="tabla-ped" class="table table-bordered table-ped">
+<thead>
+    <tr>
+        <th scope="col">Eje</th>
+        <th scope="col">Política Pública</th>
+        <th scope="col">Objetivo</th>
+        <th scope="col">Estrategia</th>
+        <th scope="col">Línea de Acción</th>
+        <th scope="col">ACCIONES</th>
+    </tr>
+</thead>
+<tbody>
+    {%for ped in alineacionped%}
+        {% if ped.fk_id_programa == p.id_programa%}
+    <tr>
+        
+        {% for e in eje %}
+        {% if e.eje == ped.eje%}
+        <td><textarea id="{{e.id}}"  name="textareaideje[]" style="width:130px;height:90px;border:0;outline:0;display:inline-block" cols="50" rows="5"  readonly>{{ped.eje}}</textarea></td>
+        {% endif %}
+        {% endfor%}
+        {% for i in politica%}
+        {% if i.politica == ped.politica%}
+        <td><textarea id="{{i.id}}" name="textareapolitica[]" class="table-input-area" readonly>{{ped.politica}}</textarea></td>
+        {% endif %}
+        {% endfor%}
+        {% for o in objetivoped%}
+        {% if o.objetivo == ped.objetivo%}  
+       <td><textarea id="{{o.id}}" name="textareaobjetivo[]" class="table-input-area" readonly>{{ped.objetivo}}</textarea></td>
+       {% endif %}
+        {% endfor%}
+       {% for s in estrategiaped%}
+        {% if s.estrategia == ped.estrategia%}
+       <td><textarea id="{{s.id}}" name="textareaestrategia[]" class="table-input-area"  readonly>{{ped.estrategia}}</textarea></td>
+       {% endif %}
+       {% endfor%}
+       {% for l in lineaccion%}
+       {% if l.linea_accion == ped.linea%}
+       <td><textarea id="{{l.id}}" name="textarealinea[]" class="table-input-area"  readonly>{{ped.linea}}</textarea></td>
+       <td><a type="button" class="btn btn-edit-entregable" onclick="return editRowPED(this,1)" title="EDITAR"><i class="fas fa-edit entregable"></i></a> <a type="button" class="btn btn-delete-entregable" onclick="deleteRow(this)" title="BORRAR"><i class="fas fa-trash-alt"></i></a></td>
+       {% endif %}
+       
+       {% endfor%}
+     
+    </tr>
+    {%endif%}
+    {%endfor%}
+</tbody>
+</table>
+                </div>
+</div>
+</div>
+
+<div class="btn-container">
+<a type="button" class="btn btn-back" href="{{url_for('inicio')}}">REGRESAR</a>
+
+<input type="hidden" name="_METHOD" value="PUT"/>
+<button type="submit" class="btn btn-save">GUARDAR</button>
+</div>
+{% endif %}
+{% endfor %}
+</form>
+{% endif%}
+</div>
+</div>
+
+</div>
+
+{% endblock %}

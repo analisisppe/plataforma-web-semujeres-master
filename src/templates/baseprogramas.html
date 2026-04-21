@@ -1,0 +1,53 @@
+{%extends 'main.html' %}
+
+{% block content %}
+<div class="container-home">
+  {{ include('navbar.html') }}
+  
+  <div class="buscador">
+<label class="label-buscador">{{ tipo == 'programas' ? 'BASE DE DATOS PROGRAMAS/ACTIVIDADES' : 'BASE DE DATOS INDICADORES'}}</label>
+{% if message%}
+
+ {%if class == 'red'%}
+ <label class="alert alert-danger">{{message}}</label>
+ {%endif%}
+{% endif%}
+  <form method="post">
+  
+   <div class="buscador-descargable">
+    <div class="col-label-descargable">
+    <label>AÑO</label>
+   
+<input class="input-descargable" name="años"  type="number" value="{{año}}" min="2021" required>
+</div>
+<div class="col-label-descargable">
+<label>MES</label>
+
+  <select class="col-form-control mes" name="mes" id="mes">
+    <option value="seleccione" selected>Seleccione...</option>
+      <option value="ENERO">ENERO</option>
+      <option value="FEBRERO">FEBRERO</option>
+      <option value="MARZO">MARZO</option>
+      <option value="ABRIL">ABRIL</option>
+      <option value="MAYO">MAYO</option>
+      <option value="JUNIO">JUNIO</option>
+      <option value="JULIO">JULIO</option>
+      <option value="AGOSTO">AGOSTO</option>
+      <option value="SEPTIEMBRE">SEPTIEMBRE</option>
+      <option value="OCTUBRE">OCTUBRE</option>
+      <option value="NOVIEMBRE">NOVIEMBRE</option>
+      <option value="DICIEMBRE">DICIEMBRE</option>
+  </select>
+
+</div>
+
+</div>
+  <div class="container-button-descargable">
+  <button type="submit" class="btn btn-descargable">DESCARGAR</button>
+</div>
+</form>
+
+
+</div>
+
+{% endblock %}

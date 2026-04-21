@@ -1,0 +1,93 @@
+{%extends 'main.html' %}
+
+        {% block content %}
+        <div class="container-home">
+            {{ include('navbar.html') }}
+<div class="buscador catalogo">
+    <div class="content-register">
+        {% if message%}
+        {%if class == 'blue'%}
+         <div class="alert alert-primary">{{message}}</div>
+         {%elseif class == 'red'%}
+         <div class="alert alert-danger">{{message}}</div>
+         {%endif%}
+        {% endif%}
+    <label class="label-buscador">ASIGNAR FECHA LIMITE DE CAPTURA</label>
+     <form  action="{{url_for('asignarFechaInforme')}}" method="POST" autocomplete="on">
+        
+        <div class="label-ped catalogo"><label>Informes</label></div>
+        <div class="buscador-descargable">
+            <div class="col-label-descargable">
+            <label >Trimestre</label>
+            <select class="input-descargable captura" name="trimestre" required>
+                <option value="seleccione" disabled selected>Seleccione...</option>
+                
+                <option value="trimestre1">TRIMESTRE 1</option>
+                <option value="trimestre2">TRIMESTRE 2</option>
+                <option value="trimestre3">TRIMESTRE 3</option>
+                <option value="trimestre4">TRIMESTRE 4</option>
+               
+              
+              </select>
+      </div>
+       <div class="col-label-descargable">
+      <label >Año</label>
+      <input class="input-descargable"  name="year" type="text" value="{{año}}" required>
+      </div>
+      <div class="col-label-descargable">
+        <label >Fecha y Hora</label>
+        <input class="input-descargable fecha"  name="fecha" type="datetime-local" required>
+        </div>
+      <div >
+          <div>
+        <button id='signup-btn' type="submit" class="btn register">ASIGNAR</button>
+    </div>
+      </div>
+      </div>    
+     </form>
+
+     <form action="{{url_for('asignarFechaAvance')}}" method="POST" autocomplete="on">
+        
+        <div class="label-ped catalogo"><label>Avances</label></div>
+        <div class="buscador-descargable">
+            <div class="col-label-descargable">
+            <label >Mes</label>
+            <select class="input-descargable captura" name="mes" required>
+                <option value="seleccione" disabled selected>Seleccione...</option>
+                
+                <option value="ENERO">ENERO</option>
+                <option value="FEBRERO">FEBRERO</option>
+                <option value="MARZO">MARZO</option>
+                <option value="ABRIL">ABRIL</option>
+                <option value="MAYO">MAYO</option>
+                <option value="JUNIO">JUNIO</option>
+                <option value="JULIO">JULIO</option>
+                <option value="AGOSTO">AGOSTO</option>
+                <option value="SEPTIEMBRE">SEPTIEMBRE</option>
+                <option value="OCTUBRE">OCTUBRE</option>
+                <option value="NOVIEMBRE">NOVIEMBRE</option>
+                <option value="DICIEMBRE">DICIEMBRE</option>
+               
+              
+              </select>
+      </div>
+       <div class="col-label-descargable">
+      <label >Año</label>
+      <input class="input-descargable"  name="year" type="text" value="{{año}}" required>
+      </div>
+      <div class="col-label-descargable">
+        <label >Fecha y Hora</label>
+        <input class="input-descargable fecha"  name="fecha" type="datetime-local" required>
+        </div>
+      <div >
+          <div>
+        <button id='signup-btn' type="submit" class="btn register">ASIGNAR</button>
+    </div>
+      </div>
+      </div>    
+     </form>
+</div>
+ </div>
+
+        </div>
+ {% endblock %}

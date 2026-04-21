@@ -1,0 +1,1366 @@
+{% block avancetotalgpa %}
+
+<div class="subcontainer-card">
+    <div class="container-btn-card">
+    <button class="btn btn-primary btn-card dropdown-toggle" type="button" data-toggle="collapse" data-target="#trimestre1" aria-expanded="false" aria-controls="trimestre1">TRIMESTRE 1</button>
+    <button class="btn btn-primary btn-card dropdown-toggle" type="button" data-toggle="collapse" data-target="#trimestre2" aria-expanded="false" aria-controls="trimestre2">TRIMESTRE 2</button>
+    <button class="btn btn-primary btn-card dropdown-toggle" type="button" data-toggle="collapse" data-target="#trimestre3" aria-expanded="false" aria-controls="trimestre3">TRIMESTRE 3</button>
+    <button class="btn btn-primary btn-card dropdown-toggle" type="button" data-toggle="collapse" data-target="#trimestre4" aria-expanded="false" aria-controls="trimestre4">TRIMESTRE 4</button>
+</div>
+
+<div class="card-content" >
+  
+        <div class="col">
+          <div class="collapse " id="trimestre1">
+            <div class="card card-body">
+             {% set trimestre1 = ['ENERO','FEBRERO','MARZO']%}
+             
+             {% for item in trimestre1 %} 
+                <div id="accordion">
+                 
+                    <div class="card">
+                     
+                      <div class="card-header btn-card text-card-header" id="headingOne">
+                        <h5>
+                          <button class="btn btn-link " data-toggle="collapse" data-target="#{{item}}" aria-expanded="false" aria-controls="collapseOne">
+                          {{item}}
+                          </button>
+                        </h5>
+                          {% set count = 0 %}
+                         {%for e in avance%}
+                         {% if identregable == e.fk_id_entregable %}
+                            {% if e.mes == item%}
+                              {%set count =+ count + 1 %}
+                              {%endif%}
+                            {%endif%}
+                          {% endfor %}
+
+                          <h5 class="card-text"> REGISTROS:{{count}}</h5>
+                       
+                      </div>
+                
+                      <div id="{{item}}" class="collapse" aria-labelledby="headingOne"  data-parent="#accordion" >
+                        <div class="card-body">
+   
+                          <div class="body-total">
+
+                            <div class="content-body-total">
+                                <div>
+                                    {% set avance_mensual= 0 %}
+                                  
+                                  {% for a in mensual%}
+                                
+                                  {% if item == 'ENERO' and a.mes == 'ENERO' %}
+                                  
+                                    {% set avance_mensual = avance_mensual + a.avance_entregable %} 
+                                  
+                                    {% elseif item == 'FEBRERO' and a.mes == 'FEBRERO' %}
+                                    {% set avance_mensual = avance_mensual + a.avance_entregable %}
+                                   
+                                    {% elseif item == 'MARZO' and a.mes == 'MARZO' %}
+                                    {% set avance_mensual = avance_mensual + a.avance_entregable %}
+                                    
+                                    {% endif %}
+                                    {%endfor%}
+                                    <p id="avance" class="totales-sub">AVANCE </p><p>{{avance_mensual}}</p>
+                                </div>
+                                <div>
+                                    {% set m10_mensual = 0 %}
+                                    {% set h10_mensual = 0 %}
+                                   
+
+                                    {% for a in mensual%}
+                                    {% set m10 = 0 %}
+                                    {% set h10 = 0 %}
+                                    {% set ms10 = 0 %}
+                                    {% set hs10 = 0 %}
+                                    {% if item == 'ENERO' and a.mes == 'ENERO' %}
+
+                                    {% set m10 = m10 + a.m_10%}
+                                    {% set ms10 = ms10 + a.ms_10%}
+                                    {% set h10 = h10 + a.h_10%}
+                                    {% set hs10 = hs10 + a.hs_10%}
+
+                                    {% set m10_mensual = m10_mensual + m10 + ms10 %}
+                                    {% set h10_mensual = h10_mensual + h10 + hs10 %}
+
+                                    {% elseif item == 'FEBRERO' and a.mes == 'FEBRERO' %}
+
+                                    {% set m10 = m10 + a.m_10%}
+                                    {% set ms10 = ms10 + a.ms_10%}
+                                    {% set h10 = h10 + a.h_10%}
+                                    {% set hs10 = hs10 + a.hs_10%}
+
+                                    {% set m10_mensual = m10_mensual + m10 + ms10 %}
+                                    {% set h10_mensual = h10_mensual + h10 + hs10 %}
+
+                                    {% elseif item == 'MARZO' and a.mes == 'MARZO' %}
+
+                                    
+                                    {% set m10 = m10 + a.m_10%}
+                                    {% set ms10 = ms10 + a.ms_10%}
+                                    {% set h10 = h10 + a.h_10%}
+                                    {% set hs10 = hs10 + a.hs_10%}
+
+                                    {% set m10_mensual = m10_mensual + m10 + ms10 %}
+                                    {% set h10_mensual = h10_mensual + h10 + hs10 %}
+                            
+
+                                    {%endif%}
+                                    {% endfor %}
+                                
+                                    <p>POBLACION <br>10-14 AÑOS</p>
+                                    <div class="text-body-total">
+                                        <p>M {{m10_mensual}}</p>
+                                        <p>H {{h10_mensual}}</p>
+                                        </div>
+
+                                </div>
+                                <div class="content-text-total">
+
+                                  {% set m15_mensual = 0%}
+                                  {% set h15_mensual = 0%}
+                               
+
+                                  {% for a in mensual%}
+                                  {% set m15 = 0%}
+                                  {% set h15 = 0%}
+                                  {% set ms15 = 0%}
+                                  {% set hs15 = 0%}
+                                  {% if item == 'ENERO' and a.mes == 'ENERO' %}
+
+                                  {% set m15 = m15 + a.m_15%}
+                                  {% set ms15 = ms15 + a.ms_15%}
+                                  {% set h15 = h15 + a.h_15%}
+                                  {% set hs15 = hs15 + a.hs_15%}
+
+                                  {% set m15_mensual = m15_mensual + m15 +ms15 %}
+                                  {% set h15_mensual = h15_mensual + h15 +hs15 %}
+
+                                  {% elseif item == 'FEBRERO' and a.mes == 'FEBRERO' %}
+
+                                  {% set m15 = m15 + a.m_15%}
+                                  {% set ms15 = ms15 + a.ms_15%}
+                                  {% set h15 = h15 + a.h_15%}
+                                  {% set hs15 = hs15 + a.hs_15%}
+
+                                  {% set m15_mensual = m15_mensual + m15 +ms15 %}
+                                  {% set h15_mensual = h15_mensual + h15 +hs15 %}
+
+                                  {% elseif item == 'MARZO' and a.mes == 'MARZO' %}
+
+                                  
+                                  {% set m15 = m15 + a.m_15%}
+                                  {% set ms15 = ms15 + a.ms_15%}
+                                  {% set h15 = h15 + a.h_15%}
+                                  {% set hs15 = hs15 + a.hs_15%}
+
+                                  {% set m15_mensual = m15_mensual + m15 +ms15 %}
+                                  {% set h15_mensual = h15_mensual + h15 +hs15 %}
+                          
+
+                                  {%endif%}
+                                  {% endfor %}
+                                    <p>POBLACION<br>
+                                        15-19 AÑOS
+                                    </p>
+                                    <div class="text-body-total">
+                                    <p>M {{m15_mensual}}</p>
+                                    <p>H {{h15_mensual}}</p>
+                                    </div>
+                                </div>
+
+                                <div>
+                                  {% set servidoras = 0%}
+                                  {% set servidores = 0%}
+                               
+
+                                  {% for a in mensual%}
+                                  {% set ma = 0%}
+                                  {% set he = 0%}
+                                  {% set msa = 0%}
+                                  {% set hse = 0%}
+                                  {% if item == 'ENERO' and a.mes == 'ENERO' %}
+
+                                  {% set ma = ma + a.m_ser%}
+                                  {% set he = he + a.h_ser%}
+                                  {% set msa = msa + a.ms_ser%}
+                                  {% set hse = hse + a.hs_ser%}
+
+                                  {% set servidoras = servidoras + ma +msa %}
+                                  {% set servidores = servidores + he +hse %}
+
+                                  {% elseif item == 'FEBRERO' and a.mes == 'FEBRERO' %}
+
+                                  {% set ma = ma + a.m_ser%}
+                                  {% set he = he + a.h_ser%}
+                                  {% set msa = msa + a.ms_ser%}
+                                  {% set hse = hse + a.hs_ser%}
+
+                                  {% set servidoras = servidoras + ma +msa %}
+                                  {% set servidores = servidores + he +hse %}
+
+                                  {% elseif item == 'MARZO' and a.mes == 'MARZO' %}
+                                  
+                                  {% set ma = ma + a.m_ser%}
+                                  {% set he = he + a.h_ser%}
+                                  {% set msa = msa + a.ms_ser%}
+                                  {% set hse = hse + a.hs_ser%}
+
+                                  {% set servidoras = servidoras + ma +msa %}
+                                  {% set servidores = servidores + he +hse %}
+                          
+
+                                  {%endif%}
+                                  {% endfor %}
+                                    <p>SERVIDORAS\ES</p>
+                                    <div class="text-body-total">
+                                        <p>M {{servidoras}}</p>
+                                        <p>H {{servidores}}</p>
+                                    </div>
+                                </div>
+
+                                <div>
+                                  {% set madres = 0%}
+                                  {% set padres = 0%}
+                              
+
+                                  {% for a in mensual%}
+                                  {% set mad = 0%}
+                                  {% set hpa = 0%}
+                                  {% set mads = 0%}
+                                  {% set hpads = 0%}
+                                  {% if item == 'ENERO' and a.mes == 'ENERO' %}
+
+                                  {% set mad = mad + a.m_padres%}
+                                  {% set hpa = hpa + a.h_padres%}
+                                  {% set mads = mads + a.ms_padres%}
+                                  {% set hpads = hpads + a.hs_padres%}
+
+                                  {% set madres = madres + mad +mads %}
+                                  {% set padres = padres + hpa +hpads %}
+
+                                  {% elseif item == 'FEBRERO' and a.mes == 'FEBRERO' %}
+
+                                  {% set mad = mad + a.m_padres%}
+                                  {% set hpa = hpa + a.h_padres%}
+                                  {% set mads = mads + a.ms_padres%}
+                                  {% set hpads = hpads + a.hs_padres%}
+
+                                  {% set madres = madres + mad +mads %}
+                                  {% set padres = padres + hpa +hpads %}
+
+                                  {% elseif item == 'MARZO' and a.mes == 'MARZO' %}
+                                  
+                                  {% set mad = mad + a.m_padres%}
+                                  {% set hpa = hpa + a.h_padres%}
+                                  {% set mads = mads + a.ms_padres%}
+                                  {% set hpads = hpads + a.hs_padres%}
+
+                                  {% set madres = madres + mad +mads %}
+                                  {% set padres = padres + hpa +hpads %}
+                          
+
+                                  {%endif%}
+                                  {% endfor %}
+
+                                    <p>MADRES, PADRES Y/O TUTORES</p>
+                                    <div class="text-body-total">
+                                        <p>M {{madres}}</p>
+                                        <p>H {{padres}}</p>
+                                    </div>
+                                </div>
+                             
+                             
+                            </div>
+                       
+                      </div>
+
+
+
+                          <table class="table table-bordered  table-striped">
+                            
+                              <thead>
+                                  <tr>
+                                    <th scope="col">MUNICIPIO</th>
+                                      <th scope="col">AVANCE</th>
+                                      <th scope="col">POBLACION<br>10-14 AÑOS</th>
+                                      <th scope="col">POBLACION<br> 15-19 AÑOS</th>
+                                      <th scope="col">SERVIDORAS/ES</th>
+                                      <th scope="col">MADRES,PADRES<br>Y/O TUTORES</th>
+                                      <th scope="col">ACCIONES</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                               
+                                
+                                {%for i in avance %}
+                                {% set poblacionM10 = 0 %}
+                                {% set poblacionH10 = 0 %}
+                                {% set poblacionM15 = 0 %}
+                                {% set poblacionH15 = 0 %}
+                                {% set servidoras = 0 %}
+                                {% set servidores = 0 %}
+                                {% set padres = 0 %}
+                                {% set madres = 0 %}
+
+                                {% if identregable == i.fk_id_entregable %}
+                                {% if i.mes == item %}
+                                
+                                {% set poblacionM10 = poblacionM10 + (i.m_10 + i.ms_10) %}
+                                {% set poblacionH10 = poblacionH10 + (i.h_10 + i.hs_10) %}
+
+                                {% set poblacionM15 = poblacionM15 + (i.m_15 + i.ms_15) %}
+                                {% set poblacionH15 = poblacionH15 + (i.h_15 + i.hs_15) %}
+                                
+                                {% set servidoras = servidoras + (i.m_ser + i.ms_ser) %}
+                                {% set servidores = servidores + (i.h_ser + i.hs_ser) %}
+
+                                {% set madres = madres + (i.m_padres+ i.ms_padres) %}
+                                {% set padres = padres + (i.h_padres + i.hs_padres) %}
+
+                               
+                                  <tr>
+                                      <td>{{i.municipio}}</td>
+                                      <td>{{i.avance_entregable}}</td>
+                                      <td>M {{poblacionM10}} H {{poblacionH10}}</td>
+                                      <td>M {{poblacionM15}} H {{poblacionH15}}</td>
+                                      <td>M {{servidoras}} H {{servidores}}</td>
+                                      <td>M {{madres}} H {{padres}}</td>
+                                     
+                                      <td>
+                                        <a type="button" class="btn btn-edit-entregable" href="{{url_for('editarAvance',{id_entregable: (i.fk_id_entregable), id_avance: (i.id_avance)})}}" title="EDITAR"><i class="fas fa-edit entregable"></i></a>
+                                        <a href="{{url_for('eliminarAvance', {'id_avance': (i.id_avance),id_entregable: (i.fk_id_entregable)})}}" onclick="return confirmDeleteAvance()" class="btn btn-delete-entregable" title="ELIMINAR"><i class="fas fa-trash-alt entregable"></i></a>
+                                      </td>
+                                  </tr>
+                                  {% endif %}
+                                  {% endif %}
+                                  {% endfor %}
+                              </tbody>
+                              </table>
+                          </div>
+                          <div>
+                       
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+          </div>
+    
+
+          
+  <div class="col">
+    <div class="collapse " id="trimestre2">
+      <div class="card card-body">
+        {% set trimestre2 = ['ABRIL','MAYO','JUNIO']%}
+             
+        {% for item in trimestre2 %} 
+           <div id="accordion">
+            
+               <div class="card">
+                
+                 <div class="card-header btn-card text-card-header" id="headingTwo">
+                   <h5>
+                     <button class="btn btn-link " data-toggle="collapse" data-target="#{{item}}" aria-expanded="false" aria-controls="collapseTwo">
+                     {{item}}
+                     </button>
+                   </h5>
+                   {% set count = 0 %}
+                   {%for e in avance%}
+                   {% if identregable == e.fk_id_entregable %}
+                      {% if e.mes == item%}
+                        {%set count =+ count + 1 %}
+                        {%endif%}
+                      {%endif%}
+                    {% endfor %}
+
+                    <h5 class="card-text"> REGISTROS:{{count}}</h5>
+                 </div>
+             
+                 <div id="{{item}}" class="collapse" aria-labelledby="headingTwo"  data-parent="#accordion">
+                   <div class="card-body">
+
+                     <div class="body-total">
+                        
+                      <div class="content-body-total">
+                        <div>
+                            {% set avance_mensual= 0 %}
+                          
+                          {% for a in mensual%}
+                        
+                          {% if item == 'ABRIL' and a.mes == 'ABRIL' %}
+                          
+                            {% set avance_mensual = avance_mensual + a.avance_entregable %} 
+                          
+                            {% elseif item == 'MAYO' and a.mes == 'MAYO' %}
+                            {% set avance_mensual = avance_mensual + a.avance_entregable %}
+                           
+                            {% elseif item == 'JUNIO' and a.mes == 'JUNIO' %}
+                            {% set avance_mensual = avance_mensual + a.avance_entregable %}
+                            
+                            {% endif %}
+                            {%endfor%}
+                            <p id="avance">AVANCE {{avance_mensual}} </p>
+                        </div>
+                        <div>
+                            {% set m10_mensual = 0%}
+                            {% set h10_mensual = 0%}
+                          
+
+                            {% for a in mensual%}
+                            {% set m10 = 0%}
+                            {% set h10 = 0%}
+                            {% set ms10 = 0%}
+                            {% set hs10 = 0%}
+                            {% if item == 'ABRIL' and a.mes == 'ABRIL' %}
+
+                            {% set m10 = m10 + a.m_10%}
+                            {% set ms10 = ms10 + a.ms_10%}
+                            {% set h10 = h10 + a.h_10%}
+                            {% set hs10 = hs10 + a.hs_10%}
+
+                            {% set m10_mensual = m10_mensual + m10 +ms10 %}
+                            {% set h10_mensual = h10_mensual + h10 +hs10 %}
+
+                            {% elseif item == 'MAYO' and a.mes == 'MAYO' %}
+
+                            {% set m10 = m10 + a.m_10%}
+                            {% set ms10 = ms10 + a.ms_10%}
+                            {% set h10 = h10 + a.h_10%}
+                            {% set hs10 = hs10 + a.hs_10%}
+
+                            {% set m10_mensual = m10_mensual + m10 +ms10 %}
+                            {% set h10_mensual = h10_mensual + h10 +hs10 %}
+
+                            {% elseif item == 'JUNIO' and a.mes == 'JUNIO' %}
+
+                            
+                            {% set m10 = m10 + a.m_10%}
+                            {% set ms10 = ms10 + a.ms_10%}
+                            {% set h10 = h10 + a.h_10%}
+                            {% set hs10 = hs10 + a.hs_10%}
+
+                            {% set m10_mensual = m10_mensual + m10 +ms10 %}
+                            {% set h10_mensual = h10_mensual + h10 +hs10 %}
+                    
+
+                            {%endif%}
+                            {% endfor %}
+                        
+                            <p>POBLACION <br>10-14 AÑOS</p>
+                            <div class="text-body-total">
+                                <p>M {{m10_mensual}}</p>
+                                <p>H {{h10_mensual}}</p>
+                                </div>
+
+                        </div>
+                        <div class="content-text-total">
+
+                          {% set m15_mensual = 0%}
+                          {% set h15_mensual = 0%}
+                       
+
+                          {% for a in mensual%}
+                          {% set m15 = 0%}
+                          {% set h15 = 0%}
+                          {% set ms15 = 0%}
+                          {% set hs15 = 0%}
+                          {% if item == 'ABRIL' and a.mes == 'ABRIL' %}
+
+                          {% set m15 = m15 + a.m_15%}
+                          {% set ms15 = ms15 + a.ms_15%}
+                          {% set h15 = h15 + a.h_15%}
+                          {% set hs15 = hs15 + a.hs_15%}
+
+                          {% set m15_mensual = m15_mensual + m15 +ms15 %}
+                          {% set h15_mensual = h15_mensual + h15 +hs15 %}
+
+                          {% elseif item == 'MAYO' and a.mes == 'MAYO' %}
+
+                          {% set m15 = m15 + a.m_15%}
+                          {% set ms15 = ms15 + a.ms_15%}
+                          {% set h15 = h15 + a.h_15%}
+                          {% set hs15 = hs15 + a.hs_15%}
+
+                          {% set m15_mensual = m15_mensual + m15 +ms15 %}
+                          {% set h15_mensual = h15_mensual + h15 +hs15 %}
+
+                          {% elseif item == 'JUNIO' and a.mes == 'JUNIO' %}
+
+                          
+                          {% set m15 = m15 + a.m_15%}
+                          {% set ms15 = ms15 + a.ms_15%}
+                          {% set h15 = h15 + a.h_15%}
+                          {% set hs15 = hs15 + a.hs_15%}
+
+                          {% set m15_mensual = m15_mensual + m15 +ms15 %}
+                          {% set h15_mensual = h15_mensual + h15 +hs15 %}
+                  
+
+                          {%endif%}
+                          {% endfor %}
+                            <p>POBLACION<br>
+                                15-19 AÑOS
+                            </p>
+                            <div class="text-body-total">
+                            <p>M {{m15_mensual}}</p>
+                            <p>H {{h15_mensual}}</p>
+                            </div>
+                        </div>
+
+                        <div>
+                          {% set servidoras = 0%}
+                          {% set servidores = 0%}
+                        
+
+                          {% for a in mensual%}
+
+                          {% set ma = 0%}
+                          {% set he = 0%}
+                          {% set msa = 0%}
+                          {% set hse = 0%}
+                          {% if item == 'ABRIL' and a.mes == 'ABRIL' %}
+
+                          {% set ma = ma + a.m_ser%}
+                          {% set he = he + a.h_ser%}
+                          {% set msa = msa + a.ms_ser%}
+                          {% set hse = hse + a.hs_ser%}
+
+                          {% set servidoras = servidoras + ma +msa %}
+                          {% set servidores = servidores + he +hse %}
+
+                          {% elseif item == 'MAYO' and a.mes == 'MAYO' %}
+
+                          {% set ma = ma + a.m_ser%}
+                          {% set he = he + a.h_ser%}
+                          {% set msa = msa + a.ms_ser%}
+                          {% set hse = hse + a.hs_ser%}
+
+                          {% set servidoras = servidoras + ma +msa %}
+                          {% set servidores = servidores + he +hse %}
+
+                          {% elseif item == 'JUNIO' and a.mes == 'JUNIO' %}
+                          
+                          {% set ma = ma + a.m_ser%}
+                          {% set he = he + a.h_ser%}
+                          {% set msa = msa + a.ms_ser%}
+                          {% set hse = hse + a.hs_ser%}
+
+                          {% set servidoras = servidoras + ma +msa %}
+                          {% set servidores = servidores + he +hse %}
+                  
+
+                          {%endif%}
+                          {% endfor %}
+                            <p>SERVIDORAS\ES</p>
+                            <div class="text-body-total">
+                                <p>M {{servidoras}}</p>
+                                <p>H {{servidores}}</p>
+                            </div>
+                        </div>
+
+                        <div>
+                          {% set madres = 0%}
+                          {% set padres = 0%}
+                       
+                          {% for a in mensual%}
+                          {% set mad = 0%}
+                          {% set hpa = 0%}
+                          {% set mads = 0%}
+                          {% set hpads = 0%}
+                          {% if item == 'ABRIL' and a.mes == 'ABRIL' %}
+
+                          {% set mad = mad + a.m_padres%}
+                          {% set hpa = hpa + a.h_padres%}
+                          {% set mads = mads + a.ms_padres%}
+                          {% set hpads = hpads + a.hs_padres%}
+
+                          {% set madres = madres + mad +mads %}
+                          {% set padres = padres + hpa +hpads %}
+
+                          {% elseif item == 'MAYO' and a.mes == 'MAYO' %}
+
+                          {% set mad = mad + a.m_padres%}
+                          {% set hpa = hpa + a.h_padres%}
+                          {% set mads = mads + a.ms_padres%}
+                          {% set hpads = hpads + a.hs_padres%}
+
+                          {% set madres = madres + mad +mads %}
+                          {% set padres = padres + hpa +hpads %}
+
+                          {% elseif item == 'JUNIO' and a.mes == 'JUNIO' %}
+                          
+                          {% set mad = mad + a.m_padres%}
+                          {% set hpa = hpa + a.h_padres%}
+                          {% set mads = mads + a.ms_padres%}
+                          {% set hpads = hpads + a.hs_padres%}
+
+                          {% set madres = madres + mad +mads %}
+                          {% set padres = padres + hpa +hpads %}
+                  
+
+                          {%endif%}
+                          {% endfor %}
+
+                            <p>MADRES, PADRES Y/O TUTORES</p>
+                            <div class="text-body-total">
+                                <p>M {{madres}}</p>
+                                <p>H {{padres}}</p>
+                            </div>
+                        </div>
+                     
+                     
+                    </div>
+
+                         
+                     </div>
+
+                     <table class="table table-bordered">
+                       
+                        <thead>
+                            <tr>
+                              <th scope="col">MUNICIPIO</th>
+                                <th scope="col">AVANCE</th>
+                                <th scope="col">POBLACION<br>10-14 AÑOS</th>
+                                <th scope="col">POBLACION<br> 15-19 AÑOS</th>
+                                <th scope="col">SERVIDORAS/ES</th>
+                                <th scope="col">MADRES,PADRES<br>Y/O TUTORES</th>
+                                <th scope="col">ACCIONES</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                       
+                          
+                          {%for i in avance %}
+
+                          {% set poblacionM10 = 0 %}
+                          {% set poblacionH10 = 0 %}
+                          {% set poblacionM15 = 0 %}
+                          {% set poblacionH15 = 0 %}
+                          {% set servidoras = 0 %}
+                          {% set servidores = 0 %}
+                          {% set padres = 0 %}
+                          {% set madres = 0 %}
+
+                          {% if identregable == i.fk_id_entregable %}
+                          {% if i.mes == item %}
+                          
+                          {% set poblacionM10 = poblacionM10 + (i.m_10 + i.ms_10) %}
+                          {% set poblacionH10 = poblacionH10 + (i.h_10 + i.hs_10) %}
+
+                          {% set poblacionM15 = poblacionM15 + (i.m_15 + i.ms_15) %}
+                          {% set poblacionH15 = poblacionH15 + (i.h_15 + i.hs_15) %}
+                          
+                          {% set servidoras = servidoras + (i.m_ser + i.ms_ser) %}
+                          {% set servidores = servidores + (i.h_ser + i.hs_ser) %}
+
+                          {% set madres = madres + (i.m_padres+ i.ms_padres) %}
+                          {% set padres = padres + (i.h_padres + i.hs_padres) %}
+
+                         
+                            <tr>
+                                <td>{{i.municipio}}</td>
+                                <td>{{i.avance_entregable}}</td>
+                                <td>M {{poblacionM10}} H {{poblacionH10}}</td>
+                                <td>M {{poblacionM15}} H {{poblacionH15}}</td>
+                                <td>M {{servidoras}} H {{servidores}}</td>
+                                <td>M {{madres}} H {{padres}}</td>
+                                 <td>
+                                  <a type="button" class="btn btn-edit-entregable" href="{{url_for('editarAvance',{id_entregable: (i.fk_id_entregable), id_avance: (i.id_avance)})}}" title="EDITAR"><i class="fas fa-edit entregable"></i></a>
+                                  <a href="{{url_for('eliminarAvance', {'id_avance': (i.id_avance),id_entregable: (i.fk_id_entregable)})}}" onclick="return confirmDeleteAvance()" class="btn btn-delete-entregable" title="ELIMINAR"><i class="fas fa-trash-alt entregable"></i></a>
+                                 </td>
+                             </tr>
+                             {% endif %}
+                             {% endif %}
+                             {% endfor %}
+                         </tbody>
+                         </table>
+                     </div>
+                     <div>
+                  
+                     </div>
+                   </div>
+                 </div>
+               </div>
+               {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+      <div class="collapse " id="trimestre3">
+        <div class="card card-body">
+          {% set trimestre3 = ['JULIO','AGOSTO','SEPTIEMBRE']%}
+             
+          {% for item in trimestre3 %} 
+             <div id="accordion">
+              
+                 <div class="card">
+                  
+                   <div class="card-header btn-card text-card-header" id="headingOne">
+                     <h5>
+                       <button class="btn btn-link " data-toggle="collapse" data-target="#{{item}}" aria-expanded="false" aria-controls="collapseOne">
+                       {{item}}
+                       </button>
+                     </h5>
+                     {% set count = 0 %}
+                         {%for e in avance%}
+                         {% if identregable == e.fk_id_entregable %}
+                            {% if e.mes == item%}
+                              {%set count =+ count + 1 %}
+                              {%endif%}
+                            {%endif%}
+                          {% endfor %}
+
+                          <h5 class="card-text"> REGISTROS:{{count}}</h5>
+                   </div>
+               
+                   <div id="{{item}}" class="collapse" aria-labelledby="headingOne"  data-parent="#accordion">
+                     <div class="card-body">
+
+                       <div class="body-total">
+                        <div class="content-body-total">
+                          <div>
+                              {% set avance_mensual= 0 %}
+                            
+                            {% for a in mensual%}
+                          
+                            {% if item == 'JULIO' and a.mes == 'JULIO' %}
+                            
+                              {% set avance_mensual = avance_mensual + a.avance_entregable %} 
+                            
+                              {% elseif item == 'AGOSTO' and a.mes == 'AGOSTO' %}
+                              {% set avance_mensual = avance_mensual + a.avance_entregable %}
+                             
+                              {% elseif item == 'SEPTIEMBRE' and a.mes == 'SEPTIEMBRE' %}
+                              {% set avance_mensual = avance_mensual + a.avance_entregable %}
+                              
+                              {% endif %}
+                              {%endfor%}
+                              <p id="avance">AVANCE {{avance_mensual}} </p>
+                          </div>
+                          <div>
+                              {% set m10_mensual = 0%}
+                              {% set h10_mensual = 0%}
+                       
+  
+                              {% for a in mensual%}
+                              {% set m10 = 0%}
+                              {% set h10 = 0%}
+                              {% set ms10 = 0%}
+                              {% set hs10 = 0%}
+                              {% if item == 'JULIO' and a.mes == 'JULIO' %}
+  
+                              {% set m10 = m10 + a.m_10%}
+                              {% set ms10 = ms10 + a.ms_10%}
+                              {% set h10 = h10 + a.h_10%}
+                              {% set hs10 = hs10 + a.hs_10%}
+  
+                              {% set m10_mensual = m10_mensual + m10 +ms10 %}
+                              {% set h10_mensual = h10_mensual + h10 +hs10 %}
+  
+                              {% elseif item == 'AGOSTO' and a.mes == 'AGOSTO' %}
+  
+                              {% set m10 = m10 + a.m_10%}
+                              {% set ms10 = ms10 + a.ms_10%}
+                              {% set h10 = h10 + a.h_10%}
+                              {% set hs10 = hs10 + a.hs_10%}
+  
+                              {% set m10_mensual = m10_mensual + m10 +ms10 %}
+                              {% set h10_mensual = h10_mensual + h10 +hs10 %}
+  
+                              {% elseif item == 'SEPTIEMBRE' and a.mes == 'SEPTIEMBRE' %}
+  
+                              
+                              {% set m10 = m10 + a.m_10%}
+                              {% set ms10 = ms10 + a.ms_10%}
+                              {% set h10 = h10 + a.h_10%}
+                              {% set hs10 = hs10 + a.hs_10%}
+  
+                              {% set m10_mensual = m10_mensual + m10 +ms10 %}
+                              {% set h10_mensual = h10_mensual + h10 +hs10 %}
+                      
+  
+                              {%endif%}
+                              {% endfor %}
+                          
+                              <p>POBLACION <br>10-14 AÑOS</p>
+                              <div class="text-body-total">
+                                  <p>M {{m10_mensual}}</p>
+                                  <p>H {{h10_mensual}}</p>
+                                  </div>
+  
+                          </div>
+                          <div class="content-text-total">
+  
+                            {% set m15_mensual = 0%}
+                            {% set h15_mensual = 0%}
+                     
+  
+                            {% for a in mensual%}
+                            {% set m15 = 0%}
+                            {% set h15 = 0%}
+                            {% set ms15 = 0%}
+                            {% set hs15 = 0%}
+                            {% if item == 'JULIO' and a.mes == 'JULIO' %}
+  
+                            {% set m15 = m15 + a.m_15%}
+                            {% set ms15 = ms15 + a.ms_15%}
+                            {% set h15 = h15 + a.h_15%}
+                            {% set hs15 = hs15 + a.hs_15%}
+  
+                            {% set m15_mensual = m15_mensual + m15 +ms15 %}
+                            {% set h15_mensual = h15_mensual + h15 +hs15 %}
+  
+                            {% elseif item == 'AGOSTO' and a.mes == 'AGOSTO' %}
+  
+                            {% set m15 = m15 + a.m_15%}
+                            {% set ms15 = ms15 + a.ms_15%}
+                            {% set h15 = h15 + a.h_15%}
+                            {% set hs15 = hs15 + a.hs_15%}
+  
+                            {% set m15_mensual = m15_mensual + m15 +ms15 %}
+                            {% set h15_mensual = h15_mensual + h15 +hs15 %}
+  
+                            {% elseif item == 'SEPTIEMBRE' and a.mes == 'SEPTIEMBRE' %}
+  
+                            
+                            {% set m15 = m15 + a.m_15%}
+                            {% set ms15 = ms15 + a.ms_15%}
+                            {% set h15 = h15 + a.h_15%}
+                            {% set hs15 = hs15 + a.hs_15%}
+  
+                            {% set m15_mensual = m15_mensual + m15 +ms15 %}
+                            {% set h15_mensual = h15_mensual + h15 +hs15 %}
+                    
+  
+                            {%endif%}
+                            {% endfor %}
+                              <p>POBLACION<br>
+                                  15-19 AÑOS
+                              </p>
+                              <div class="text-body-total">
+                              <p>M {{m15_mensual}}</p>
+                              <p>H {{h15_mensual}}</p>
+                              </div>
+                          </div>
+  
+                          <div>
+                            {% set servidoras = 0%}
+                            {% set servidores = 0%}
+                       
+  
+                            {% for a in mensual%}
+                            {% set ma = 0%}
+                            {% set he = 0%}
+                            {% set msa = 0%}
+                            {% set hse = 0%}
+                            {% if item == 'JULIO' and a.mes == 'JULIO' %}
+  
+                            {% set ma = ma + a.m_ser%}
+                            {% set he = he + a.h_ser%}
+                            {% set msa = msa + a.ms_ser%}
+                            {% set hse = hse + a.hs_ser%}
+  
+                            {% set servidoras = servidoras + ma +msa %}
+                            {% set servidores = servidores + he +hse %}
+  
+                            {% elseif item == 'AGOSTO' and a.mes == 'AGOSTO' %}
+  
+                            {% set ma = ma + a.m_ser%}
+                            {% set he = he + a.h_ser%}
+                            {% set msa = msa + a.ms_ser%}
+                            {% set hse = hse + a.hs_ser%}
+  
+                            {% set servidoras = servidoras + ma +msa %}
+                            {% set servidores = servidores + he +hse %}
+  
+                            {% elseif item == 'SEPTIEMBRE' and a.mes == 'SEPTIEMBRE' %}
+                            
+                            {% set ma = ma + a.m_ser%}
+                            {% set he = he + a.h_ser%}
+                            {% set msa = msa + a.ms_ser%}
+                            {% set hse = hse + a.hs_ser%}
+  
+                            {% set servidoras = servidoras + ma +msa %}
+                            {% set servidores = servidores + he +hse %}
+                    
+  
+                            {%endif%}
+                            {% endfor %}
+                              <p>SERVIDORAS\ES</p>
+                              <div class="text-body-total">
+                                  <p>M {{servidoras}}</p>
+                                  <p>H {{servidores}}</p>
+                              </div>
+                          </div>
+  
+                          <div>
+                            {% set madres = 0%}
+                            {% set padres = 0%}
+                          
+  
+                            {% for a in mensual%}
+                            {% set mad = 0%}
+                            {% set hpa = 0%}
+                            {% set mads = 0%}
+                            {% set hpads = 0%}
+                            {% if item == 'JULIO' and a.mes == 'JULIO' %}
+  
+                            {% set mad = mad + a.m_padres%}
+                            {% set hpa = hpa + a.h_padres%}
+                            {% set mads = mads + a.ms_padres%}
+                            {% set hpads = hpads + a.hs_padres%}
+  
+                            {% set madres = madres + mad +mads %}
+                            {% set padres = padres + hpa +hpads %}
+  
+                            {% elseif item == 'AGOSTO' and a.mes == 'AGOSTO' %}
+  
+                            {% set mad = mad + a.m_padres%}
+                            {% set hpa = hpa + a.h_padres%}
+                            {% set mads = mads + a.ms_padres%}
+                            {% set hpads = hpads + a.hs_padres%}
+  
+                            {% set madres = madres + mad +mads %}
+                            {% set padres = padres + hpa +hpads %}
+  
+                            {% elseif item == 'SEPTIEMBRE' and a.mes == 'SEPTIEMBRE' %}
+                            
+                            {% set mad = mad + a.m_padres%}
+                            {% set hpa = hpa + a.h_padres%}
+                            {% set mads = mads + a.ms_padres%}
+                            {% set hpads = hpads + a.hs_padres%}
+  
+                            {% set madres = madres + mad +mads %}
+                            {% set padres = padres + hpa +hpads %}
+                    
+  
+                            {%endif%}
+                            {% endfor %}
+  
+                              <p>MADRES, PADRES Y/O TUTORES</p>
+                              <div class="text-body-total">
+                                  <p>M {{madres}}</p>
+                                  <p>H {{padres}}</p>
+                              </div>
+                          </div>
+                       
+                       
+                      </div>
+                       </div>
+
+                       <table class="table table-bordered">
+                         
+                        <thead>
+                            <tr>
+                              <th scope="col">MUNICIPIO</th>
+                                <th scope="col">AVANCE</th>
+                                <th scope="col">POBLACION<br>10-14 AÑOS</th>
+                                <th scope="col">POBLACION<br> 15-19 AÑOS</th>
+                                <th scope="col">SERVIDORAS/ES</th>
+                                <th scope="col">MADRES,PADRES<br>Y/O TUTORES</th>
+                                <th scope="col">ACCIONES</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          
+                          
+                          {%for i in avance %}
+                          {% set poblacionM10 = 0 %}
+                          {% set poblacionH10 = 0 %}
+                          {% set poblacionM15 = 0 %}
+                          {% set poblacionH15 = 0 %}
+                          {% set servidoras = 0 %}
+                          {% set servidores = 0 %}
+                          {% set padres = 0 %}
+                          {% set madres = 0 %}
+
+                          {% if identregable == i.fk_id_entregable %}
+                          {% if i.mes == item %}
+                          
+                          {% set poblacionM10 = poblacionM10 + (i.m_10 + i.ms_10) %}
+                          {% set poblacionH10 = poblacionH10 + (i.h_10 + i.hs_10) %}
+
+                          {% set poblacionM15 = poblacionM15 + (i.m_15 + i.ms_15) %}
+                          {% set poblacionH15 = poblacionH15 + (i.h_15 + i.hs_15) %}
+                          
+                          {% set servidoras = servidoras + (i.m_ser + i.ms_ser) %}
+                          {% set servidores = servidores + (i.h_ser + i.hs_ser) %}
+
+                          {% set madres = madres + (i.m_padres+ i.ms_padres) %}
+                          {% set padres = padres + (i.h_padres + i.hs_padres) %}
+
+                         
+                            <tr>
+                                <td>{{i.municipio}}</td>
+                                <td>{{i.avance_entregable}}</td>
+                                <td>M {{poblacionM10}} H {{poblacionH10}}</td>
+                                <td>M {{poblacionM15}} H {{poblacionH15}}</td>
+                                <td>M {{servidoras}} H {{servidores}}</td>
+                                <td>M {{madres}} H {{padres}}</td>
+                                  
+                                   <td>
+                                    <a type="button" class="btn btn-edit-entregable" href="{{url_for('editarAvance',{id_entregable: (i.fk_id_entregable), id_avance: (i.id_avance)})}}" title="EDITAR"><i class="fas fa-edit entregable"></i></a>
+                                        <a href="{{url_for('eliminarAvance', {'id_avance': (i.id_avance),id_entregable: (i.fk_id_entregable)})}}" onclick="return confirmDeleteAvance()" class="btn btn-delete-entregable" title="ELIMINAR"><i class="fas fa-trash-alt entregable"></i></a>
+                                   </td>
+                               </tr>
+                               {% endif %}
+                               {% endif %}
+                               {% endfor %}
+                           </tbody>
+                           </table>
+                       </div>
+                       <div>
+                    
+                       </div>
+                     </div>
+                   </div>
+                 </div>
+                 {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="collapse " id="trimestre4">
+        <div class="card card-body">
+          {% set trimestre4 = ['OCTUBRE','NOVIEMBRE','DICIEMBRE']%}
+             
+          {% for item in trimestre4 %} 
+             <div id="accordion">
+              
+                 <div class="card">
+                  
+                   <div class="card-header btn-card text-card-header" id="headingOne">
+                     <h5>
+                       <button class="btn btn-link " data-toggle="collapse" data-target="#{{item}}" aria-expanded="false" aria-controls="collapseOne">
+                       {{item}}
+                       </button>
+                     </h5>
+                     {% set count = 0 %}
+                         {%for e in avance%}
+                         {% if identregable == e.fk_id_entregable %}
+                            {% if e.mes == item%}
+                              {%set count =+ count + 1 %}
+                              {%endif%}
+                            {%endif%}
+                          {% endfor %}
+
+                          <h5 class="card-text"> REGISTROS:{{count}}</h5>
+                   </div>
+               
+                   <div id="{{item}}" class="collapse" aria-labelledby="headingOne"  data-parent="#accordion">
+                     <div class="card-body">
+
+                       <div class="body-total">
+                        <div class="content-body-total">
+                          <div>
+                              {% set avance_mensual= 0 %}
+                            
+                            {% for a in mensual%}
+                          
+                            {% if item == 'OCTUBRE' and a.mes == 'OCTUBRE' %}
+                            
+                              {% set avance_mensual = avance_mensual + a.avance_entregable %} 
+                            
+                              {% elseif item == 'NOVIEMBRE' and a.mes == 'NOVIEMBRE' %}
+                              {% set avance_mensual = avance_mensual + a.avance_entregable %}
+                             
+                              {% elseif item == 'DICIEMBRE' and a.mes == 'DICIEMBRE' %}
+                              {% set avance_mensual = avance_mensual + a.avance_entregable %}
+                              
+                              {% endif %}
+                              {%endfor%}
+                              <p id="avance">AVANCE {{avance_mensual}} </p>
+                          </div>
+                          <div>
+                              {% set m10_mensual = 0%}
+                              {% set h10_mensual = 0%}
+                           
+  
+                              {% for a in mensual%}
+                              {% set m10 = 0%}
+                              {% set h10 = 0%}
+                              {% set ms10 = 0%}
+                              {% set hs10 = 0%}
+                              {% if item == 'OCTUBRE' and a.mes == 'OCTUBRE' %}
+  
+                              {% set m10 = m10 + a.m_10%}
+                              {% set ms10 = ms10 + a.ms_10%}
+                              {% set h10 = h10 + a.h_10%}
+                              {% set hs10 = hs10 + a.hs_10%}
+  
+                              {% set m10_mensual = m10_mensual + m10 +ms10 %}
+                              {% set h10_mensual = h10_mensual + h10 +hs10 %}
+  
+                              {% elseif item == 'NOVIEMBRE' and a.mes == 'NOVIEMBRE' %}
+  
+                              {% set m10 = m10 + a.m_10%}
+                              {% set ms10 = ms10 + a.ms_10%}
+                              {% set h10 = h10 + a.h_10%}
+                              {% set hs10 = hs10 + a.hs_10%}
+  
+                              {% set m10_mensual = m10_mensual + m10 +ms10 %}
+                              {% set h10_mensual = h10_mensual + h10 +hs10 %}
+  
+                              {% elseif item == 'DICIEMBRE' and a.mes == 'DICIEMBRE' %}
+  
+                              
+                              {% set m10 = m10 + a.m_10%}
+                              {% set ms10 = ms10 + a.ms_10%}
+                              {% set h10 = h10 + a.h_10%}
+                              {% set hs10 = hs10 + a.hs_10%}
+  
+                              {% set m10_mensual = m10_mensual + m10 +ms10 %}
+                              {% set h10_mensual = h10_mensual + h10 +hs10 %}
+                      
+  
+                              {%endif%}
+                              {% endfor %}
+                          
+                              <p>POBLACION <br>10-14 AÑOS</p>
+                              <div class="text-body-total">
+                                  <p>M {{m10_mensual}}</p>
+                                  <p>H {{h10_mensual}}</p>
+                                  </div>
+  
+                          </div>
+                          <div class="content-text-total">
+  
+                            {% set m15_mensual = 0%}
+                            {% set h15_mensual = 0%}
+                     
+  
+                            {% for a in mensual%}
+                            {% set m15 = 0%}
+                            {% set h15 = 0%}
+                            {% set ms15 = 0%}
+                            {% set hs15 = 0%}
+                            {% if item == 'OCTUBRE' and a.mes == 'OCTUBRE' %}
+  
+                            {% set m15 = m15 + a.m_15%}
+                            {% set ms15 = ms15 + a.ms_15%}
+                            {% set h15 = h15 + a.h_15%}
+                            {% set hs15 = hs15 + a.hs_15%}
+  
+                            {% set m15_mensual = m15_mensual + m15 +ms15 %}
+                            {% set h15_mensual = h15_mensual + h15 +hs15 %}
+  
+                            {% elseif item == 'NOVIEMBRE' and a.mes == 'NOVIEMBRE' %}
+  
+                            {% set m15 = m15 + a.m_15%}
+                            {% set ms15 = ms15 + a.ms_15%}
+                            {% set h15 = h15 + a.h_15%}
+                            {% set hs15 = hs15 + a.hs_15%}
+  
+                            {% set m15_mensual = m15_mensual + m15 +ms15 %}
+                            {% set h15_mensual = h15_mensual + h15 +hs15 %}
+  
+                            {% elseif item == 'DICIEMBRE' and a.mes == 'DICIEMBRE' %}
+  
+                            
+                            {% set m15 = m15 + a.m_15%}
+                            {% set ms15 = ms15 + a.ms_15%}
+                            {% set h15 = h15 + a.h_15%}
+                            {% set hs15 = hs15 + a.hs_15%}
+  
+                            {% set m15_mensual = m15_mensual + m15 +ms15 %}
+                            {% set h15_mensual = h15_mensual + h15 +hs15 %}
+                    
+  
+                            {%endif%}
+                            {% endfor %}
+                              <p>POBLACION<br>
+                                  15-19 AÑOS
+                              </p>
+                              <div class="text-body-total">
+                              <p>M {{m15_mensual}}</p>
+                              <p>H {{h15_mensual}}</p>
+                              </div>
+                          </div>
+  
+                          <div>
+                            {% set servidoras = 0%}
+                            {% set servidores = 0%}
+                      
+  
+                            {% for a in mensual%}
+                            {% set ma = 0%}
+                            {% set he = 0%}
+                            {% set msa = 0%}
+                            {% set hse = 0%}
+                            {% if item == 'OCTUBRE' and a.mes == 'OCTUBRE' %}
+  
+                            {% set ma = ma + a.m_ser%}
+                            {% set he = he + a.h_ser%}
+                            {% set msa = msa + a.ms_ser%}
+                            {% set hse = hse + a.hs_ser%}
+  
+                            {% set servidoras = servidoras + ma +msa %}
+                            {% set servidores = servidores + he +hse %}
+  
+                            {% elseif item == 'NOVIEMBRE' and a.mes == 'NOVIEMBRE' %}
+  
+                            {% set ma = ma + a.m_ser%}
+                            {% set he = he + a.h_ser%}
+                            {% set msa = msa + a.ms_ser%}
+                            {% set hse = hse + a.hs_ser%}
+  
+                            {% set servidoras = servidoras + ma +msa %}
+                            {% set servidores = servidores + he +hse %}
+  
+                            {% elseif item == 'DICIEMBRE' and a.mes == 'DICIEMBRE' %}
+                            
+                            {% set ma = ma + a.m_ser%}
+                            {% set he = he + a.h_ser%}
+                            {% set msa = msa + a.ms_ser%}
+                            {% set hse = hse + a.hs_ser%}
+  
+                            {% set servidoras = servidoras + ma +msa %}
+                            {% set servidores = servidores + he +hse %}
+                    
+  
+                            {%endif%}
+                            {% endfor %}
+                              <p>SERVIDORAS\ES</p>
+                              <div class="text-body-total">
+                                  <p>M {{servidoras}}</p>
+                                  <p>H {{servidores}}</p>
+                              </div>
+                          </div>
+  
+                          <div>
+                            {% set madres = 0%}
+                            {% set padres = 0%}
+                       
+  
+                            {% for a in mensual%}
+                            {% set mad = 0%}
+                            {% set hpa = 0%}
+                            {% set mads = 0%}
+                            {% set hpads = 0%}
+                            {% if item == 'OCTUBRE' and a.mes == 'OCTUBRE' %}
+  
+                            {% set mad = mad + a.m_padres%}
+                            {% set hpa = hpa + a.h_padres%}
+                            {% set mads = mads + a.ms_padres%}
+                            {% set hpads = hpads + a.hs_padres%}
+  
+                            {% set madres = madres + mad +mads %}
+                            {% set padres = padres + hpa +hpads %}
+  
+                            {% elseif item == 'NOVIEMBRE' and a.mes == 'NOVIEMBRE' %}
+  
+                            {% set mad = mad + a.m_padres%}
+                            {% set hpa = hpa + a.h_padres%}
+                            {% set mads = mads + a.ms_padres%}
+                            {% set hpads = hpads + a.hs_padres%}
+  
+                            {% set madres = madres + mad +mads %}
+                            {% set padres = padres + hpa +hpads %}
+  
+                            {% elseif item == 'DICIEMBRE' and a.mes == 'DICIEMBRE' %}
+                            
+                            {% set mad = mad + a.m_padres%}
+                            {% set hpa = hpa + a.h_padres%}
+                            {% set mads = mads + a.ms_padres%}
+                            {% set hpads = hpads + a.hs_padres%}
+  
+                            {% set madres = madres + mad +mads %}
+                            {% set padres = padres + hpa +hpads %}
+                    
+  
+                            {%endif%}
+                            {% endfor %}
+  
+                              <p>MADRES, PADRES Y/O TUTORES</p>
+                              <div class="text-body-total">
+                                  <p>M {{madres}}</p>
+                                  <p>H {{padres}}</p>
+                              </div>
+                          </div>
+                       
+                       
+                      </div>
+                           
+                       </div>
+
+                       <table class="table table-bordered">
+                         
+                        <thead>
+                            <tr>
+                              <th scope="col">MUNICIPIO</th>
+                                <th scope="col">AVANCE</th>
+                                <th scope="col">POBLACION<br>10-14 AÑOS</th>
+                                <th scope="col">POBLACION<br> 15-19 AÑOS</th>
+                                <th scope="col">SERVIDORAS/ES</th>
+                                <th scope="col">MADRES,PADRES<br>Y/O TUTORES</th>
+                                <th scope="col">ACCIONES</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                         
+                          
+                          {%for i in avance %}
+
+                          {% set poblacionM10 = 0 %}
+                          {% set poblacionH10 = 0 %}
+                          {% set poblacionM15 = 0 %}
+                          {% set poblacionH15 = 0 %}
+                          {% set servidoras = 0 %}
+                          {% set servidores = 0 %}
+                          {% set padres = 0 %}
+                          {% set madres = 0 %}
+
+                          {% if identregable == i.fk_id_entregable %}
+                          {% if i.mes == item %}
+                          
+                          {% set poblacionM10 = poblacionM10 + (i.m_10 + i.ms_10) %}
+                          {% set poblacionH10 = poblacionH10 + (i.h_10 + i.hs_10) %}
+
+                          {% set poblacionM15 = poblacionM15 + (i.m_15 + i.ms_15) %}
+                          {% set poblacionH15 = poblacionH15 + (i.h_15 + i.hs_15) %}
+                          
+                          {% set servidoras = servidoras + (i.m_ser + i.ms_ser) %}
+                          {% set servidores = servidores + (i.h_ser + i.hs_ser) %}
+
+                          {% set madres = madres + (i.m_padres + i.ms_padres) %}
+                          {% set padres = padres + (i.h_padres + i.hs_padres) %}
+
+                         
+                            <tr>
+                                <td>{{i.municipio}}</td>
+                                <td>{{i.avance_entregable}}</td>
+                                <td>M {{poblacionM10}} H {{poblacionH10}}</td>
+                                <td>M {{poblacionM15}} H {{poblacionH15}}</td>
+                                <td>M {{servidoras}} H {{servidores}}</td>
+                                <td>M {{madres}} H {{padres}}</td>       
+                                   <td>
+                                    <a type="button" class="btn btn-edit-entregable" href="{{url_for('editarAvance',{id_entregable: (i.fk_id_entregable), id_avance: (i.id_avance)})}}" title="EDITAR"><i class="fas fa-edit entregable"></i></a>
+                                    <a href="{{url_for('eliminarAvance', {'id_avance': (i.id_avance),id_entregable: (i.fk_id_entregable)})}}" onclick="return confirmDeleteAvance()" class="btn btn-delete-entregable" title="ELIMINAR"><i class="fas fa-trash-alt entregable"></i></a>
+                                   </td>
+                               </tr>
+                               {% endif %}
+                               {% endif %}
+                               {% endfor %}
+                           </tbody>
+                           </table>
+                       </div>
+                       <div>
+                    
+                       </div>
+                     </div>
+                   </div>
+                 </div>
+                 {% endfor %}
+        </div>
+      </div>
+    </div>
+ 
+      </div>
+</div>
+{% endblock %}

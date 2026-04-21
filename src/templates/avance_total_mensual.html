@@ -1,0 +1,1236 @@
+{% block avancetotalmensual %}
+
+<div class="subcontainer-card">
+    <div class="container-btn-card">
+    <button class="btn btn-primary btn-card dropdown-toggle" id="collapseButton" type="button" data-toggle="collapse" data-target="#trimestre1" aria-expanded="false" aria-controls="trimestre1">TRIMESTRE 1</button>
+    <button class="btn btn-primary btn-card dropdown-toggle" id="collapseButton2" type="button" data-toggle="collapse" data-target="#trimestre2" aria-expanded="false" aria-controls="trimestre2">TRIMESTRE 2</button>
+    <button class="btn btn-primary btn-card dropdown-toggle" id="collapseButton3" type="button" data-toggle="collapse" data-target="#trimestre3" aria-expanded="false" aria-controls="trimestre3">TRIMESTRE 3</button>
+    <button class="btn btn-primary btn-card dropdown-toggle" id="collapseButton4" type="button" data-toggle="collapse" data-target="#trimestre4" aria-expanded="false" aria-controls="trimestre4">TRIMESTRE 4</button>
+</div>
+
+<div class="card-content" >
+  
+        <div class="col">
+          <div class="collapse" id="trimestre1">
+            <div class="card card-body">
+             {% set trimestre1 = ['ENERO','FEBRERO','MARZO']%}
+             
+             {% for item in trimestre1 %} 
+                <div id="accordion">
+                 
+                    <div class="card">
+                     
+                      <div class="card-header btn-card text-card-header" id="headingOne">
+                        <h5>
+                          <button class="btn btn-link " data-toggle="collapse" data-target="#{{item}}" aria-expanded="false" aria-controls="{{item}}">
+                          {{item}}
+                          </button>
+                        </h5>
+                          {% set count = 0 %}
+                         {%for e in avance%}
+                         {% if identregable == e.fk_id_entregable %}
+                            {% if e.mes == item%}
+                              {%set count =+ count + 1 %}
+                              {%endif%}
+                            {%endif%}
+                          {% endfor %}
+
+                          <h5 class="card-text"> REGISTROS:{{count}}</h5>
+                       
+                      </div>
+                
+                      <div id="{{item}}" class="collapse" aria-labelledby="headingOne"  data-parent="#accordion" >
+                        <div class="card-body">
+   
+                          <div class="body-total">
+                           
+                            <div  class="content-body-total">
+                                <div class="container-totales-sub" data-is-avance="{{avance|json_encode}}" data-is-trimestre="{{trimestre1| json_encode}}" data-is-entregable="{{identregable|json_encode}}" id="tabla-avance-mensual">
+                                  {% set avance_mensual= 0 %}
+                                  
+                                  {% for a in mensual%}
+                                
+                                  {% if item == 'ENERO' and a.mes == 'ENERO' %}
+                                  
+                                    {% set avance_mensual = avance_mensual + a.avance_entregable %} 
+                                  
+                                    {% elseif item == 'FEBRERO' and a.mes == 'FEBRERO' %}
+                                    {% set avance_mensual = avance_mensual + a.avance_entregable %}
+                                   
+                                    {% elseif item == 'MARZO' and a.mes == 'MARZO' %}
+                                    {% set avance_mensual = avance_mensual + a.avance_entregable %}
+                                    
+                                    {% endif %}
+                                    {%endfor%}
+                                    <p id="avance" class="totales-sub">AVANCE </p><p>{{avance_mensual|number_format}}</p>
+                                
+                                    
+                                </div>
+                                {% if rol != 'Enlace Externo'%}
+                                <div class="container-totales-sub">
+                                  {% set monto_mensual= 0 %}
+                                  {% for a in mensual%}
+                                  {% if item == 'ENERO' and a.mes == 'ENERO' %}
+                                    {% set monto_mensual = monto_mensual + a.monto %}
+                                 
+
+                                    {% elseif item == 'FEBRERO' and a.mes == 'FEBRERO' %}
+                                    {% set monto_mensual = monto_mensual + a.monto %}
+                               
+
+                                    {% elseif item == 'MARZO' and a.mes == 'MARZO' %}
+                                    {% set monto_mensual = monto_mensual + a.monto %}
+                                   
+                                    {%endif%}
+                                  {% endfor%}
+                                  <p class="totales-sub">EJERCIDO</p><p>${{monto_mensual|number_format(2)}} </p>
+                                </div>
+                             {%endif%}
+                            </div>
+
+                            <div class="content-body-total">
+                                <div class="content-text-total">
+
+                              
+                                  {% set mt_mensual=0 %}
+                                  {% set ht_mensual=0 %}
+                                  {% for a in mensual%}
+                                  {% set m1 = 0%}
+                                  {% set ms = 0%}
+                                  {% set h1 = 0%}
+                                  {% set hs = 0%}
+                                  {% if item == 'ENERO' and a.mes == 'ENERO' %}    
+                                    {% set m1 = m1 + a.m_t1%}
+                                    {% set ms = ms + a.m_ts%}
+                                    {% set mt_mensual = mt_mensual + m1 + ms %}
+                                    {% set h1 = h1 + a.h_t1%}
+                                    {% set hs = hs + a.h_ts%}
+                                    {% set ht_mensual = ht_mensual + h1 + hs %}
+                                
+                                   
+                                    {% elseif item == 'FEBRERO' and a.mes == 'FEBRERO' %}
+                                    {% set m1 = m1 + a.m_t1%}
+                                    {% set ms = ms + a.m_ts%}
+                                    {% set mt_mensual = mt_mensual + m1 + ms %}
+                                    {% set h1 = h1 + a.h_t1%}
+                                    {% set hs = hs + a.h_ts%}
+                                    {% set ht_mensual = ht_mensual + h1 + hs %}
+                                   
+
+                                    {% elseif item == 'MARZO' and a.mes == 'MARZO' %}
+                                    {% set m1 = m1 + a.m_t1%}
+                                    {% set ms = ms + a.m_ts%}
+                                    {% set mt_mensual = mt_mensual + m1 + ms %}
+                                    {% set h1 = h1 + a.h_t1%}
+                                    {% set hs = hs + a.h_ts%}
+                                    {% set ht_mensual = ht_mensual + h1 + hs %}
+                                    {%endif%}
+                                    {%endfor%}
+                                    <p class="totales-sub">PERSONAS BENEFICIADAS</p>
+                                    <div class="text-body-total">
+                                    <p>M {{mt_mensual|number_format}}</p>
+                                    <p>H {{ht_mensual|number_format}}</p>
+                                    </div>
+                                </div>
+
+                                <div>
+                                  {% set md_mensual=0 %}
+                                  {% set hd_mensual=0 %}
+                             
+                                  {% for a in mensual%}
+                                       
+                                  {% set md1 = 0%}
+                                  {% set mds = 0%}
+                                  {% set hd1 = 0%}
+                                  {% set hds = 0%}
+
+                                  {% if item == 'ENERO' and a.mes == 'ENERO' %}
+                                  {% set md1 = md1 + a.m_d1%}
+                                  {% set mds = mds + a.m_ds%}
+                                    {% set md_mensual = md_mensual + md1 + mds %}
+                                    {% set hd1 = hd1 + a.h_d1%}
+                                    {% set hds = hds + a.h_ds%}
+                                    {% set hd_mensual = hd_mensual + hd1 + hds %}
+                                    
+
+                                    {% elseif item == 'FEBRERO' and a.mes == 'FEBRERO' %}
+                                    {% set md1 = md1 + a.m_d1%}
+                                    {% set mds = mds + a.m_ds%}
+                                      {% set md_mensual = md_mensual + md1 + mds %}
+                                      {% set hd1 = hd1 + a.h_d1%}
+                                      {% set hds = hds + a.h_ds%}
+                                      {% set hd_mensual = hd_mensual + hd1 + hds %}
+                                  
+                                    {% elseif item == 'MARZO' and a.mes == 'MARZO' %}
+                                    {% set md1 = md1 + a.m_d1%}
+                                    {% set mds = mds + a.m_ds%}
+                                      {% set md_mensual = md_mensual + md1 + mds %}
+                                      {% set hd1 = hd1 + a.h_d1%}
+                                      {% set hds = hds + a.h_ds%}
+                                      {% set hd_mensual = hd_mensual + hd1 + hds %}
+
+                                    {%endif%}
+                                    {%endfor%}
+                                    <p class="totales-sub">TOTAL DE PERSONAS CON DISCAPACIDAD</p>
+                                    <div class="text-body-total">
+                                        <p>M {{md_mensual|number_format}}</p>
+                                        <p>H {{hd_mensual|number_format}}</p>
+                                    </div>
+                                </div>
+
+                                <div>
+                                  {% set mi_mensual=0 %}
+                                  {% set hi_mensual=0 %}
+
+                             
+
+                                  {% for a in mensual%}
+                                  {% set mi1 = 0%}
+                                  {% set mis = 0%}
+                                  {% set hi1 = 0%}
+                                  {% set his = 0%}
+                                  {% if item == 'ENERO' and a.mes == 'ENERO' %}
+                                  {% set mi1 = mi1 + a.m_i1%}
+                                  {% set mis = mis + a.m_is%}
+                                    {% set mi_mensual = mi_mensual + mi1 + mis%}
+                                    {% set hi1 = hi1 + a.h_i1%}
+                                    {% set his = his + a.h_is%}
+                                    {% set hi_mensual = hi_mensual + hi1 + his %}
+                                    
+
+                                    {% elseif item == 'FEBRERO' and a.mes == 'FEBRERO' %}
+                                    {% set mi1 = mi1 + a.m_i1%}
+                                  {% set mis = mis + a.m_is%}
+                                    {% set mi_mensual = mi_mensual + mi1 + mis%}
+                                    {% set hi1 = hi1 + a.h_i1%}
+                                    {% set his = his + a.h_is%}
+                                    {% set hi_mensual = hi_mensual + hi1 + his %}
+                                   
+                                    {% elseif item == 'FEBRERO' and a.mes == 'FEBRERO' %}
+                                    {% set mi1 = mi1 + a.m_i1%}
+                                    {% set mis = mis + a.m_is%}
+                                      {% set mi_mensual = mi_mensual + mi1 + mis%}
+                                      {% set hi1 = hi1 + a.h_i1%}
+                                      {% set his = his + a.h_is%}
+                                      {% set hi_mensual = hi_mensual + hi1 + his %}
+
+                                    {%endif%}
+                                    {%endfor%}
+                                    <p class="totales-sub">TOTAL MAYAHABLANTES</p>
+                                    <div class="text-body-total">
+                                        <p >M {{mi_mensual|number_format}}</p>
+                                        <p>H {{hi_mensual|number_format}}</p>
+                                    </div>
+                                </div>
+                             
+                             
+                            </div>
+                       
+                      </div>
+
+
+<div class="table-responsive">
+                          <table class="table table-bordered  table-striped">
+                            
+                              <thead>
+                                  <tr>
+                                      <th scope="col">Municipio</th>
+                                      <th scope="col">Avance</th>
+                                      {% if rol == 'Enlace Externo'%}
+                                      <th scope="col">Población</th>
+                                      {%else%}
+                                      <th scope="col">Monto ejercido</th>
+                                      {%endif%}
+                                      <th scope="col">Personas beneficiadas</th>
+                                      <th scope="col">Personas con discapacidad</th>
+                                      <th scope="col">Personas hablantes de lengua indígena</th>
+                                      <th scope="col">Acciones</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                           
+                                
+                                {%for i in avance %}
+
+                              
+
+                                {% if identregable == i.fk_id_entregable %}
+                                {% if i.mes == item %}
+                                {% set beneficiadosMujeres = 0 %}
+                                {% set beneficiadosHombres = 0 %}
+                                {% set discapacidadMujeres = 0 %}
+                                {% set discapacidadHombres = 0 %}
+                                {% set mayaMujeres = 0 %}
+                                {% set mayaHombres = 0 %}
+                                {% set beneficiadosMujeres = beneficiadosMujeres + (i.m_t1 + i.m_ts) %}
+                                {% set beneficiadosHombres = beneficiadosHombres + (i.h_t1 + i.h_ts) %}
+                                
+                                {% set discapacidadMujeres = discapacidadMujeres + (i.m_d1 + i.m_ds) %}
+                                {% set discapacidadHombres = discapacidadHombres + (i.h_d1 + i.h_ds) %}
+
+                                {% set mayaMujeres  = mayaMujeres  + (i.m_i1 + i.m_is) %}
+                                {% set mayaHombres  = mayaHombres  + (i.h_i1 + i.h_is) %}
+
+                               
+                                  <tr>
+                                    {% if rol == 'Enlace Externo'%}
+                                    <td>{{i.municipio}}</td>
+                                    <td>{{i.avance_entregable|number_format}}</td>
+                                    <td>{{i.poblacion}}</td>
+                                    <td>M {{beneficiadosMujeres|number_format}} H {{beneficiadosHombres|number_format}}</td>
+                                    <td>M {{discapacidadMujeres|number_format}} H {{discapacidadHombres|number_format}}</td>
+                                    <td>M {{mayaMujeres|number_format}} H {{mayaHombres|number_format}}</td>
+                                     {%else%}
+                                     <td>{{i.municipio}}</td>
+                                     <td>{{i.avance_entregable|number_format}}</td>
+                                     <td>{{i.monto|number_format(2)}}</td>
+                                     <td>M {{beneficiadosMujeres|number_format}} H {{beneficiadosHombres|number_format}}</td>
+                                     <td>M {{discapacidadMujeres|number_format}} H {{discapacidadHombres|number_format}}</td>
+                                     <td>M {{mayaMujeres|number_format}} H {{mayaHombres|number_format}}</td>
+                                 
+                                     {%endif%}
+                                     
+                                      <td>
+                                        {%if rol != 'Enlace Externo'%}
+                                        <a type="button" class="btn btn-edit-entregable" href="{{url_for('editarAvance',{id_entregable: (i.fk_id_entregable), id_avance: (i.id_avance)})}}" title="EDITAR"><i class="fas fa-edit entregable"></i></a>
+                                       
+                                        <a href="{{url_for('eliminarAvance', {'id_avance': (i.id_avance),id_entregable: (i.fk_id_entregable)})}}" onclick="return confirmDeleteAvance()" class="btn btn-delete-entregable" title="ELIMINAR"><i class="fas fa-trash-alt entregable"></i></a>
+                                        {%else%}
+                                        <a href="{{url_for('eliminarAvance', {'id_avance': (i.id_avance),id_entregable: (i.fk_id_entregable)})}}" onclick="return confirmDeleteAvance()" class="btn btn-delete-entregable" title="ELIMINAR"><i class="fas fa-trash-alt entregable"></i></a>
+                                        {%endif%}
+                                        
+                                      </td>
+                                  </tr>
+                                  {% endif %}
+                                  {% endif %}
+                                  {% endfor %}
+                              </tbody>
+                              </table>
+</div>
+                          </div>
+                          <div>
+                       
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+          </div>
+    
+
+          
+  <div class="col">
+    <div class="collapse" id="trimestre2">
+      <div class="card card-body">
+        {% set trimestre2 = ['ABRIL','MAYO','JUNIO']%}
+             
+        {% for item in trimestre2 %} 
+           <div id="accordion">
+            
+               <div class="card">
+                
+                 <div class="card-header btn-card text-card-header" id="headingTwo">
+                   <h5>
+                     <button class="btn btn-link " data-toggle="collapse" data-target="#{{item}}" aria-expanded="false" aria-controls="{{item}}">
+                     {{item}}
+                     </button>
+                   </h5>
+                   {% set count = 0 %}
+                   {%for e in avance%}
+                   {% if identregable == e.fk_id_entregable %}
+                      {% if e.mes == item%}
+                        {%set count =+ count + 1 %}
+                        {%endif%}
+                      {%endif%}
+                    {% endfor %}
+
+                    <h5 class="card-text"> REGISTROS:{{count}}</h5>
+                 </div>
+             
+                 <div id="{{item}}" class="collapse" aria-labelledby="headingTwo"  data-parent="#accordion">
+                   <div class="card-body">
+
+                     <div class="body-total">
+                      <div  class="content-body-total">
+                        <div class="container-totales-sub">
+                          {% set avance_mensual= 0 %}
+                                  
+                          {% for a in mensual%}
+                        {% if item == 'ABRIL' and a.mes == 'ABRIL' %}
+                        {% set avance_mensual = avance_mensual + a.avance_entregable %} 
+                          
+                          
+                            {% elseif item == 'MAYO' and a.mes == 'MAYO' %}
+                            {% set avance_mensual = avance_mensual + a.avance_entregable %} 
+                            
+
+                            {% elseif item == 'JUNIO' and a.mes == 'JUNIO' %}
+                            {% set avance_mensual = avance_mensual + a.avance_entregable %} 
+                            {% endif %}
+                            {%endfor%}
+                            <p id="avance" class="totales-sub">AVANCE </p><p>{{avance_mensual|number_format}}</p>
+                        </div>
+                        {%if rol != 'Enlace Externo'%}
+                        <div class="container-totales-sub">
+                          {% set monto_mensual= 0 %}
+                          {% for a in mensual%}
+                          {% if item == 'ABRIL' and a.mes == 'ABRIL' %}
+                            {% set monto_mensual = monto_mensual + a.monto %}
+                          
+
+                            {% elseif item == 'MAYO' and a.mes == 'MAYO' %}
+                            {% set monto_mensual = monto_mensual + a.monto %}
+                          
+
+                            {% elseif item == 'JUNIO' and a.mes == 'JUNIO' %}
+                            {% set monto_mensual = monto_mensual + a.monto %}
+                     
+                            {%endif%}
+                          {% endfor%}
+                          <p class="totales-sub">EJERCIDO</p><p>${{monto_mensual|number_format(2)}} </p>
+                        </div>
+                        {%endif%}
+                     
+                    </div>
+
+                    <div class="content-body-total">
+                        <div class="content-text-total">
+
+                          {% set mt_mensual=0 %}
+                          {% set ht_mensual=0 %}
+
+                          {% set m1 = 0%}
+                          {% set ms = 0%}
+                          {% set h1 = 0%}
+                          {% set hs = 0%}
+                          {% for a in mensual%}
+                          {% if item == 'ABRIL' and a.mes == 'ABRIL' %}
+                          {% set m1 = m1 + a.m_t1%}
+                          {% set ms = ms +a.m_ts%}
+                          {% set mt_mensual = mt_mensual + m1 + ms %}
+                          {% set h1 = h1 + a.h_t1%}
+                          {% set hs = hs + a.h_ts%}
+                          {% set ht_mensual = ht_mensual + h1 + hs %}
+                            
+                            {% elseif item == 'MAYO' and a.mes == 'MAYO' %}
+                            {% set m1 = m1 + a.m_t1%}
+                            {% set ms = ms +a.m_ts%}
+                            {% set mt_mensual = mt_mensual + m1 + ms %}
+                            {% set h1 = h1 + a.h_t1%}
+                            {% set hs = hs + a.h_ts%}
+                            {% set ht_mensual = ht_mensual + h1 + hs %}
+                        
+
+                            {% elseif item == 'JUNIO' and a.mes == 'JUNIO' %}
+                            {% set m1 = m1 + a.m_t1%}
+                            {% set ms = ms +a.m_ts%}
+                            {% set mt_mensual = mt_mensual + m1 + ms %}
+                            {% set h1 = h1 + a.h_t1%}
+                            {% set hs = hs + a.h_ts%}
+                            {% set ht_mensual = ht_mensual + h1 + hs %}
+                        
+                            {%endif%}
+                            {%endfor%}
+
+                            <p class="totales-sub">PERSONAS BENEFICIADAS</p>
+                            <div class="text-body-total">
+                            <p>M {{mt_mensual|number_format}}</p>
+                            <p>H {{ht_mensual|number_format}}</p>
+                            </div>
+                        </div>
+
+                        <div>
+                          {% set md_mensual=0 %}
+                          {% set hd_mensual=0 %}
+                            
+                          {% set md1 = 0%}
+                          {% set mds = 0%}
+                          {% set hd1 = 0%}
+                          {% set hds = 0%}
+
+                          {% for a in mensual%}
+                          {% if item == 'ABRIL' and a.mes == 'ABRIL' %}
+                          {% set md1 = md1 + a.m_d1%}
+                          {% set mds = mds + a.m_ds%}
+                            {% set md_mensual = md_mensual + md1 + mds %}
+                            {% set hd1 = hd1 + a.h_d1%}
+                            {% set hds = hds + a.h_ds%}
+                            {% set hd_mensual = hd_mensual + hd1 + hds %}
+                          
+
+                            {% elseif item == 'MAYO' and a.mes == 'MAYO' %}
+                            {% set md1 = md1 + a.m_d1%}
+                            {% set mds = mds + a.m_ds%}
+                              {% set md_mensual = md_mensual + md1 + mds %}
+                              {% set hd1 = hd1 + a.h_d1%}
+                              {% set hds = hds + a.h_ds%}
+                              {% set hd_mensual = hd_mensual + hd1 + hds %}
+                          
+                            {% elseif item == 'JUNIO' and a.mes == 'JUNIO' %}
+                            {% set md1 = md1 + a.m_d1%}
+                            {% set mds = mds + a.m_ds%}
+                              {% set md_mensual = md_mensual + md1 + mds %}
+                              {% set hd1 = hd1 + a.h_d1%}
+                              {% set hds = hds + a.h_ds%}
+                              {% set hd_mensual = hd_mensual + hd1 + hds %}
+                      
+
+                            {%endif%}
+                            {%endfor%}
+
+                            <p class="totales-sub">TOTAL DE PERSONAS CON DISCAPACIDAD</p>
+                            <div class="text-body-total">
+                                <p>M {{md_mensual|number_format}}</p>
+                                <p>H {{hd_mensual|number_format}}</p>
+                            </div>
+                        </div>
+
+                        <div>
+                          {% set mi_mensual=0 %}
+                          {% set hi_mensual=0 %}
+
+                          {% set mi1 = 0%}
+                          {% set mis = 0%}
+                          {% set hi1 = 0%}
+                          {% set his = 0%}
+
+                          {% for a in mensual%}
+                          {% if item == 'ABRIL' and a.mes == 'ABRIL' %}
+                            {% set mi1 = mi1 + a.m_i1%}
+                                  {% set mis = mis + a.m_is%}
+                                    {% set mi_mensual = mi_mensual + mi1 + mis%}
+                                    {% set hi1 = hi1 + a.h_i1%}
+                                    {% set his = his + a.h_is%}
+                                    {% set hi_mensual = hi_mensual + hi1 + his %}
+                         
+
+                            {% elseif item == 'MAYO' and a.mes == 'MAYO' %}
+                            {% set mi1 = mi1 + a.m_i1%}
+                            {% set mis = mis + a.m_is%}
+                              {% set mi_mensual = mi_mensual + mi1 + mis%}
+                              {% set hi1 = hi1 + a.h_i1%}
+                              {% set his = his + a.h_is%}
+                              {% set hi_mensual = hi_mensual + hi1 + his %}
+                    
+                            {% elseif item == 'JUNIO' and a.mes == 'JUNIO' %}
+                            {% set mi1 = mi1 + a.m_i1%}
+                                  {% set mis = mis + a.m_is%}
+                                    {% set mi_mensual = mi_mensual + mi1 + mis%}
+                                    {% set hi1 = hi1 + a.h_i1%}
+                                    {% set his = his + a.h_is%}
+                                    {% set hi_mensual = hi_mensual + hi1 + his %}
+                      
+
+                            {%endif%}
+                            {%endfor%}
+
+                            <p class="totales-sub">TOTAL MAYAHABLANTES</p>
+                            <div class="text-body-total">
+                                <p>M {{mi_mensual|number_format}}</p>
+                                <p>H {{hi_mensual|number_format}}</p>
+                            </div>
+                        </div>
+                     
+                     
+                    </div>
+                         
+                     </div>
+
+                     <div class="table-responsive">
+                     <table class="table table-bordered">
+                       
+                         <thead>
+                             <tr>
+                              <th scope="col">Municipio</th>
+                              <th scope="col">Avance</th>
+                              {% if rol == 'Enlace Externo'%}
+                              <th scope="col">Población</th>
+                              {%else%}
+                              <th scope="col">Monto ejercido</th>
+                              {%endif%}
+                              <th scope="col">Personas beneficiadas</th>
+                              <th scope="col">Personas con discapacidad</th>
+                              <th scope="col">Personas hablantes de lengua indígena</th>
+                              <th scope="col">Acciones</th>
+                             </tr>
+                         </thead>
+                         <tbody>
+                         
+                           
+                           {%for i in avance %}
+
+                           {% if identregable == i.fk_id_entregable %}
+                           {% if i.mes == item %}
+                           {% set beneficiadosMujeres = 0 %}
+                           {% set beneficiadosHombres = 0 %}
+                           {% set discapacidadMujeres = 0 %}
+                           {% set discapacidadHombres = 0 %}
+                           {% set mayaMujeres = 0 %}
+                           {% set mayaHombres = 0 %}
+
+                           {% set beneficiadosMujeres = beneficiadosMujeres + (i.m_t1 + i.m_ts) %}
+                           {% set beneficiadosHombres = beneficiadosHombres + (i.h_t1 + i.h_ts) %}
+                           
+                           {% set discapacidadMujeres = discapacidadMujeres + (i.m_d1 + i.m_ds) %}
+                           {% set discapacidadHombres = discapacidadHombres + (i.h_d1 + i.h_ds) %}
+
+                           {% set mayaMujeres  = mayaMujeres  + (i.m_i1 + i.m_is) %}
+                           {% set mayaHombres  = mayaHombres  + (i.h_i1 + i.h_is) %}
+
+                          
+                             <tr>
+                              {% if rol == 'Enlace Externo'%}
+                              <td>{{i.municipio}}</td>
+                              <td>{{i.avance_entregable|number_format}}</td>
+                              <td>{{i.poblacion}}</td>
+                              <td>M {{beneficiadosMujeres|number_format}} H {{beneficiadosHombres|number_format}}</td>
+                              <td>M {{discapacidadMujeres|number_format}} H {{discapacidadHombres|number_format}}</td>
+                              <td>M {{mayaMujeres|number_format}} H {{mayaHombres|number_format}}</td>
+                               {%else%}
+                               <td>{{i.municipio}}</td>
+                               <td>{{i.avance_entregable|number_format}}</td>
+                               <td>{{i.monto|number_format(2)}}</td>
+                               <td>M {{beneficiadosMujeres|number_format}} H {{beneficiadosHombres|number_format}}</td>
+                               <td>M {{discapacidadMujeres|number_format}} H {{discapacidadHombres|number_format}}</td>
+                               <td>M {{mayaMujeres|number_format}} H {{mayaHombres|number_format}}</td>
+                           
+                               {%endif%}
+                                
+                                 <td>
+                                  {%if rol != 'Enlace Externo'%}
+                                  <a type="button" class="btn btn-edit-entregable" href="{{url_for('editarAvance',{id_entregable: (i.fk_id_entregable), id_avance: (i.id_avance)})}}" title="EDITAR"><i class="fas fa-edit entregable"></i></a>
+                                 
+                                  <a href="{{url_for('eliminarAvance', {'id_avance': (i.id_avance),id_entregable: (i.fk_id_entregable)})}}" onclick="return confirmDeleteAvance()" class="btn btn-delete-entregable" title="ELIMINAR"><i class="fas fa-trash-alt entregable"></i></a>
+                                  {%else%}
+                                  <a href="{{url_for('eliminarAvance', {'id_avance': (i.id_avance),id_entregable: (i.fk_id_entregable)})}}" onclick="return confirmDeleteAvance()" class="btn btn-delete-entregable" title="ELIMINAR"><i class="fas fa-trash-alt entregable"></i></a>
+                                  {%endif%}
+                                 </td>
+                             </tr>
+                             {% endif %}
+                             {% endif %}
+                             {% endfor %}
+                         </tbody>
+                         </table>
+                     </div>
+                     </div>
+                     <div>
+                  
+                     </div>
+                   </div>
+                 </div>
+               </div>
+               {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+      <div class="collapse" id="trimestre3">
+        <div class="card card-body">
+          {% set trimestre3 = ['JULIO','AGOSTO','SEPTIEMBRE']%}
+             
+          {% for item in trimestre3 %} 
+             <div id="accordion">
+              
+                 <div class="card">
+                  
+                   <div class="card-header btn-card text-card-header" id="headingOne">
+                     <h5>
+                       <button class="btn btn-link " data-toggle="collapse" data-target="#{{item}}" aria-expanded="false" aria-controls="{{item}}">
+                       {{item}}
+                       </button>
+                     </h5>
+                     {% set count = 0 %}
+                         {%for e in avance%}
+                         {% if identregable == e.fk_id_entregable %}
+                            {% if e.mes == item%}
+                              {%set count =+ count + 1 %}
+                              {%endif%}
+                            {%endif%}
+                          {% endfor %}
+
+                          <h5 class="card-text"> REGISTROS:{{count}}</h5>
+                   </div>
+               
+                   <div id="{{item}}" class="collapse" aria-labelledby="headingOne"  data-parent="#accordion">
+                     <div class="card-body">
+
+                       <div class="body-total">
+                             <div class="content-body-total">
+                                 <div class="container-totales-sub">
+                                  {% set avance_mensual= 0 %}
+                                  
+                                  {% for a in mensual%}
+                                {% if item == 'JULIO' and a.mes == 'JULIO' %}
+                                {% set avance_mensual = avance_mensual + a.avance_entregable %} 
+                                  
+                                  
+                                    {% elseif item == 'AGOSTO' and a.mes == 'AGOSTO' %}
+                                    {% set avance_mensual = avance_mensual + a.avance_entregable %} 
+                                    
+        
+                                    {% elseif item == 'SEPTIEMBRE' and a.mes == 'SEPTIEMBRE' %}
+                                    {% set avance_mensual = avance_mensual + a.avance_entregable %} 
+                                    {% endif %}
+                                    {%endfor%}
+                                    <p id="avance" class="totales-sub">AVANCE </p><p>{{avance_mensual|number_format}}</p>
+                                 </div>
+                                 {%if rol != 'Enlace Externo'%}
+                                 <div class="container-totales-sub">
+                                  {% set monto_mensual= 0 %}
+                                  {% for a in mensual%}
+                                  {% if item == 'JULIO' and a.mes == 'JULIO' %}
+                                    {% set monto_mensual = monto_mensual + a.monto %}
+                                  
+        
+                                    {% elseif item == 'AGOSTO' and a.mes == 'AGOSTO' %}
+                                    {% set monto_mensual = monto_mensual + a.monto %}
+                                  
+        
+                                    {% elseif item == 'SEPTIEMBRE' and a.mes == 'SEPTIEMBRE' %}
+                                    {% set monto_mensual = monto_mensual + a.monto %}
+                             
+                                    {%endif%}
+                                  {% endfor%}
+                                  <p class="totales-sub">EJERCIDO</p><p>${{monto_mensual|number_format(2)}} </p>
+                                 </div>
+                                 {%endif%}
+                              
+                             </div>
+
+                             <div class="content-body-total">
+                              <div class="content-text-total">
+
+                                {% set mt_mensual=0 %}
+                                {% set ht_mensual=0 %}
+
+                                {% set m1 = 0%}
+                                {% set ms = 0%}
+                                {% set h1 = 0%}
+                                {% set hs = 0%}
+                                {% for a in mensual%}
+                                {% if item == 'JULIO' and a.mes == 'JULIO' %}
+                                {% set m1 = m1 + a.m_t1%}
+                                {% set ms = ms +a.m_ts%}
+                                {% set mt_mensual = mt_mensual + m1 + ms %}
+                                {% set h1 = h1 + a.h_t1%}
+                                {% set hs = hs + a.h_ts%}
+                                {% set ht_mensual = ht_mensual + h1 + hs %}
+                              
+                                  {% elseif item == 'AGOSTO' and a.mes == 'AGOSTO' %}
+                                  {% set m1 = m1 + a.m_t1%}
+                          {% set ms = ms +a.m_ts%}
+                          {% set mt_mensual = mt_mensual + m1 + ms %}
+                          {% set h1 = h1 + a.h_t1%}
+                          {% set hs = hs + a.h_ts%}
+                          {% set ht_mensual = ht_mensual + h1 + hs %}
+                                
+                                  {% elseif item == 'SEPTIEMBRE' and a.mes == 'SEPTIEMBRE' %}
+                                  {% set m1 = m1 + a.m_t1%}
+                          {% set ms = ms +a.m_ts%}
+                          {% set mt_mensual = mt_mensual + m1 + ms %}
+                          {% set h1 = h1 + a.h_t1%}
+                          {% set hs = hs + a.h_ts%}
+                          {% set ht_mensual = ht_mensual + h1 + hs %}
+                                 
+                                  {%endif%}
+                                  {%endfor%}
+
+                                  <p class="totales-sub">PERSONAS BENEFICIADAS</p>
+                                  <div class="text-body-total">
+                                  <p>M {{mt_mensual|number_format}}</p>
+                                  <p>H {{ht_mensual|number_format}}</p>
+                                  </div>
+                              </div>
+      
+                              <div>
+                                {% set md_mensual=0 %}
+                                {% set hd_mensual=0 %}
+
+                                {% set md1 = 0%}
+                                {% set mds = 0%}
+                                {% set hd1 = 0%}
+                                {% set hds = 0%}
+                                {% for a in mensual%}
+                                {% if item == 'JULIO' and a.mes == 'JULIO' %}
+                                {% set md1 = md1 + a.m_d1%}
+                                {% set mds = mds + a.m_ds%}
+                                  {% set md_mensual = md_mensual + md1 + mds %}
+                                  {% set hd1 = hd1 + a.h_d1%}
+                                  {% set hds = hds + a.h_ds%}
+                                  {% set hd_mensual = hd_mensual + hd1 + hds %}
+                               
+      
+                                  {% elseif item == 'AGOSTO' and a.mes == 'AGOSTO' %}
+                                  {% set md1 = md1 + a.m_d1%}
+                          {% set mds = mds + a.m_ds%}
+                            {% set md_mensual = md_mensual + md1 + mds %}
+                            {% set hd1 = hd1 + a.h_d1%}
+                            {% set hds = hds + a.h_ds%}
+                            {% set hd_mensual = hd_mensual + hd1 + hds %}
+                               
+                                  {% elseif item == 'SEPTIEMBRE' and a.mes == 'SEPTIEMBRE' %}
+                                  {% set md1 = md1 + a.m_d1%}
+                                  {% set mds = mds + a.m_ds%}
+                                    {% set md_mensual = md_mensual + md1 + mds %}
+                                    {% set hd1 = hd1 + a.h_d1%}
+                                    {% set hds = hds + a.h_ds%}
+                                    {% set hd_mensual = hd_mensual + hd1 + hds %}
+                                
+      
+                                  {%endif%}
+                                  {%endfor%}
+
+                                  <p class="totales-sub">TOTAL DE PERSONAS CON DISCAPACIDAD</p>
+                                  <div class="text-body-total">
+                                      <p>M {{md_mensual|number_format}}</p>
+                                      <p>H {{hd_mensual|number_format}}</p>
+                                  </div>
+                              </div>
+      
+                              <div>
+                                {% set mi_mensual=0 %}
+                                {% set hi_mensual=0 %}
+
+                                {% set mi1 = 0%}
+                                {% set mis = 0%}
+                                {% set hi1 = 0%}
+                                {% set his = 0%}
+
+                                {% for a in mensual%}
+                                {% if item == 'JULIO' and a.mes == 'JULIO' %}
+                                 {% set mi1 = mi1 + a.m_i1%}
+                                  {% set mis = mis + a.m_is%}
+                                    {% set mi_mensual = mi_mensual + mi1 + mis%}
+                                    {% set hi1 = hi1 + a.h_i1%}
+                                    {% set his = his + a.h_is%}
+                                    {% set hi_mensual = hi_mensual + hi1 + his %}
+                                
+      
+                                  {% elseif item == 'AGOSTO' and a.mes == 'AGOSTO' %}
+                                  {% set mi1 = mi1 + a.m_i1%}
+                                  {% set mis = mis + a.m_is%}
+                                    {% set mi_mensual = mi_mensual + mi1 + mis%}
+                                    {% set hi1 = hi1 + a.h_i1%}
+                                    {% set his = his + a.h_is%}
+                                    {% set hi_mensual = hi_mensual + hi1 + his %}
+                                 
+      
+                                  {% elseif item == 'SEPTIEMBRE' and a.mes == 'SEPTIEMBRE' %}
+                                  {% set mi1 = mi1 + a.m_i1%}
+                                  {% set mis = mis + a.m_is%}
+                                    {% set mi_mensual = mi_mensual + mi1 + mis%}
+                                    {% set hi1 = hi1 + a.h_i1%}
+                                    {% set his = his + a.h_is%}
+                                    {% set hi_mensual = hi_mensual + hi1 + his %}
+                               
+      
+                                  {%endif%}
+                                  {%endfor%}
+
+                                  <p class="totales-sub">TOTAL MAYAHABLANTES</p>
+                                  <div class="text-body-total">
+                                      <p>M {{mi_mensual|number_format}}</p>
+                                      <p>H {{hi_mensual|number_format}}</p>
+                                  </div>
+                              </div>
+                              
+                              
+                             </div>
+                           
+                       </div>
+                     <div class="table-responsive">
+                       <table class="table table-bordered">
+                         
+                           <thead>
+                               <tr>
+                                <th scope="col">Municipio</th>
+                                <th scope="col">Avance</th>
+                                {% if rol == 'Enlace Externo'%}
+                                <th scope="col">Población</th>
+                                {%else%}
+                                <th scope="col">Monto ejercido</th>
+                                {%endif%}
+                                <th scope="col">Personas beneficiadas</th>
+                                <th scope="col">Personas con discapacidad</th>
+                                <th scope="col">Personas hablantes de lengua indígena</th>
+                                <th scope="col">Acciones</th>
+                               </tr>
+                           </thead>
+                           <tbody>
+                            
+                             
+                             {%for i in avance %}
+
+                             {% if identregable == i.fk_id_entregable %}
+                             {% if i.mes == item %}
+                             {% set beneficiadosMujeres = 0 %}
+                             {% set beneficiadosHombres = 0 %}
+                             {% set discapacidadMujeres = 0 %}
+                             {% set discapacidadHombres = 0 %}
+                             {% set mayaMujeres = 0 %}
+                             {% set mayaHombres = 0 %}
+                             
+                             {% set beneficiadosMujeres = beneficiadosMujeres + (i.m_t1 + i.m_ts) %}
+                             {% set beneficiadosHombres = beneficiadosHombres + (i.h_t1 + i.h_ts) %}
+                             
+                             {% set discapacidadMujeres = discapacidadMujeres + (i.m_d1 + i.m_ds) %}
+                             {% set discapacidadHombres = discapacidadHombres + (i.h_d1 + i.h_ds) %}
+
+                             {% set mayaMujeres  = mayaMujeres  + (i.m_i1 + i.m_is) %}
+                             {% set mayaHombres  = mayaHombres  + (i.h_i1 + i.h_is) %}
+
+                            
+                               <tr>
+                                {% if rol == 'Enlace Externo'%}
+                                <td>{{i.municipio}}</td>
+                                <td>{{i.avance_entregable|number_format}}</td>
+                                <td>{{i.poblacion}}</td>
+                                <td>M {{beneficiadosMujeres|number_format}} H {{beneficiadosHombres|number_format}}</td>
+                                <td>M {{discapacidadMujeres|number_format}} H {{discapacidadHombres|number_format}}</td>
+                                <td>M {{mayaMujeres|number_format}} H {{mayaHombres|number_format}}</td>
+                                 {%else%}
+                                 <td>{{i.municipio}}</td>
+                                 <td>{{i.avance_entregable|number_format}}</td>
+                                 <td>{{i.monto|number_format(2)}}</td>
+                                 <td>M {{beneficiadosMujeres|number_format}} H {{beneficiadosHombres|number_format}}</td>
+                                 <td>M {{discapacidadMujeres|number_format}} H {{discapacidadHombres|number_format}}</td>
+                                 <td>M {{mayaMujeres|number_format}} H {{mayaHombres|number_format}}</td>
+                             
+                                 {%endif%}
+                                  
+                                   <td>
+                                    {%if rol != 'Enlace Externo'%}
+                                        <a type="button" class="btn btn-edit-entregable" href="{{url_for('editarAvance',{id_entregable: (i.fk_id_entregable), id_avance: (i.id_avance)})}}" title="EDITAR"><i class="fas fa-edit entregable"></i></a>
+                                       
+                                        <a href="{{url_for('eliminarAvance', {'id_avance': (i.id_avance),id_entregable: (i.fk_id_entregable)})}}" onclick="return confirmDeleteAvance()" class="btn btn-delete-entregable" title="ELIMINAR"><i class="fas fa-trash-alt entregable"></i></a>
+                                        {%else%}
+                                        <a href="{{url_for('eliminarAvance', {'id_avance': (i.id_avance),id_entregable: (i.fk_id_entregable)})}}" onclick="return confirmDeleteAvance()" class="btn btn-delete-entregable" title="ELIMINAR"><i class="fas fa-trash-alt entregable"></i></a>
+                                        {%endif%}
+                                   </td>
+                               </tr>
+                               {% endif %}
+                               {% endif %}
+                               {% endfor %}
+                           </tbody>
+                           </table>
+                     </div>
+                       </div>
+                       <div>
+                    
+                       </div>
+                     </div>
+                   </div>
+                 </div>
+                 {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="collapse" id="trimestre4">
+        <div class="card card-body">
+          {% set trimestre4 = ['OCTUBRE','NOVIEMBRE','DICIEMBRE']%}
+             
+          {% for item in trimestre4 %} 
+             <div id="accordion">
+              
+                 <div class="card">
+                  
+                   <div class="card-header btn-card text-card-header" id="headingOne">
+                     <h5>
+                       <button class="btn btn-link " data-toggle="collapse" data-target="#{{item}}" aria-expanded="false" aria-controls="{{item}}">
+                       {{item}}
+                       </button>
+                     </h5>
+                     {% set count = 0 %}
+                         {%for e in avance%}
+                         {% if identregable == e.fk_id_entregable %}
+                            {% if e.mes == item%}
+                              {%set count =+ count + 1 %}
+                              {%endif%}
+                            {%endif%}
+                          {% endfor %}
+
+                          <h5 class="card-text"> REGISTROS:{{count}}</h5>
+                   </div>
+               
+                   <div id="{{item}}" class="collapse" aria-labelledby="headingOne"  data-parent="#accordion">
+                     <div class="card-body">
+
+                       <div class="body-total">
+                        <div class="content-body-total">
+                          <div class="container-totales-sub">
+                            {% set avance_mensual= 0 %}
+                                  
+                            {% for a in mensual%}
+                          {% if item == 'OCTUBRE' and a.mes == 'OCTUBRE' %}
+                          {% set avance_mensual = avance_mensual + a.avance_entregable %} 
+                            
+                            
+                              {% elseif item == 'NOVIEMBRE' and a.mes == 'NOVIEMBRE' %}
+                              {% set avance_mensual = avance_mensual + a.avance_entregable %} 
+                              
+  
+                              {% elseif item == 'DICIEMBRE' and a.mes == 'DICIEMBRE' %}
+                              {% set avance_mensual = avance_mensual + a.avance_entregable %} 
+                              {% endif %}
+                              {%endfor%}
+                              <p id="avance" class="totales-sub">AVANCE </p><p>{{avance_mensual|number_format}}</p>
+                          </div>
+                          {%if rol != 'Enlace Externo'%}
+                          <div class="container-totales-sub">
+                            {% set monto_mensual= 0 %}
+                            {% for a in mensual%}
+                            {% if item == 'OCTUBRE' and a.mes == 'OCTUBRE' %}
+                              {% set monto_mensual = monto_mensual + a.monto %}
+                            
+  
+                              {% elseif item == 'NOVIEMBRE' and a.mes == 'NOVIEMBRE' %}
+                              {% set monto_mensual = monto_mensual + a.monto %}
+                            
+  
+                              {% elseif item == 'DICIEMBRE' and a.mes == 'DICIEMBRE' %}
+                              {% set monto_mensual = monto_mensual + a.monto %}
+                       
+                              {%endif%}
+                            {% endfor%}
+                            <p class="totales-sub">EJERCIDO</p><p>${{monto_mensual|number_format(2)}} </p>
+                          </div>
+                       {%endif%}
+                      </div>
+
+                      <div class="content-body-total">
+                       <div class="content-text-total">
+
+                         {% set mt_mensual=0 %}
+                         {% set ht_mensual=0 %}
+
+                         {% set m1 = 0%}
+                         {% set ms = 0%}
+                         {% set h1 = 0%}
+                         {% set hs = 0%}
+
+                         {% for a in mensual%}
+
+                         {% if item == 'OCTUBRE' and a.mes == 'OCTUBRE' %}
+                         {% set m1 = m1 + a.m_t1%}
+                         {% set ms = ms +a.m_ts%}
+                         {% set mt_mensual = mt_mensual + m1 + ms %}
+                         {% set h1 = h1 + a.h_t1%}
+                         {% set hs = hs + a.h_ts%}
+                         {% set ht_mensual = ht_mensual + h1 + hs %}
+                         
+                    
+                         
+                           {% elseif item == 'NOVIEMBRE' and a.mes == 'NOVIEMBRE' %}
+                           {% set m1 = m1 + a.m_t1%}
+                           {% set ms = ms +a.m_ts%}
+                           {% set mt_mensual = mt_mensual + m1 + ms %}
+                           {% set h1 = h1 + a.h_t1%}
+                           {% set hs = hs + a.h_ts%}
+                           {% set ht_mensual = ht_mensual + h1 + hs %}
+                          
+
+                         {% elseif item == 'DICIEMBRE' and a.mes == 'DICIEMBRE' %}
+                         {% set m1 = m1 + a.m_t1%}
+                         {% set ms = ms +a.m_ts%}
+                         {% set mt_mensual = mt_mensual + m1 + ms %}
+                         {% set h1 = h1 + a.h_t1%}
+                         {% set hs = hs + a.h_ts%}
+                         {% set ht_mensual = ht_mensual + h1 + hs %}
+                         
+                           {%endif%}
+                           {%endfor%}
+
+                           <p class="totales-sub">PERSONAS BENEFICIADAS</p>
+                           <div class="text-body-total">
+                           <p>M {{mt_mensual|number_format}}</p>
+                           <p>H {{ht_mensual|number_format}}</p>
+                           </div>
+                       </div>
+
+                       <div>
+                         {% set md_mensual=0 %}
+                         {% set hd_mensual=0 %}
+
+                          {% set md1 = 0%}
+                                {% set mds = 0%}
+                                {% set hd1 = 0%}
+                                {% set hds = 0%}
+                                {% for a in mensual%}
+                                {% if item == 'OCTUBRE' and a.mes == 'OCTUBRE' %}
+                                {% set md1 = md1 + a.m_d1%}
+                                {% set mds = mds + a.m_ds%}
+                                  {% set md_mensual = md_mensual + md1 + mds %}
+                                  {% set hd1 = hd1 + a.h_d1%}
+                                  {% set hds = hds + a.h_ds%}
+                                  {% set hd_mensual = hd_mensual + hd1 + hds %}
+                  
+
+                           {% elseif item == 'NOVIEMBRE' and a.mes == 'NOVIEMBRE' %}
+                           {% set md1 = md1 + a.m_d1%}
+                                {% set mds = mds + a.m_ds%}
+                                  {% set md_mensual = md_mensual + md1 + mds %}
+                                  {% set hd1 = hd1 + a.h_d1%}
+                                  {% set hds = hds + a.h_ds%}
+                                  {% set hd_mensual = hd_mensual + hd1 + hds %}
+                          
+                           {% elseif item == 'DICIEMBRE' and a.mes == 'DICIEMBRE' %}
+                           {% set md1 = md1 + a.m_d1%}
+                                {% set mds = mds + a.m_ds%}
+                                  {% set md_mensual = md_mensual + md1 + mds %}
+                                  {% set hd1 = hd1 + a.h_d1%}
+                                  {% set hds = hds + a.h_ds%}
+                                  {% set hd_mensual = hd_mensual + hd1 + hds %}
+                         
+
+                           {%endif%}
+                           {%endfor%}
+
+                           <p class="totales-sub">TOTAL DE PERSONAS CON DISCAPACIDAD</p>
+                           <div class="text-body-total">
+                               <p>M {{md_mensual|number_format}}</p>
+                               <p>H {{hd_mensual|number_format}}</p>
+                           </div>
+                       </div>
+
+                       <div>
+                         {% set mi_mensual=0 %}
+                         {% set hi_mensual=0 %}
+                         {% set mi1 = 0%}
+                         {% set mis = 0%}
+                         {% set hi1 = 0%}
+                         {% set his = 0%}
+
+                         {% for a in mensual%}
+                         {% if item == 'OCTUBRE' and a.mes == 'OCTUBRE' %}
+                          {% set mi1 = mi1 + a.m_i1%}
+                           {% set mis = mis + a.m_is%}
+                             {% set mi_mensual = mi_mensual + mi1 + mis%}
+                             {% set hi1 = hi1 + a.h_i1%}
+                             {% set his = his + a.h_is%}
+                             {% set hi_mensual = hi_mensual + hi1 + his %}
+  
+                           {% elseif item == 'NOVIEMBRE' and a.mes == 'NOVIEMBRE' %}
+                           {% set mi1 = mi1 + a.m_i1%}
+                           {% set mis = mis + a.m_is%}
+                             {% set mi_mensual = mi_mensual + mi1 + mis%}
+                             {% set hi1 = hi1 + a.h_i1%}
+                             {% set his = his + a.h_is%}
+                             {% set hi_mensual = hi_mensual + hi1 + his %}
+                         
+
+                           {% elseif item == 'DICIEMBRE' and a.mes == 'DICIEMBRE ' %}
+                           {% set mi1 = mi1 + a.m_i1%}
+                           {% set mis = mis + a.m_is%}
+                             {% set mi_mensual = mi_mensual + mi1 + mis%}
+                             {% set hi1 = hi1 + a.h_i1%}
+                             {% set his = his + a.h_is%}
+                             {% set hi_mensual = hi_mensual + hi1 + his %}
+                          
+
+                           {%endif%}
+                           {%endfor%}
+
+                           <p class="totales-sub">TOTAL MAYAHABLANTES</p>
+                           <div class="text-body-total">
+                               <p>M {{mi_mensual|number_format}}</p>
+                               <p>H {{hi_mensual|number_format}}</p>
+                           </div>
+                       </div>
+                              
+                      </div>
+                           
+                       </div>
+                       <div class="table-responsive">
+                       <table class="table table-bordered table-striped">
+                         
+                           <thead>
+                               <tr>
+                                <th scope="col">Municipio</th>
+                                <th scope="col">Avance</th>
+                                {% if rol == 'Enlace Externo'%}
+                                <th scope="col">Población</th>
+                                {%else%}
+                                <th scope="col">Monto ejercido</th>
+                                {%endif%}
+                                <th scope="col">Personas beneficiadas</th>
+                                <th scope="col">Personas con discapacidad</th>
+                                <th scope="col">Personas hablantes de lengua indígena</th>
+                                <th scope="col">Acciones</th>
+                               </tr>
+                           </thead>
+                           <tbody>
+                            
+                             {%set contador = 0%}
+                             {%for i in avance %}
+
+                             {% if identregable == i.fk_id_entregable %}
+                             {% if i.mes == item %}
+                             {% set beneficiadosMujeres = 0 %}
+                             {% set beneficiadosHombres = 0 %}
+                             {% set discapacidadMujeres = 0 %}
+                             {% set discapacidadHombres = 0 %}
+                             {% set mayaMujeres = 0 %}
+                             {% set mayaHombres = 0 %}
+                             {% set beneficiadosMujeres = beneficiadosMujeres + (i.m_t1 + i.m_ts) %}
+                             {% set beneficiadosHombres = beneficiadosHombres + (i.h_t1 + i.h_ts) %}
+                             
+                             {% set discapacidadMujeres = discapacidadMujeres + (i.m_d1 + i.m_ds) %}
+                             {% set discapacidadHombres = discapacidadHombres + (i.h_d1 + i.h_ds) %}
+
+                             {% set mayaMujeres  = mayaMujeres  + (i.m_i1 + i.m_is) %}
+                             {% set mayaHombres  = mayaHombres  + (i.h_i1 + i.h_is) %}
+
+                            
+                               <tr>
+                                 {% if rol == 'Enlace Externo'%}
+                                 <td>{{i.municipio}}</td>
+                                 <td>{{i.avance_entregable|number_format}}</td>
+                                 <td>{{i.poblacion}}</td>
+                                 <td>M {{beneficiadosMujeres|number_format}} H {{beneficiadosHombres|number_format}}</td>
+                                 <td>M {{discapacidadMujeres|number_format}} H {{discapacidadHombres|number_format}}</td>
+                                 <td>M {{mayaMujeres|number_format}} H {{mayaHombres|number_format}}</td>
+                                  {%else%}
+                                  <td>{{i.municipio}}</td>
+                                  <td>{{i.avance_entregable|number_format}}</td>
+                                  <td>{{i.monto|number_format(2)}}</td>
+                                  <td>M {{beneficiadosMujeres|number_format}} H {{beneficiadosHombres|number_format}}</td>
+                                  <td>M {{discapacidadMujeres|number_format}} H {{discapacidadHombres|number_format}}</td>
+                                  <td>M {{mayaMujeres|number_format}} H {{mayaHombres|number_format}}</td>
+                              
+                                  {%endif%}
+                                   <td>
+                                    {%if rol != 'Enlace Externo'%}
+                                        <a type="button" class="btn btn-edit-entregable" href="{{url_for('editarAvance',{id_entregable: (i.fk_id_entregable), id_avance: (i.id_avance)})}}" title="EDITAR"><i class="fas fa-edit entregable"></i></a>
+                                       
+                                        <a href="{{url_for('eliminarAvance', {'id_avance': (i.id_avance),id_entregable: (i.fk_id_entregable)})}}" onclick="return confirmDeleteAvance()" class="btn btn-delete-entregable" title="ELIMINAR"><i class="fas fa-trash-alt entregable"></i></a>
+                                        {%else%}
+                                        <a href="{{url_for('eliminarAvance', {'id_avance': (i.id_avance),id_entregable: (i.fk_id_entregable)})}}" onclick="return confirmDeleteAvance()" class="btn btn-delete-entregable" title="ELIMINAR"><i class="fas fa-trash-alt entregable"></i></a>
+                                        {%endif%}
+                                   </td>
+                               </tr>
+                               {% endif %}
+                               {% endif %}
+                               {% endfor %}
+                           </tbody>
+                           </table>
+                       </div>
+                       </div>
+                       <div>
+                    
+                       </div>
+                     </div>
+                   </div>
+                 </div>
+                 {% endfor %}
+        </div>
+      </div>
+    </div>
+ 
+      </div>
+</div>
+{% endblock %}

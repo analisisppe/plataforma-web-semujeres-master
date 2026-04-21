@@ -1,0 +1,340 @@
+{%extends 'main.html' %}
+
+{% block content %}
+<div class="container-home">
+    {{ include('navbar.html') }}
+
+ 
+        <div class="container-entregable">
+            <div class="content-entregable">
+            
+                {% if id_programa and id_entregable%}
+                
+                {% for e in entregable%}
+                
+                {% if  id_entregable == e.id_entregable and id_programa == e.fk_id_programa %}
+        <form method="POST" id="post-agregar-entregable">
+            <h3 class="subtitle">DATOS GENERALES</h3>
+            {% if message%}
+
+    {%if class == 'red'%}
+    <label class="alert alert-danger">{{message}}</label>
+    {%endif%}
+   {% endif%}
+            <div class="info-entregable">
+                <div class="content-form-entregable"> 
+                <div class="col-label-entregable">
+                    <label>Entregable</label>
+                    <input type="text" class="form-general-data" value="{{e.nombre_entregable}}" id="nombre_entregable" name="nombre_entregable" placeholder="Ingresa Nombre de Entregable" required>
+                </div>
+
+                <div class="col-label-entregable">
+                    <label>Periodicidad</label>
+                    <select class="form-general-data" aria-label="Default select example" name="periodicidad" id="periodicidad">
+                        <option value="{{e.periodicidad}}" selected>{{e.periodicidad}}</option>
+                        <option value="MENSUAL">MENSUAL</option>
+                        <option value="TRIMESTRAL">TRIMESTRAL</option>
+                        <option value="SEMESTRAL">SEMESTRAL</option>
+                        <option value="ANUAL">ANUAL</option>
+                    </select>
+                    </div>
+                </div>
+
+                <div class="content-form-entregable"> 
+                <div class="col-label-entregable">
+                    <label>Unidad de medida </label>
+                    <input type="text" class="form-general-data" value="{{e.unidad_medida}}" id="unidad_medida" name="unidad_medida">
+                </div>
+
+                <div class="col-label-entregable">
+                    <label>Meta anual</label>
+                    <input type="number" class="form-general-data" value="{{e.meta}}" id="meta" name="meta">
+                </div>
+            </div>
+            <div class="content-form-entregable"> 
+                <div class="col-label-entregable">
+                    <label class="form-check-label label-checkbox" for="exampleCheck1">Municipalizable</label>
+                    {% if e.municipalizable == 'on' %}
+                    <input type="checkbox" class="form-check-input" value="{{e.municipalizable}}" id="municipalizable" name="municipalizable" checked>
+                    {%else%}
+                    <input type="checkbox" class="form-check-input" id="municipalizable" name="municipalizable">
+                    {%endif%}
+                  </div>
+
+                {% if rol != 'Enlace Externo'%}
+                <div class="col-label-entregable">
+                    <label >Compromiso</label>
+                    <select class="form-general-data"  aria-label="Default select example" name="compromiso" id="compromiso">
+                        <option selected>{{e.compromiso}}</option>
+                        {% for c in compromisos%}      
+                        <option value="{{c.id}}">{{c.descripcion}}</option>
+                        {% endfor %}
+                    </select>
+                    </div>
+                    {%endif%}
+                </div>
+            </div>
+
+            <div class="t-content-entregable">
+                <div class="label-ped">
+                    <label>OBJETIVO DE DESARROLLO SOSTENIBLE</label>
+                    <img src="{{base_path()}}/images/wheel.png" alt="Agenda 2030" width="35px" height="35px">
+                </div>
+                <div class="info-entregable">
+                   
+                    <div class="col-form-entregable">
+                <div class="col-label-entregable">
+
+                    <select class="form-general-data" aria-label="Default select example" name="desarrollo_sostenible" id="ods" required>
+                        <option value="0" selected>Seleccione...</option>
+                        {% for o in ods%}
+                        <option id="ods-option" value="{{o.id}}">{{o.conclusion}}</option>
+                        {% endfor %}
+                    </select>
+                    </div>
+
+                    <div class="container-add-btn">
+                        <button id='ods' type="button" class="btn btn-add-ods alineacion" onclick="return agregar_ods()">AGREGAR</button>
+                    </div> 
+            
+                </div>
+                <div class="table-responsive">
+            <table id="table-ods" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">OBJETIVO DE DESARROLLO SOSTENIBLE</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                   
+                    <tr>
+                        <td><textarea name="ods" style="width:600px;height:90px;border:0;outline:0;display:inline-block" cols="50" rows="5" readonly>{{e.ods}}</textarea></td>
+                        <td><a type="button" class="btn btn-delete-entregable" onclick="deleteOds(this)" title="ELIMINAR"><i class="fas fa-trash-alt"></i></a></td>
+                    </tr>
+                  
+    
+                </tbody>
+            </table>
+            </div>
+        </div>
+           </div>
+           {% if rol != 'Enlace Externo'%}
+           <div  class="t-content-entregable">
+            <div class="label-ped">
+                <label>SIGO</label>
+            </div>
+            <div class="info-entregable">
+                <div class="col-form-entregable">
+                    <div class="col-label-entregable">
+                    <label>Actividad Estratégica SIGO</label>
+                    <input type="text" class="form-control-entregable" name="act-sigo" value="{{e.actividad_sigo}}" id="act-sig">
+            </div>
+            <div class="col-label-entregable">
+                <label>Entregable SIGO</label>
+                <input type="text" class="form-control-entregable" name="entregable-sigo" value="{{e.entregable_sigo}}" id="entregable-sig">
+        </div>
+           </div>
+           </div>
+           </div>
+           {%endif%}
+           <div class="t-content-entregable">
+            <div class="label-ped">
+                <label>ALINEACIÓN PROGRAMAS ESPECIALES</label>
+            </div>
+          <div class="info-entregable">
+            
+            <div class="col-form-entregable">
+                <div class="col-label-entregable">
+                <label>Programa</label>
+                <select class="form-control-entregable "  aria-label="Default select example" onchange="return cambioPMP(this.value)" name="pmp" id="idpmp">
+                    <option selected>Seleccione...</option>
+                    {% for p in pmp%}
+                    <option value="{{p.id_pmp}}">{{p.tema}}</option>
+                    {% endfor %}
+
+                </select>
+            </div>
+
+            <div class="col-label-entregable">
+                <label>Objetivo</label>
+                <select class="form-control-entregable " data-is-objpmp="{{objetivopmp|json_encode}}" aria-label="Default select example"  name="objpmp" id="idobjpmp" onchange="return cambioEstrategia()">
+                    <option selected>Seleccione...</option>
+                  
+
+                </select>
+            </div>
+
+            <div class="col-label-entregable">
+                <label>Estrategia</label>
+                <select class="form-control-entregable " data-is-estrategiapmp="{{estrategiapmp|json_encode}}"  aria-label="Default select example"  name="estrategiapmp" id="idestrategiapmp" onchange="return cambiolineapmp()">
+                    <option selected>Seleccione...</option>
+                    
+                </select>
+            </div>
+                </div>
+                <div class="col-form-entregable" >
+                    <div class="col-label-entregable">
+                    <label class="form-label">Línea de Acción</label>
+                        <select class="form-control-entregable" data-is-lineapmp="{{lineaccionpmp|json_encode}}"aria-label="Default select example" name="lineapmp" id="idlineapmp">
+                            <option selected>Seleccione...</option>
+                 
+                        </select>
+                   </div>
+
+                    <div class="container-add-btn" >
+                        <button id='add-btn' type="button" class="btn btn-add-table" onclick="return agregar_programaespecial()">AGREGAR</button>
+                    </div> 
+                    </div>
+              
+                    <div class="table-responsive">
+                    <table id="programa-especial" class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">Programa</th>
+                                <th scope="col">Objetivo</th>
+                                <th scope="col">Estrategia</th>
+                                <th scope="col">Línea de Acción</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pe in pespecial%}
+                            <tr>
+                              <td><textarea name="pmp[]" style="width:180px;height:100px;border:0;outline:0;display:inline-block" cols="50" rows="5" readonly>{{pe.programa}}</textarea></td>
+                              <td><textarea name="objpmp[]" style="width:180px;height:100px;border:0;outline:0;display:inline-block" cols="50" rows="5" readonly>{{pe.objetivo}}</textarea></td>
+                              <td><textarea name="estrategiapmp[]" style="width:180px;height:100px;border:0;outline:0;display:inline-block" cols="50" rows="5" readonly>{{pe.estrategia}}</textarea></td>
+                              <td><textarea name="lineapmp[]" style="width:180px;height:100px;border:0;outline:0;display:inline-block" cols="50" rows="5" readonly>{{pe.linea_accion}}</textarea></td>
+                              <td><a type="button" class="btn btn-delete-entregable" onclick="deletePmp(this)" title="ELIMINAR"><i class="fas fa-trash-alt"></i></a></td>
+                            </tr>
+            {%endfor%}
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+        </div>
+        <div class="t-content-entregable">
+            <div class="label-ped">
+                <label>ALINEACIÓN AVG</label>
+            </div>
+        
+            <div class="info-entregable">
+                <div class="col-form-entregable">
+                    <div class="col-label-entregable">
+                <label>Conclusion</label>
+                <select class="form-general-data " aria-label="Default select example" name="avg-select" id="idavg">
+                    <option selected>Seleccione...</option>
+                    {% for c in avg%}
+                    <option value="{{c.id_avg}}">{{c.conclusion_avg}}</option>
+                    {% endfor %}}
+                </select>
+            </div >
+                <div class="container-add-btn">
+                    <button id='signup-btn' type="button" class="btn btn-add-table alineacion" onclick="return agregar_avg()">AGREGAR</button>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table id="table-avg" class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">Conclusión</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                           <td><textarea name="avg" style="width:600px;height:90px;border:0;outline:0;display:inline-block" cols="50" rows="5" readonly>{{e.avg}}</textarea></td>
+                           <td><a type="button" class="btn btn-delete-entregable" onclick="deleteAvg(this)" title="ELIMINAR"><i class="fas fa-trash-alt"></i></a></td>
+                        </tr>
+        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>      
+                
+        
+                    {% if rolUser == 'Administrador' or rolUser == 'Enlace SEMUJERES'  or rolUser == 'Enlace GEPEA' or rolUser == 'Admin SEMUJERES-GEPEA' %}
+                    <div class="t-content-entregable">
+                        <div class="label-ped">
+                            <label>DATOS FINANCIEROS</label>
+                        </div>
+                    <div class="info-entregable">
+                        <div class="col-form-entregable">
+                        <div class="col-label-entregable">
+                        <label>Fuente de Financiamiento</label>
+                        <select class="form-control-entregable " aria-label="Default select example" name="fuente" id="fuenteid">
+                            <option value="0"selected>Seleccione...</option>
+                            <option value="1">ESTATAL</option>
+                            <option value="2">PAIMEF</option>
+                            <option value="3">PFTPG</option>
+                            <option value="4">FOBAM</option>
+                        </select>
+                    </div>
+
+                        <div class="col-label-entregable">
+                            <label>Monto de la Fuente</label>
+                            <input type="number" class="form-control-entregable" name="monto" id="montoid">
+                        </div>
+
+                        <div class="container-add-btn">
+                            <button id='signup-btn' type="button" class="btn btn-add-table" onclick="return onSubmitFuente()">AGREGAR</button>
+                        </div> 
+                    </div>
+                    <div class="table-responsive">
+                        <table id="fuente-financiamiento" class="table table-bordered ">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Nombre de la Fuente de Financiamiento</th>
+                                    <th scope="col">Monto</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                               
+                                {% for f in finanzas%}
+                               
+                                <tr>
+                                  
+                                <td><input id="'+ data.fuentevalue +'" name="rowfuente[]" style="width:400px;height:50px;border:0;outline:0;display:inline-block" value="{{f.fuente}}" readonly></td>
+                                <td><input type="text" id="rowmonto" name="rowmonto[]"  style="width:200px;height:50px;border:0;outline:0;display:inline-block"  value="{{f.monto}}" readonly></td>
+                                <td><a class="btn btn-edit-entregable" onClick="editFuente(this)"><i class="fas fa-edit"></i></a> <a type="button" class="btn btn-delete-entregable" onclick="deleteFuente(this)" title="ELIMINAR"><i class="fas fa-trash-alt"></i></a></td>
+                                   
+                            </tr> 
+                            {%endfor%}
+                
+                            </tbody>
+                        </table>
+                    </div>
+                        <div class="container-finance">
+                            <div class="col-label-entregable">
+                                <label>Monto Total</label>
+                                <input type="text" class="form-control-entregable" value="${{e.monto_total|number_format(2)}}" onChange="sumar()" id="financiamiento" name="monto-total" readonly>
+                            </div>
+                            <div class="col-label-entregable">
+                                <label>Porcentaje Que Representa del Total Asignado a la UBP</label>
+                                <input type="number" class="form-control-entregable" value="{{e.porcentaje_ubp_total}}" name="porcentaje-ubp-total" id="porcentaje-ubp-total">
+                            </div>
+                        </div>
+                    </div>  
+                    
+                   
+            {%endif%}
+
+                    <div class="btn-container">
+                        <a type="button" class="btn btn-back" href="{{url_for('/entregable/{id}',{'id':(id_programa)})}}">REGRESAR</a>
+                        
+                        <input type="hidden" name="_METHOD" value="PUT"/>
+                        <button type="submit" form="post-agregar-entregable" formmethod="POST" class="btn btn-save" >GUARDAR</button>
+                    </div> 
+                    {% endif %}
+            
+                    {% endfor %}
+                    {% endif %}
+        </form>
+    </div>
+</div>
+
+
+</div>
+{% endblock%}

@@ -1,0 +1,75 @@
+{%extends 'main.html' %}
+{% block content %}
+<div class="container-home">
+  {{ include('navbar.html') }}
+
+        <div class="buscador">
+
+          <div class="buscador-container">
+            <div class="year-container">
+              <label class="year-label">AÑO</label>
+              <input class="input-year" id="buscar-año"  type="text" placeholder="2021" value="{{año}}" readonly>
+             </div>
+            <div class="year-container">
+              <label class="label-program">Nombre de Programa/Actividad</label>
+                <div class="container-searchinput">
+                       
+                    <input id="buscadorprograma" name="buscar-programa" onkeyup="buscador()" class="input-search" type="search" placeholder="Ingrese Nombre de Programa o Actividad" aria-label="Ingrese Nombre de Programa/Actividad" >
+                    <div class="btn btn-outline-success" type="button" ><i class="fas fa-search"></i></div>
+               
+                </div>
+              </nav>
+            </div>
+
+            <div class="container-searchinput">
+              <button type="button" onclick="window.location.href='agregarPrograma';" class="btn btn-add-program">AGREGAR PROGRAMA</button>
+            </div>
+            
+          </div>
+        </div>
+   
+        <div class="table-container table-responsive">      
+        <table id="programa-table" name='programa' class="table table-bordered table-home table-striped">
+            <thead>
+             <tr>
+              <th scope="col">DEPENDENCIA</th>
+              <th id="nombre_programa" scope="col">PROGRAMA/ACTIVIDAD</th>
+              <th scope="col">ACCIONES</th>
+            </tr>
+            </thead>
+            <tbody>
+              
+              {% for p in programa %}       
+              <tr>
+
+                <td>{{p.dependencia}}</td>
+                <td headers="nombre_programa" id="{{p.nombre_programa}}" >
+                  {{ p.nombre_programa }}</td>
+                 
+                <td>
+                  {% if rol == 'Administrador' or rol == 'Admin SEMUJERES-GEPEA'%}
+                  <a type="button" class="btn btn-edit-entregable" href="{{url_for('editarPrograma',{id: (p.id_programa)})}}" title="EDITAR"><i class="fas fa-edit entregable"></i></a>
+                  {%endif%}
+                  <a type="button" class="btn btn-edit-entregable" href="{{url_for('/entregable/{id}',{'id': (p.id_programa)})}}" title="ENTREGABLES"><i class="fas fa-file-alt entregable"></i></a>  
+                  {% if rol == 'Administrador' or rol == 'Admin SEMUJERES-GEPEA'%}
+                  <a href="{{url_for('eliminarPrograma', {'id': (p.id_programa)})}}" onclick="return confirmDelete()" class="btn btn-delete-entregable" title="ELIMINAR"><i class="fas fa-trash-alt entregable"></i></a>
+                  {%endif%}
+                </td>
+               
+              </tr>
+            
+         
+              {% endfor %} 
+             
+            </tbody>
+        </table> 
+        <div id="busca" class='noSearch hide'>
+          
+        </div>
+      
+            </div>
+       
+   
+</div>
+
+{% endblock %}

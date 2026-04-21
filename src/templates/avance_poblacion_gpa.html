@@ -1,0 +1,117 @@
+{% block avancepoblaciongpa %}
+
+
+<div class="label-ped">
+    <label>Población Primera Vez</label>
+</div>
+<div class="form-row form-people">
+
+<div class="people-gpa">
+    <div class="label-people">
+    <label> Población 10-14 Años </label>
+</div>
+<div class="container-input-gpa">
+<label class="label-gpa">M</label><input class="input-people" min="0" value="{{a.m_10}}" type="number" id="m_10" name="m_10">
+</div>
+<div class="container-input-gpa">
+<label class="label-gpa">H</label><input class="input-people" min="0" type="number" value="{{a.h_10}}" id="h_10" name="h_10">
+</div>
+</div>
+
+
+<div class="people-gpa">
+    <div class="label-people">
+    <label> Población 15-19 Años </label>
+
+</div>
+<div class="container-input-gpa">
+   <label class="label-gpa">M</label><input class="input-people" min="0" value="{{a.m_15}}" type="number" id="m_15" name="m_15">
+</div>
+   <div class="container-input-gpa">
+   <label class="label-gpa">H</label><input class="input-people" min="0" type="number" value="{{a.h_15}}" id="h_15" name="h_15">
+   </div>
+</div>
+
+<div class="people-gpa">
+    <div class="label-people">
+    <label> Servidoras/es</label>
+   
+</div>
+<div class="container-input-gpa">
+<label class="label-gpa">M</label><input class="input-people" min="0" type="number" value="{{a.m_ser}}" id="m_ser" name="m_ser">
+</div>
+<div class="container-input-gpa">
+<label class="label-gpa">H</label><input class="input-people" min="0" type="number" value="{{a.h_ser}}" id="h_ser" name="h_ser">
+</div>
+</div>
+
+<div class="people-gpa">
+    <div class="label-people">
+    <label> Madres, Padres y/o Tutores</label>
+</div>
+<div class="container-input-gpa">
+<label class="label-gpa">M</label><input class="input-people" min="0" type="number" value="{{a.m_padres}}" id="m_padres" name="m_padres">
+</div>
+<div class="container-input-gpa">
+<label class="label-gpa">H</label><input class="input-people" min="0" type="number" value="{{a.h_padres}}" id="h_padres" name="h_padres">
+</div>
+</div>
+
+</div>
+
+<div class="label-ped">
+<label>Población Seguimiento</label>
+</div>
+<div class="form-row form-people">
+
+    <div class="people-gpa">
+        <div class="label-people">
+        <label> Población 10-14 Años </label>
+    
+    </div>
+    <div class="container-input-gpa">
+    <label class="label-gpa">M</label><input class="input-people" min="0" type="number" value="{{a.ms_10}}" id="ms_10" name="ms_10">
+    </div>
+    <div class="container-input-gpa">
+    <label class="label-gpa">H</label><input class="input-people" min="0" type="number" value="{{a.hs_10}}" id="hs_10" name="hs_10">
+    </div>
+    </div>
+    
+    <div class="people-gpa">
+        <div class="label-people">
+        <label> Población 15-19 Años </label>  
+    </div>
+    <div class="container-input-gpa">
+       <label class="label-gpa">M</label><input class="input-people" min="0" type="number" value="{{a.ms_15}}" id="ms_15" name="ms_15">
+    </div>
+    <div class="container-input-gpa">
+       <label class="label-gpa">H</label><input class="input-people" min="0" type="number" value="{{a.hs_15}}" id="hs_15" name="hs_15">
+    </div>
+    </div>
+    
+    <div class="people-gpa">
+        <div class="label-people">
+        <label> Servidoras/es</label>
+       
+    </div>
+    <div class="container-input-gpa">
+    <label class="label-gpa">M</label><input class="input-people" min="0" type="number" value="{{a.ms_ser}}" id="ms_ser" name="ms_ser">
+    </div>
+    <div class="container-input-gpa">
+    <label class="label-gpa">H</label><input class="input-people" min="0" type="number" id="hs_ser" value="{{a.hs_ser}}" name="hs_ser">
+    </div>
+    </div>
+    
+    <div class="people-gpa">
+        <div class="label-people">
+        <label> Madres, Padres y/o Tutores</label>
+    </div>
+    <div class="container-input-gpa">
+    <label class="label-gpa">M</label><input class="input-people" min="0" type="number" id="ms_padres" value="{{a.ms_padres}}" name="ms_padres">
+    </div>
+    <div class="container-input-gpa">
+    <label class="label-gpa">H</label><input class="input-people" min="0" type="number" id="hs_padres" value="{{a.hs_padres}}" name="hs_padres">
+    </div>
+    </div>
+</div>
+{% endblock %}

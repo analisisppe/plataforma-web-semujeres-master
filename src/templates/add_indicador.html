@@ -1,0 +1,149 @@
+{%extends 'main.html' %}
+{% block content%}
+<div class="container-home">
+    
+    {{ include('navbar.html') }}
+
+    <div class="container-entregable">
+        <div class="content-entregable">
+            <form method="POST" name="indicadorespage">
+                <h3 class="subtitle">INDICADORES</h3>
+                {% if message%}
+
+                {%if class == 'red'%}
+                <label class="alert alert-danger">{{message}}</label>
+                {%endif%}
+               {% endif%}
+               <div class="container-form-indicador">
+                   <div class="content-form-indicador">
+                        <div class="label-indicador">
+                          
+                            <label>Responsable del Seguimiento</label>
+                            
+                            <input class="form-control" type="text" value="{{responsable}}" name="responsable-indicador" required> 
+                       
+                        </div>
+
+                        
+                        <div class="label-indicador">
+                            <label>Corresponsable del Seguimiento</label>
+                          
+                            
+                            <input class="form-control"  type="text" value="{{corresponsable}}" name="corresponsable-indicador" required> 
+                      
+                        </div>
+                    </div>
+
+                   <div class="content-form-indicador"> 
+                       <div class="container-info-indicador-dos" >
+
+                        <div class="content-info-indicador">
+                           <div class="label-indicador">
+                               <label>No. Indicador</label>
+                               <select class="form-control " data-is-pp="{{pp|json_encode}}" data-is-base="{{baseMeta|json_encode}}" data-is-indicador="{{indicador|json_encode}}" data-is-variables="{{variables|json_encode}}" aria-label="Default select example" name="numeroindicador" id="select-indicadorid" onchange="return showInfoIndicador(this.value)" required>
+                                
+                                <option selected>Seleccione...</option>
+                                {% for i in indicador%}
+                                <option value="{{i.id_indicador}}">{{i.numero}}</option>
+                                {% endfor%}
+                            </select>
+                           </div>
+                        </div>
+                           <div class="content-info-indicador">
+                                <div class="label-line-indicador"> 
+                                    <label>Linea Base</label>
+                                    <input class="form-control indicador" type="number" name="linea-base" id="linea-base" readonly>
+                                </div>
+
+                                <div class="label-line-indicador">
+                                    <label>Linea Meta</label>
+                                    <input class="form-control indicador" type="number" name="linea-meta" id="linea-meta" readonly>
+                                </div>
+                           </div>
+                       </div>
+
+                       <div class="container-info-indicador" >
+                        <div class="label-indicador" >
+                            <label>Nombre Indicador</label>
+                            <textarea class="textarea-style"  type="text" name="nombre-indicador" id="nombre-indicador" readonly></textarea>
+                        </div>   
+                        <div  class="label-indicador" >
+                            <label>Definición</label>
+                            <textarea class="textarea-style"  type="text" name="definicion-indicador" id="definicion-indicador" readonly></textarea>
+                        </div> 
+
+                        <div  class="label-indicador" >
+                            <label>Programa Presupuestario</label>
+                            <textarea class="textarea-style"  type="text" name="pp" id="programa-presupuestario" readonly></textarea>
+                        </div> 
+                        </div>
+                   </div>
+
+                   <div>
+                    <h3 class="subtitle">CAPTURA DE LA VARIABLE</h3>
+                    <div class="content-form-indicador">
+                        <div class="label-line-indicador">
+                            <label>MES</label>
+                            <select class="col-form-control mes" name="mes-indicador" id="mes-indicador" required>
+                                <option value="{{a.mes}}" selected>{{a.mes}}</option>
+                                <option value="ENERO">ENERO</option>
+                                <option value="FEBRERO">FEBRERO</option>
+                                <option value="MARZO">MARZO</option>
+                                <option value="ABRIL">ABRIL</option>
+                                <option value="MAYO">MAYO</option>
+                                <option value="JUNIO">JUNIO</option>
+                                <option value="JULIO">JULIO</option>
+                                <option value="AGOSTO">AGOSTO</option>
+                                <option value="SEPTIEMBRE">SEPTIEMBRE</option>
+                                <option value="OCTUBRE">OCTUBRE</option>
+                                <option value="NOVIEMBRE">NOVIEMBRE</option>
+                                <option value="DICIEMBRE">DICIEMBRE</option>
+                            </select>    
+
+                            <label>AÑO</label>
+                            <input class="form-control" name="año-indicador" type="text" value="{{año}}" >
+                        </div>
+
+                        <div class="container-form-indicador">
+                            <div class="container-descripcion-indicador">
+                                <div class="label-descripcion-indicador">
+                                    <label>Nombre de Variable B</label>
+                                    <textarea class="textarea-style" id="variable-b" readonly name="variable-b" ></textarea>
+                                </div>
+
+                                <div class="label-line-indicador">
+                                    <label >Valor de Variable B</label>
+                                    <input class="form-control" id="valor-b" name="valor-b" type="number" required>
+                                </div>
+                                </div>
+
+                                <div class="container-descripcion-indicador">
+                                <div class="label-descripcion-indicador">
+                                    <label>Nombre de Variable C</label>
+                                    <textarea class="textarea-style" id="variable-c" name="variable-c" readonly></textarea>
+                                </div>
+                            
+                                <div class="label-line-indicador">
+                                    <label  >Valor de Variable C</label>
+                                    <input class="form-control" id="valor-c" name="valor-c" type="number" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                   </div>
+
+                 
+               </div>
+
+               <div class="btn-container">
+                <a type="button" class="btn btn-back" href="{{url_for('indicadores')}}">REGRESAR</a>
+                {{id_indicador ?  '<input type="hidden" name="_METHOD" value="PUT"/>'}}
+               <button type="submit" class="btn btn-save">GUARDAR</button>
+            </div>
+            </form>
+        </div>    
+    </div>
+
+   
+</div>
+{% endblock%}

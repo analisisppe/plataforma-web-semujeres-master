@@ -1,0 +1,118 @@
+{%extends 'main.html' %}
+
+        {% block content %}
+        <div class="container-home">
+            {{ include('navbar.html') }}
+<div class="container-register">
+    <div class="content-register">
+
+        
+     <p class="register-title-web">REGISTRO DE USUARIO</p>
+   
+ 
+    {% if message%}
+       {%if class == 'blue'%}
+        <label class="alert alert-primary">{{message}}</label>
+        {%elseif class == 'red'%}
+        <label class="alert alert-danger">{{message}}</label>
+        {%endif%}
+    {% endif%}
+
+    <div id="message-red"> <h7>La contraseña debe tener lo siguiente:</h7>
+        <p id="letter" class="invalid">Mínimo una letra minúscula</p>
+        <p id="capital" class="invalid">Mínimo una letra mayúscula</p>
+        <p id="number" class="invalid">Mínimo un número</p>
+        <p id="largo" class="invalid">Mínimo 8 caracteres</p>
+    </div>
+     <form class="form-row register" enctype="multipart/form-data" method="POST" autocomplete="on" >
+        
+      <div class="col-md-5">
+                
+        <label class="form-label">Correo</label>
+        <input name="correo" id="correo" class="form-control" value="{{correo}}"  type="email" placeholder="correo@email.com" required>
+      </div>
+         
+     <div class="col-md-5">
+         <label  class="form-label">Contraseña</label>
+          <input type="password" class="form-control"  id="pswd1" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="La contraseña debe tener al menos un número, una letra mayúscula y una minúscula.Mínimo 8 caracteres."  name="clave_acceso1"  required>
+      
+        
+         <label class="form-label">Confirma la Contraseña</label>
+         <input type="password" class="form-control" id="pswd2" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="La contraseña debe tener al menos un número, una letra mayúscula y una minúscula.Mínimo 8 caracteres." name="clave_acceso2" required>           
+     </div>
+      
+     <div class="label-register">
+        <label>Datos Generales</label>   
+    </div>
+    
+      <div class="form-row register">
+       
+
+          <div class="col-md-5">
+         <label class="form-label">Nombre</label>
+         <input id='nombre_usuario' name="nombre_usuario" value="{{usuario}}" class="form-control" type="text" required>
+         </div>
+
+         <div class="col-md-5">
+         <label class="form-label">Apellidos</label>
+         <input id='apellido_usuario' name="apellido_usuario" value="{{apellido}}" class="form-control" type="text" required>
+         </div>
+
+         <div class=" form-group col-md-5">
+            <label class="form-label">Dependencia</label>
+            <select class="form-control " aria-label="Default select example" name="dependencia" id="dependencia" required>
+                {% if depen %}
+                <option selected>{{depen}}</option>
+               
+                {%else%}
+                <option disabled selected>Seleccione...</option>
+                {%endif%}
+                {% for p in dependencias%}
+                   <option >{{p.nombre_dep}}</option>
+                {% endfor%}
+               
+              
+            </select>
+            </div>
+
+         <div class="col-md-5">
+            <label class="form-label">Unidad Administrativa a la que pertenece:</label>
+            <input id='unidad_administrativa' name="unidad_admin" class="form-control" value="{{unidad}}" type="text" required>
+            </div>
+
+         <div class="form-group col-md-5">
+             <label class="form-label">Rol</label>
+             <select class="form-control" aria-label="Default select example" name="rol" id="rol" required>
+                 {% if rolinput %}
+                 <option selected>{{rolinput}}</option>
+                 {%else%}
+                 <option disabled selected>Seleccione...</option>
+                 {%endif%}
+                 <option >Administrador</option>
+                 <option >Admin SEMUJERES-GEPEA</option>
+                 <option >Enlace SEMUJERES</option>
+                 <option >Enlace Externo</option>
+                 <option >Enlace GEPEA</option>
+             </select>
+         </div>
+         
+         <div class="form-group col-md-5">
+         <label form="formFile" class="form-label">Foto de Perfil</label>
+         <input id='foto_perfil' name="foto_perfil" class="form-control" type="file" id="foto_perfil" accept="image/png, image/jpeg, image/jpg">
+         </div>
+
+         
+        
+                   
+     </div>    
+
+     
+        <button id='signup-btn' type="submit" class="btn register" onclick ="verifyPassword()">REGISTRAR</button>
+
+        
+     </form>
+
+ </div>
+
+        </div>
+ {% endblock %}

@@ -1,0 +1,235 @@
+{%extends 'main.html' %}
+{% block content%}
+
+<div class="container-home">
+    {{ include('navbar.html') }}
+
+    <div class="container-avance">
+        <div class="container-avance-total">
+        <div class="content-avance">
+        <div class="avance-title">
+            
+           <p class="title-p">PROGRAMA/ACTIVIDAD</p>
+           {% for e in entregable %}
+           {% if identregable == e.id_entregable%}
+           {% for p in programa%}
+           {% if p.id_programa == e.fk_id_programa %}
+           <p class="subtitle-p"> {{p.nombre_programa}}</p>
+              
+           <p class="title-p">AVANCE DE ENTREGABLE</p>
+          
+               
+           <p class="subtitle-p"> {{e.nombre_entregable}}</p>
+         
+        </div>
+
+        <div class="btn-container-avance">
+            <a  class="btn btn-add" href="{{url_for('/entregable/{id}',{'id': (p.id_programa)})}}">REGRESAR</a>
+            {% endif %}
+              {% endfor %}
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+        <div class="form-totales">
+                    <div class="form-row form-totales">
+                        
+                        <div class="container-text-totales">
+                            <div class="content-text-totales">
+                        <p class="totales-sub">Total Avance: </p><p> {{sumaavance|number_format}}</p>
+                        </div>
+                        {% if rol == 'Enlace SEMUJERES' or rol == 'Administrador' or rol == 'Admin SEMUJERES-GEPEA'%}
+                        <div class="content-text-totales">
+                            <p class="totales-sub">Total Ejercido: </p><p> ${{monto|number_format(2)}}</p>
+                        </div>
+                        {%endif%}
+                    </div>
+
+                   
+                   
+                    {% if rol == 'Enlace SEMUJERES' or rol == 'Administrador' or rol == 'Admin SEMUJERES-GEPEA' or rol == 'Enlace Externo' %}
+                        <div class="container-text-totales">
+                             <div class="content-text-totales">
+                        <p class="totales-sub">Mujeres Beneficiadas: </p><p> {{mBeneficiados|number_format}}</p>
+                        </div>
+                        <div class="content-text-totales">
+                            <p class="totales-sub">Mujeres con Discapacidad: </p><p> {{mDiscapacidad|number_format}}</p>
+                            </div>
+                            <div class="content-text-totales">
+                                <p class="totales-sub">Mujeres Hablantes<br> de Lengua Indígena:</p><p class="avance-maya">{{mMaya|number_format}}</p>
+                            </div> 
+                        </div>
+
+    
+                        <div class="container-text-totales">
+                            <div class="content-text-totales">
+                                <p class="totales-sub">Hombres Beneficiados: </p><p> {{hBeneficiados|number_format}}</p>
+                            </div>
+                            <div class="content-text-totales">
+                            <p class="totales-sub">Hombres con Discapacidad: </p><p> {{hDiscapacidad|number_format}}</p>
+                            </div>
+
+                            <div class="content-text-totales">
+                                <p class="totales-sub">Hombres Hablantes<br>de Lengua Indígena:</p><p class="avance-maya">{{hMaya|number_format}}</p>
+                            </div>
+                        </div>
+                        
+
+                        {%endif%}
+               
+                {%if rol == 'Enlace Externo' or rol == 'Enlace GEPEA' %}
+              
+                  
+                {{ include('avance_total_gpa_externo.html')}}
+          
+            {% elseif rol == 'Administrador'%}
+
+            {% for t in entregable%}
+                {% if t.id_entregable == identregable %}
+                    {% for o in programa%}
+                        {% if o.id_programa == t.fk_id_programa%}
+                                {% if o.rol_usuario == 'Enlace GEPEA' or o.rol_usuario == 'Enlace Externo' %}
+                                {{ include('avance_total_gpa_externo.html')}}
+                                {%endif%}
+                        {%endif%}
+                    {% endfor %}
+                {% endif %}
+            {%endfor%}
+ 
+            {% elseif rol == 'Admin SEMUJERES-GEPEA'%}
+            {% for t in entregable%}
+                {% if t.id_entregable == identregable %}
+                    {% for o in programa%}
+                        {% if o.id_programa == t.fk_id_programa%}
+                                {% if o.rol_usuario == 'Enlace GEPEA'%}
+                               
+                                {{ include('avance_total_gpa_externo.html')}}
+                              
+                                {% endif%}
+                        {%endif%}
+                    {% endfor %}
+                {% endif %}
+            {%endfor%}
+            {%endif%}
+                    </div>
+                </div>
+        </div>
+  
+   
+
+    <div class="container-card">
+
+        {% if rol == 'Enlace Externo'%}
+        {{ include('avance_datos_externos.html')}}
+
+       {%elseif rol == 'Enlace SEMUJERES' %}
+       {{ include('avance_datos_generales.html')}} 
+
+       {% elseif rol == 'Administrador'%}
+
+           {% for t in entregable%}
+               {% if t.id_entregable == identregable %}
+                   {% for o in programa%}
+                       {% if o.id_programa == t.fk_id_programa%}
+                               {% if o.rol_usuario == 'Enlace GEPEA'%}
+                               {{ include('avance_datos_generales_gpa.html')}} 
+                                 {%elseif o.rol_usuario == 'Enlace Externo'%}
+                                 {{ include('avance_datos_externos.html')}} 
+                                 {%elseif o.rol_usuario == 'Enlace SEMUJERES'%}
+                                 {{ include('avance_datos_generales.html')}} 
+                                 {%elseif o.rol_usuario == 'Administrador'%}
+                                 {{ include('avance_datos_generales.html')}} 
+                                 {%elseif o.rol_usuario == 'Admin SEMUJERES-GEPEA'%}
+                                 {{ include('avance_datos_generales.html')}}
+                               {% endif%}
+                       {%endif%}
+                   {% endfor %}
+               {% endif %}
+           {%endfor%}
+
+           {% elseif rol == 'Admin SEMUJERES-GEPEA'%}
+           {% for t in entregable%}
+               {% if t.id_entregable == identregable %}
+                   {% for o in programa%}
+                       {% if o.id_programa == t.fk_id_programa%}
+                               {% if o.rol_usuario == 'Enlace GEPEA'%}
+                               {{ include('avance_datos_generales_gpa.html')}} 
+                               {%elseif o.rol_usuario == 'Enlace SEMUJERES'%}
+                               {{ include('avance_datos_generales.html')}} 
+                                 {% elseif o.rol_usuario == 'Admin SEMUJERES-GEPEA'%}
+                                 {{ include('avance_datos_generales.html')}} 
+                               {% endif%}
+                       {%endif%}
+                   {% endfor %}
+               {% endif %}
+           {%endfor%}
+
+
+
+       {% elseif rol == 'Enlace GEPEA' %}
+       
+       {{ include('avance_datos_generales_gpa.html')}} 
+
+       {% endif %}
+      
+    </div>
+
+
+
+    <div class="container-card-registro">
+        {%if rol == 'Enlace Externo'%}
+        {{ include('avance_total_mensual.html') }}
+
+        {% elseif rol == 'Enlace SEMUJERES' %}
+        {{ include('avance_total_mensual.html') }}
+
+        {% elseif rol == 'Administrador' %}
+
+            {% for n in entregable%}
+                {% if n.id_entregable == identregable %}
+                    {% for r in programa%}
+                        {% if r.id_programa == n.fk_id_programa%}
+                                {% if r.rol_usuario == 'Enlace GEPEA'%}
+                                {{ include('avance_total_gpa.html') }}
+                                  {%elseif r.rol_usuario == 'Enlace Externo'%}
+                                  {{ include('avance_total_mensual.html') }}
+                                  {%elseif r.rol_usuario == 'Administrador'%}
+                                  {{ include('avance_total_mensual.html') }}
+                                  {%elseif r.rol_usuario == 'Enlace SEMUJERES'%}
+                                  {{ include('avance_total_mensual.html') }}
+                                  {%elseif r.rol_usuario == 'Admin SEMUJERES-GEPEA'%}
+                                  {{ include('avance_total_mensual.html') }}
+                                {% endif%}
+                        {%endif%}
+                    {% endfor %}
+                {% endif %}
+            {%endfor%}
+
+        {% elseif rol == 'Admin SEMUJERES-GEPEA'%}
+        {% for n in entregable%}
+                {% if n.id_entregable == identregable %}
+                    {% for r in programa%}
+                        {% if r.id_programa == n.fk_id_programa%}
+                                {% if r.rol_usuario == 'Enlace GEPEA'%}
+                                {{ include('avance_total_gpa.html') }}
+                                  {%elseif r.rol_usuario == 'Enlace SEMUJERES'%}
+                                  {{ include('avance_total_mensual.html') }}
+                                  {%elseif r.rol_usuario == 'Admin SEMUJERES-GEPEA'%}
+                                  {{ include('avance_total_mensual.html') }}
+                                {% endif%}
+                        {%endif%}
+                    {% endfor %}
+                {% endif %}
+            {%endfor%}
+
+		{% elseif rol == 'Enlace GEPEA' %}
+		
+			{{ include('avance_total_gpa.html') }}
+
+        {% endif %}
+       
+    </div>
+</div>
+
+{% endblock %}

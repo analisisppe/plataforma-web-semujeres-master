@@ -1,0 +1,169 @@
+{%extends 'main.html' %}
+
+{% block content %}
+<div class="container-home">
+    {{ include('navbar.html') }}
+
+    <div class="container-entregable">
+        <div class="content-entregable">
+          
+<form method="POST" name="programa">
+   
+    <h3 class="subtitle">DATOS GENERALES</h3>
+    {% if message%}
+
+    {%if class == 'red'%}
+    <label class="alert alert-danger">{{message}}</label>
+    {%endif%}
+   {% endif%}
+<div class="form-row justify-content-center">
+
+  
+    <div class="col-md-5">
+        <label>Nombre de Programa/Actividad</label>
+        <input type="text" class="form-control" value="{{programa}}" name="nombre_programa" id="nombre_programa" required>
+    </div>
+
+    <div class="col-md-5">
+        <label>Año</label>
+        <input type="text" class="form-control"  name="año" id="año" value="{{año}}" min="2021" required>
+    </div>
+
+    <div class="col-md-5">
+        <label>Objetivo General</label>
+        <textarea type="text" class="form-control"  name="objetivo" id="objetivo" required>{{objetivo}}</textarea>
+    </div>
+
+    <div class="col-md-5">
+        <label>Descripción</label>
+        <textarea type="text" class="form-control" name="descripcion" id="descripcion" required>{{descripcion}}</textarea>
+    </div>
+
+    <div class="col-md-5">
+        <label>Nombre de la Persona Responsable</label>
+        <input type="text" class="form-control"  name="nombre_responsable" id="nombre_responsable" value="{{nombrer}}" required>
+    </div>
+
+    <div class="col-md-5">
+        <label>Cargo de la Persona Responsable</label>
+        <input type="text" class="form-control"  name="cargo_responsable" id="cargo_responsable" value="{{cargo}}" required>
+    </div>
+
+    <div class="col-md-5">
+        <label>Correo de la Persona Responsable</label>
+        <input type="email" class="form-control"  name="correo_responsable" id="correo_responsable" value="{{correo}}" required>
+    </div>
+
+    <div class="col-md-5">
+        <label>Teléfono de la Persona Responsable</label>
+        <input type="tel" class="form-control"  name="tel_responsable" id="tel_Responsable" value="{{tel}}" required>
+    </div>
+
+    <div class="col-md-5 checkbox">
+        <label>Acciones para la Igualdad De Género</label>
+            <input class="checkbox-programa" name="brecha_genero" id="brecha_genero" type="checkbox">
+      </div>
+      
+</div>
+
+
+
+
+<div class="t-content-entregable">
+    <div class="label-ped">
+        <label>ALINEACIÓN AL P.E.D.</label>
+    </div>
+
+    <div class="addprogram">
+<div class="col-form-entregable">
+<div class="col-label-entregable">
+    <label>Eje</label>
+  
+    <select id="select-eje" class="form-control ped" data-is-eje="{{eje|json_encode}}" aria-label="Default select example" name="eje" onchange="return cambio_eje(this.value)" required>            
+
+        <option value="0" disabled selected>Seleccione...</option>
+        {% for e in eje%}
+        <option id="eje-option" value="{{e.id}}" >{{e.eje}}</option>
+        {% endfor %}
+      
+    </select>
+</div>
+    <div class="col-label-entregable">
+        <label>Política Pública</label>
+        <select class="form-control ped" data-is-politica="{{politica|json_encode}}" aria-label="Default select example" name="politica" id="select-politica" onchange="return cambio_objped(this.value)">
+            <option  value="0" disabled selected>Seleccione...</option>
+            <option></option>
+          
+        </select>
+    </div>
+</div>
+
+<div class="col-form-entregable">
+<div class="col-label-entregable ped">
+            <label >Objetivo</label>
+            <select class="form-control ped" aria-label="Default select example" name="objped" id="select-objped" data-is-objetivoped="{{objetivoped|json_encode}}" onchange="return cambio_estrategia(this.value)" >
+                <option value="0" disabled selected>Seleccione...</option>
+                <option></option>
+            </select>
+</div>
+        
+<div class="col-label-entregable">
+                <label >Estrategia</label>
+                <select class="form-control ped" aria-label="Default select example" name="estrategiaped" id="select-estrategiaped" data-is-estrategiaped="{{estrategiaped|json_encode}}" onchange="return cambio_lineaccion(this.value)">
+                    <option value="0" disabled selected>Seleccione...</option>
+                    <option></option>
+                
+                </select>
+                </div>
+</div>
+
+<div class="col-form-entregable">
+                <div class="col-label-entregable">
+                    <label >Línea de Acción</label>
+                    <select class="form-control ped" aria-label="Default select example" name="lineaped" id="select-lineaccion" data-is-lineaaccion="{{lineaccion|json_encode}}">
+                        <option value="0" disabled selected>Seleccione...</option>
+                        <option></option>
+
+                    </select>
+                </div>
+
+                <div>
+                        <button id='signup-btn' type="button" class="btn btn-add-table" onclick="return onSubmitAgregar()">AGREGAR</button>
+                    </div> 
+                </div>
+
+
+<div class="table-responsive">
+<table id="tabla-ped" class="table table-bordered table-ped">
+<thead>
+    <tr>
+        <th scope="col">Eje</th>
+        <th scope="col">Política Pública</th>
+        <th scope="col">Objetivo</th>
+        <th scope="col">Estrategia</th>
+        <th scope="col">Línea de Acción</th>
+        <th scope="col">ACCIONES</th>
+    </tr>
+</thead>
+<tbody>
+   
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+
+<div class="btn-container">
+<a type="button" class="btn btn-back" href="{{url_for('inicio')}}">REGRESAR</a>
+
+<button type="submit" class="btn btn-save">GUARDAR</button>
+</div>
+</form>  
+</div>
+</div>
+
+</div>
+
+{% endblock %}
