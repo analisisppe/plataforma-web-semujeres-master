@@ -92,9 +92,9 @@
                     {% set municipios = municipios|merge([{municipio : a.municipio}])%}
                     {%endif%}
                     {% set avanceResultado = avanceResultado|merge([{municipio : a.municipio,m_d: a.m_d1,m_ds: a.m_ds,mi1: a.m_i1,mis: a.m_is,hd1 : a.h_d1,hds : a.h_ds,hi1 : a.h_i1,his : a.h_is}])%}
-                    {% set av =+ av + a.avance_entregable%}
+                     {% set av = av + a.avance_entregable %}
                        {%if item.meta != 0%}
-                   {% set progreso =+ progreso + (a.avance_entregable*100)//item.meta %}
+                     {% set progreso = progreso + (a.avance_entregable * 100) // item.meta %}
                        {%else%}
                        {% set progreso = 0%}
                        {%endif%}

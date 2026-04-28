@@ -1,6 +1,22 @@
 <?php
 declare(strict_types=1);
 
+if (PHP_SAPI === 'cli-server') {
+	$path = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
+	if (strpos($path, '/semujeres/public/') === 0) {
+		$path = substr($path, strlen('/semujeres/public'));
+	}
+	$file = __DIR__ . $path;
+	if (is_file($file)) {
+		$contentType = function_exists('mime_content_type') ? mime_content_type($file) : null;
+		header('Content-Type: ' . ($contentType ?: 'application/octet-stream'));
+		if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'HEAD') {
+			readfile($file);
+		}
+		exit;
+	}
+}
+
 use App\Application\Handlers\HttpErrorHandler;
 use App\Application\Handlers\ShutdownHandler;
 use App\Application\ResponseEmitter\ResponseEmitter;
@@ -56,7 +72,12 @@ $container->set('fichas',__DIR__.'/../app/uploadFichas');
 // Instantiate the app
 AppFactory::setContainer($container);
 $app = AppFactory::create();
-$app->setBasePath("/semujeres/public");
+$basePath = getenv('APP_BASE_PATH') ?: '/semujeres/public';
+if (PHP_SAPI === 'cli-server') {
+	$requestPath = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
+	$basePath = (strpos($requestPath, '/semujeres/public') === 0) ? '/semujeres/public' : '';
+}
+$app->setBasePath($basePath);
 $callableResolver = $app->getCallableResolver();
 
 

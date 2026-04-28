@@ -14,8 +14,9 @@ class Indicador extends Model {
         'id_indicador',
         'numero',
         'definicion',
+        'formula',
         'fk_pp'
-                        ];
+    ];
 
 
     public $timestamps = false;

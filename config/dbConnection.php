@@ -35,11 +35,11 @@ if ($driver === 'sqlsrv') {
     }
 
     if (isset($db_encrypt)) {
-        $connection["encrypt"] = (bool) $db_encrypt;
+        $connection["encrypt"] = $db_encrypt ? 'yes' : 'no';
     }
 
     if (isset($db_trust_server_certificate)) {
-        $connection["trust_server_certificate"] = (bool) $db_trust_server_certificate;
+        $connection["trust_server_certificate"] = $db_trust_server_certificate ? 'yes' : 'no';
     }
 }
 

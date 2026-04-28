@@ -13,12 +13,13 @@
 
 <form  method="POST" >
 <h3 class="subtitle">DATOS GENERALES</h3>
-{% if message%}
-
-{%if class == 'red'%}
-<label class="alert alert-danger">{{message}}</label>
-{%endif%}
-{% endif%}
+    {% if message%}
+       {%if class == 'blue'%}
+        <label class="alert alert-primary">{{message}}</label>
+        {%elseif class == 'red'%}
+        <label class="alert alert-danger">{{message}}</label>
+        {%endif%}
+    {% endif%}
 <div class="form-row justify-content-center">
    
     <div class="col-md-5">
@@ -76,10 +77,10 @@
 
 <div class="t-content-entregable">
     <div class="label-ped">
-        <label>ALINEACIÓN AL P.E.D.</label>
+        <a1>ALINEACIÓN AL P.E.D.</a1>
     </div>
-
-    <div class="addprogram">
+<div class="addprogram">
+    
 <div class="col-form-entregable">
 <div class="col-label-entregable">
     <label>Eje</label>
@@ -87,8 +88,8 @@
     <select id="select-eje" class="form-control " data-is-eje="{{eje|json_encode}}" aria-label="Default select example" name="eje" onchange="return cambio_eje(this.value)">            
 
         <option value="0" disabled selected>Seleccione...</option>
-        {% for e in eje%}
-        <option id="eje-option" value="{{e.id}}" >{{e.eje}}</option>
+        {% for eje in eje%}
+        <option id="eje-option" value="{{eje.id}}" >{{eje.eje}}</option>
         {% endfor %}
       
     </select>
@@ -97,7 +98,9 @@
         <label>Política Pública</label>
         <select class="form-control " data-is-politica="{{politica|json_encode}}" aria-label="Default select example" name="politica" id="select-politica" onchange="return cambio_objped(this.value)">
             <option  value="0" disabled selected>Seleccione...</option>
-            <option></option>
+            {% for politica in politica%}
+            <option id="eje-option" value="{{politica.id}}" >{{politica.politica_publica}}</option>
+            {% endfor %}
           
         </select>
     </div>
@@ -108,7 +111,9 @@
             <label >Objetivo</label>
             <select class="form-control " aria-label="Default select example" name="objped" id="select-objped" data-is-objetivoped="{{objetivoped|json_encode}}" onchange="return cambio_estrategia(this.value)" >
                 <option value="0" disabled selected>Seleccione...</option>
-                <option></option>
+                {% for objetivoped in objetivoped%}
+                <option id="objetivo-option" value="{{objetivoped.id}}" >{{objetivoped.objetivo}}</option>
+                {% endfor %}
             </select>
 </div>
         
@@ -116,7 +121,9 @@
                 <label >Estrategia</label>
                 <select class="form-control " aria-label="Default select example" name="estrategiaped" id="select-estrategiaped" data-is-estrategiaped="{{estrategiaped|json_encode}}" onchange="return cambio_lineaccion(this.value)">
                     <option value="0" disabled selected>Seleccione...</option>
-                    <option></option>
+                    {% for estrategiaped in estrategiaped%}
+                    <option id="estrategia-option" value="{{estrategiaped.id}}" >{{estrategiaped.estrategia}}</option>
+                    {% endfor %}
                 
                 </select>
                 </div>
@@ -127,7 +134,9 @@
                     <label >Línea de Acción</label>
                     <select class="form-control " aria-label="Default select example" name="lineaped" id="select-lineaccion" data-is-lineaaccion="{{lineaccion|json_encode}}">
                         <option value="0" disabled selected>Seleccione...</option>
-                        <option></option>
+                        {% for lineaccion in lineaccion%}
+                        <option id="linea-option" value="{{lineaccion.id}}" >{{lineaccion.linea_accion}}</option>
+                        {% endfor %}
 
                     </select>
                 </div>
@@ -137,7 +146,8 @@
                     </div> 
                 </div>
 
-                <div class="table-responsive">
+<div class="table-responsive">
+    
 <table id="tabla-ped" class="table table-bordered table-ped">
 <thead>
     <tr>
@@ -187,6 +197,7 @@
     {%endfor%}
 </tbody>
 </table>
+
                 </div>
 </div>
 </div>

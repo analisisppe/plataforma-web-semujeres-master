@@ -43,9 +43,8 @@ class usuarioController{
             //encontrar usuario
             $user = Usuario::where('correo','=',$correo)->get();
          
-          if($user != '[]'){
-           
-            $userpass = $user[0]->clave_acceso;
+            if($user != '[]'){
+                $userpass = $user[0]->clave_acceso;
                 //verificar que las contraseñas sean correctas
                 if(password_verify($pass,$userpass)){
                  //$session = $request->getAttribute('session');
@@ -56,7 +55,7 @@ class usuarioController{
                 return $response->withHeader('Location',"inicio")->withStatus(302);
                 }else{
                  //si no se cumple, regresar mensaje de error
-             return $this->container->get('view')->render($response, 'login_usuario.html',['message'=>'Usuario O contraseña Incorrectos.']);
+                return $this->container->get('view')->render($response, 'login_usuario.html',['message'=>'Usuario O contraseña Incorrectos.']);
                 }
             }else{
                 return $this->container->get('view')->render($response, 'login_usuario.html',['message'=>'Usuario O contraseña Incorrectos.']);
@@ -64,10 +63,10 @@ class usuarioController{
            
       
         }catch(\PDOException $e) {
-         $this->logger->error($e->getMessage());
-     }
- 
-    
+            error_log($e->getMessage());
+            return $this->container->get('view')->render($response, 'login_usuario.html',['message'=>'Error de conexión a la base de datos.']);
+        }
+
      }
  
      public function mostrarRegistro (ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
@@ -132,8 +131,15 @@ class usuarioController{
                      $tplVars= '¡Usuario Registrado Exitosamente!';
                      $class='blue';
                     
-                     return $this->container->get('view')->render($response, "registro_usuario.html",['message'=>$tplVars,'class'=>$class,'nombre'=>$nombre,'dependencia'=>$dependencia,
-                    'rol'=>$rol,'dependencias'=>$institutos]);
+                     return $this->container->get('view')->render(
+                        $response, "registro_usuario.html",[
+                            'message'=>$tplVars,
+                            'class'=>$class,
+                            'nombre'=>$nombre,
+                            'dependencia'=>$dependencia,
+                            'rol'=>$rol,
+                            'dependencias'=>$institutos
+                            ]);
                     // return $response->withHeader('Location', "iniciarSesion");
          
                  }catch(\PDOException $e){
@@ -174,10 +180,20 @@ class usuarioController{
             $rolinput = $input['rol'];
           }
  
-           return $this->container->get('view')->render($response, "registro_usuario.html", ['message'=>$tplVars,'class'=>$class,
-           'correo'=>$correo,'usuario'=>$nombre_usuario,'apellido'=>$apellido_usuario,'depen'=>$dependenciainput,'unidad'=>$unidad_admin,
-            'rolinput'=>$rolinput ,'nombre'=>$nombre,'dependencia'=>$dependencia,
-           'rol'=>$rol,'dependencias'=>$institutos]);   
+           return $this->container->get('view')->
+           render($response, "registro_usuario.html", 
+           ['message'=>$tplVars,
+           'class'=>$class,
+           'correo'=>$correo,
+           'usuario'=>$nombre_usuario,
+           'apellido'=>$apellido_usuario,
+           'depen'=>$dependenciainput,
+           'unidad'=>$unidad_admin,
+           'rolinput'=>$rolinput,
+           'nombre'=>$nombre,
+           'dependencia'=>$dependencia,
+           'rol'=>$rol,
+           'dependencias'=>$institutos]);   
           
      }
  

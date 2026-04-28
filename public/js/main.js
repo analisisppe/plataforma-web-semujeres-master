@@ -54,13 +54,15 @@ var letter = document.getElementById("letter");
 var capital = document.getElementById("capital");
 var number = document.getElementById("number");
 var largo = document.getElementById("largo");
+var messageRed = document.getElementById("message-red");
 
+if (pwd1 && pwd2 && letter && capital && number && largo && messageRed) {
 pwd1.onfocus = function() {
-      document.getElementById("message-red").style.display = "block";
-    }
+                  messageRed.style.display = "block";
+            }
 
     pwd1.onblur = function() {
-      document.getElementById("message-red").style.display = "none";
+                  messageRed.style.display = "none";
     }
 
     pwd1.onkeyup = function() {
@@ -106,11 +108,11 @@ pwd1.onfocus = function() {
 
 
     pwd2.onfocus = function() {
-      document.getElementById("message-red").style.display = "block";
+                  messageRed.style.display = "block";
     }
 
     pwd2.onblur = function() {
-      document.getElementById("message-red").style.display = "none";
+                  messageRed.style.display = "none";
     }
 
     pwd2.onkeyup = function() {
@@ -153,6 +155,7 @@ pwd1.onfocus = function() {
         largo.classList.add("invalid");
       }
     }
+}
 }
 
 $(document).ready(function() {
@@ -399,7 +402,7 @@ function buscadorEntregable(){
 
 
 function cambio_eje(value){
-
+debugger;
      //json politica transferido de twig a js y parseado
      var datapolitica = document.querySelector('#select-politica').dataset.isPolitica;
      var p = JSON.parse(datapolitica);
@@ -415,7 +418,7 @@ function cambio_eje(value){
             for(let i=0; i<p.length; i++){
               //si la condicion se cumple asignar politicas correspondientes a select
                 if(p[i]["fk_eje"] == value ){
-                  politicaopt += "<option value='" + p[i].id + "'>" + p[i].politica + "</option>";                              
+                  politicaopt += "<option value='" + p[i].id + "'>" + p[i].politica_publica + "</option>";                              
             }           
                   }                  
             }         
@@ -536,6 +539,11 @@ function onSubmitAgregar(){
       data["lineaccion"]=textlinea;
       data["idlinea"]=idlinea;
 
+      if (ideje === "0" || idp === "0" || idobjetivo === "0" || idestrategia === "0" || idlinea === "0") {
+            alert('Selecciona Eje, Politica, Objetivo, Estrategia y Linea de Accion antes de agregar.');
+            return false;
+      }
+
      
       if (selectedRow == null){
             agregarPed(data);
@@ -545,6 +553,7 @@ function onSubmitAgregar(){
       }
   
       resetSelect();
+      return false;
 }
 
 function agregarPed(data){
@@ -553,17 +562,17 @@ function agregarPed(data){
     console.log(data.ideje);
       var row = table.insertRow(table.length);
       var cell1 = row.insertCell(0);
-      cell1.innerHTML = '<textarea id="' + data.ideje +'" name="textareaideje[]" style="width:130px;height:90px;border:0;outline:0;display:inline-block" cols="50" rows="5" readonly>'+data.eje+'</textarea>'; 
+      cell1.innerHTML = '<textarea id="' + data.ideje +'" name="textareaideje[]" class="table-input-area" readonly>'+data.eje+'</textarea>'; 
       var cell2 = row.insertCell(1);   
-      cell2.innerHTML = '<textarea id="' + data.idp +'" name="textareapolitica[]" style="width:130px;height:90px;border:0;outline:0;display:inline-block" cols="50" rows="5" readonly>'+data.politica+'</textarea>'; 
+      cell2.innerHTML = '<textarea id="' + data.idp +'" name="textareapolitica[]" class="table-input-area" readonly>'+data.politica+'</textarea>'; 
       var cell3 = row.insertCell(2);
-      cell3.innerHTML = '<textarea id="' + data.idobjetivo +'" name="textareaobjetivo[]" style="width:130px;height:90px;border:0;outline:0;display:inline-block" cols="50" rows="5" readonly>'+data.objetivo+'</textarea>'; 
+      cell3.innerHTML = '<textarea id="' + data.idobjetivo +'" name="textareaobjetivo[]" class="table-input-area" readonly>'+data.objetivo+'</textarea>'; 
       var cell4 = row.insertCell(3);
-      cell4.innerHTML ='<textarea id="' + data.idestrategia +'" name="textareaestrategia[]" style="width:130px;height:90px;border:0;outline:0;display:inline-block" cols="50" rows="5" readonly>'+data.estrategia+'</textarea>'; 
+      cell4.innerHTML ='<textarea id="' + data.idestrategia +'" name="textareaestrategia[]" class="table-input-area" readonly>'+data.estrategia+'</textarea>'; 
       var cell5 = row.insertCell(4);
-      cell5.innerHTML = '<textarea id="' + data.idlinea +'" name="textarealinea[]" style="width:130px;height:90px;border:0;outline:0;display:inline-block" cols="50" rows="5" readonly>'+data.lineaccion+'</textarea>'; 
+      cell5.innerHTML = '<textarea id="' + data.idlinea +'" name="textarealinea[]" class="table-input-area" readonly>'+data.lineaccion+'</textarea>'; 
       var cell6 = row.insertCell(5);   
-      cell6.innerHTML = cell6.innerHTML+ '<a class="btn btn-edit-entregable" onClick="editRow(this)"><i class="fas fa-edit"></i></a> <a type="button" class="btn btn-delete-entregable" onclick="deleteRow(this)"><i class="fas fa-trash-alt"></i></a>';
+      cell6.innerHTML = cell6.innerHTML+ '<a type="button" class="btn btn-edit-entregable" onclick="return editRowPED(this,1)" title="EDITAR"><i class="fas fa-edit entregable"></i></a> <a type="button" class="btn btn-delete-entregable" onclick="deleteRow(this)" title="BORRAR"><i class="fas fa-trash-alt"></i></a>';
 
 }
 
@@ -585,30 +594,26 @@ function resetSelect(){
 function editRow(td){
          
      selectedRow = td.parentElement.parentElement;
-  
-     document.getElementById('select-eje').value=document.getElementsByName("textareaideje")[0].id;
-     
-     document.getElementById('select-politica').value=document.getElementsByName("textareapolitica")[0].id;
-      
-     document.getElementById('select-objped').value=document.getElementsByName("textareaobjetivo")[0].id;
-      document.getElementById('select-estrategiaped').value=document.getElementsByName("textareaestrategia")[0].id;
-    
-     document.getElementById('select-lineaccion').value=document.getElementsByName("textarealinea")[0].id;
+     document.getElementById('select-eje').value = selectedRow.cells[0].querySelector('textarea').id;
+     document.getElementById('select-politica').value = selectedRow.cells[1].querySelector('textarea').id;
+     document.getElementById('select-objped').value = selectedRow.cells[2].querySelector('textarea').id;
+     document.getElementById('select-estrategiaped').value = selectedRow.cells[3].querySelector('textarea').id;
+     document.getElementById('select-lineaccion').value = selectedRow.cells[4].querySelector('textarea').id;
      
       
 }
 
-function editRowPED(value){
-      console.log("HOLA SOY EDIT ROW" + value);
-     
+function editRowPED(td){
+      editRow(td);
+      return false;
 }
 
 function updateRecord(data) {
-      selectedRow.cells[0].innerHTML = '<textarea id="' + data.ideje +'" name="textareaideje" style="width:130px;height:90px;border:0;outline:0;display:inline-block" cols="50" rows="5" readonly>'+data.eje+'</textarea>'; 
-      selectedRow.cells[1].innerHTML = '<textarea id="' + data.idp +'" name="textareapolitica" style="width:130px;height:90px;border:0;outline:0;display:inline-block" cols="50" rows="5" readonly>'+data.politica+'</textarea>'; 
-      selectedRow.cells[2].innerHTML = '<textarea id="' + data.idobjetivo +'" name="textareaobjetivo" style="width:130px;height:90px;border:0;outline:0;display:inline-block" cols="50" rows="5" readonly>'+data.objetivo+'</textarea>'; 
-      selectedRow.cells[3].innerHTML = '<textarea id="' + data.idestrategia +'" name="textareaestrategia" style="width:130px;height:90px;border:0;outline:0;display:inline-block" cols="50" rows="5" readonly>'+data.estrategia+'</textarea>'; 
-      selectedRow.cells[4].innerHTML =  '<textarea id="' + data.idlinea +'" name="textarealinea" style="width:130px;height:90px;border:0;outline:0;display:inline-block" cols="50" rows="5" readonly>'+data.lineaccion+'</textarea>'; 
+      selectedRow.cells[0].innerHTML = '<textarea id="' + data.ideje +'" name="textareaideje[]" class="table-input-area" readonly>'+data.eje+'</textarea>'; 
+      selectedRow.cells[1].innerHTML = '<textarea id="' + data.idp +'" name="textareapolitica[]" class="table-input-area" readonly>'+data.politica+'</textarea>'; 
+      selectedRow.cells[2].innerHTML = '<textarea id="' + data.idobjetivo +'" name="textareaobjetivo[]" class="table-input-area" readonly>'+data.objetivo+'</textarea>'; 
+      selectedRow.cells[3].innerHTML = '<textarea id="' + data.idestrategia +'" name="textareaestrategia[]" class="table-input-area" readonly>'+data.estrategia+'</textarea>'; 
+      selectedRow.cells[4].innerHTML =  '<textarea id="' + data.idlinea +'" name="textarealinea[]" class="table-input-area" readonly>'+data.lineaccion+'</textarea>'; 
      
   }
 
@@ -1406,9 +1411,14 @@ function deleteData(){
     
 //FUNCION PARA MOSTRAR INFORMACIÓN DE MAPA.HTML
 
-       var municipios = document.querySelectorAll('path');
-       var jsonResultado = document.querySelector('#mapa-content').dataset.isResultado;
-       var resultado = JSON.parse(jsonResultado);
+      var mapaContent = document.querySelector('#mapa-content');
+      if (mapaContent) {
+      var municipios = document.querySelectorAll('path');
+      var jsonResultado = mapaContent.dataset.isResultado;
+      var resultado = null;
+      if (jsonResultado) {
+           resultado = JSON.parse(jsonResultado);
+      }
       
        for(i=0; i<municipios.length;i++){  
            
@@ -1460,6 +1470,7 @@ function deleteData(){
             });
       }
       
+}
 }
 
 

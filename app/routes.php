@@ -14,14 +14,12 @@ return function (App $app) {
     });
 
     $authMiddleware = function(Request $request, RequestHandler $handler ){
-        $response = $handler->handle($request);
-      
-        if(!empty($_SESSION['user'])){        
-           
-             return $response;
-        }else{
-            return $response->withHeader('Location', "iniciarSesion");
-       }
+        if (empty($_SESSION['user'])) {
+            $response = new \Slim\Psr7\Response();
+            return $response->withHeader('Location', 'iniciarSesion')->withStatus(302);
+        }
+
+        return $handler->handle($request);
     };
 
 ///ROUTES PARA LOGIN, REGISTRO Y CERRAR SESION ///

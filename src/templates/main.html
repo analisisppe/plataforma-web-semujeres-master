@@ -41,8 +41,38 @@
     <!-- choose one -->
 <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
 
-
-<script src={{base_path()}}/js/main.js></script>
+<script>
+  // Robust script loading with fallback
+  function loadMainScript() {
+    //var paths = ['{{base_path()}}/js/main.js', '/js/main.js'];
+    var paths = ['/js/main.js'];
+    var currentPath = 0;
+    
+    function tryLoad() {
+      if (currentPath >= paths.length) {
+        console.error('Failed to load main.js from any path');
+        return;
+      }
+      
+      var script = document.createElement('script');
+      script.src = paths[currentPath];
+      script.onerror = function() {
+        currentPath++;
+        tryLoad();
+      };
+      document.body.appendChild(script);
+    }
+    
+    tryLoad();
+  }
+  
+  // Load when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadMainScript);
+  } else {
+    loadMainScript();
+  }
+</script>
 
 <footer class="footer">SECRETARIA DE LAS MUJERES</footer>
 </body>

@@ -6,12 +6,28 @@
 IF OBJECT_ID('dbo.valor_indicadores', 'U') IS NOT NULL DROP TABLE dbo.valor_indicadores;
 IF OBJECT_ID('dbo.base_meta_indicador', 'U') IS NOT NULL DROP TABLE dbo.base_meta_indicador;
 IF OBJECT_ID('dbo.var_indicador', 'U') IS NOT NULL DROP TABLE dbo.var_indicador;
+IF OBJECT_ID('dbo.indicadores', 'U') IS NOT NULL DROP TABLE dbo.indicadores;
+IF OBJECT_ID('dbo.ficha', 'U') IS NOT NULL DROP TABLE dbo.ficha;
 IF OBJECT_ID('dbo.indicador', 'U') IS NOT NULL DROP TABLE dbo.indicador;
 IF OBJECT_ID('dbo.programa_presupuestario', 'U') IS NOT NULL DROP TABLE dbo.programa_presupuestario;
-IF OBJECT_ID('dbo.indicadores', 'U') IS NOT NULL DROP TABLE dbo.indicadores;
 IF OBJECT_ID('dbo.informe', 'U') IS NOT NULL DROP TABLE dbo.informe;
 IF OBJECT_ID('dbo.avance', 'U') IS NOT NULL DROP TABLE dbo.avance;
+IF OBJECT_ID('dbo.finanzas', 'U') IS NOT NULL DROP TABLE dbo.finanzas;
+IF OBJECT_ID('dbo.p_especial', 'U') IS NOT NULL DROP TABLE dbo.p_especial;
+IF OBJECT_ID('dbo.ods', 'U') IS NOT NULL DROP TABLE dbo.ods;
+IF OBJECT_ID('dbo.municipios', 'U') IS NOT NULL DROP TABLE dbo.municipios;
+IF OBJECT_ID('dbo.compromisos', 'U') IS NOT NULL DROP TABLE dbo.compromisos;
+IF OBJECT_ID('dbo.linea_accion_pmp', 'U') IS NOT NULL DROP TABLE dbo.linea_accion_pmp;
+IF OBJECT_ID('dbo.estrategia_pmp', 'U') IS NOT NULL DROP TABLE dbo.estrategia_pmp;
+IF OBJECT_ID('dbo.objetivo_estrategias', 'U') IS NOT NULL DROP TABLE dbo.objetivo_estrategias;
+IF OBJECT_ID('dbo.pmp', 'U') IS NOT NULL DROP TABLE dbo.pmp;
 IF OBJECT_ID('dbo.entregable', 'U') IS NOT NULL DROP TABLE dbo.entregable;
+IF OBJECT_ID('dbo.alineacion_ped', 'U') IS NOT NULL DROP TABLE dbo.alineacion_ped;
+IF OBJECT_ID('dbo.lineas_accion_ped', 'U') IS NOT NULL DROP TABLE dbo.lineas_accion_ped;
+IF OBJECT_ID('dbo.estrategia_ped', 'U') IS NOT NULL DROP TABLE dbo.estrategia_ped;
+IF OBJECT_ID('dbo.objetivo_ped', 'U') IS NOT NULL DROP TABLE dbo.objetivo_ped;
+IF OBJECT_ID('dbo.politica_publica', 'U') IS NOT NULL DROP TABLE dbo.politica_publica;
+IF OBJECT_ID('dbo.eje', 'U') IS NOT NULL DROP TABLE dbo.eje;
 IF OBJECT_ID('dbo.programa', 'U') IS NOT NULL DROP TABLE dbo.programa;
 IF OBJECT_ID('dbo.pass_recovery', 'U') IS NOT NULL DROP TABLE dbo.pass_recovery;
 IF OBJECT_ID('dbo.usuario', 'U') IS NOT NULL DROP TABLE dbo.usuario;
@@ -48,7 +64,7 @@ CREATE TABLE dbo.programa (
 	nombre_programa NVARCHAR(250) NOT NULL,
 	[año] INT NULL,
 	objetivo NVARCHAR(MAX) NULL,
-	[descripción] NVARCHAR(MAX) NULL,
+	[descripcion] NVARCHAR(MAX) NULL,
 	nombre_responsable NVARCHAR(180) NULL,
 	cargo_responsable NVARCHAR(180) NULL,
 	correo_responsable NVARCHAR(180) NULL,
@@ -86,11 +102,135 @@ CREATE TABLE dbo.entregable (
 		ON DELETE CASCADE
 );
 
+CREATE TABLE dbo.p_especial (
+	id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	programa NVARCHAR(250) NOT NULL,
+	objetivo NVARCHAR(250) NOT NULL,
+	estrategia NVARCHAR(250) NOT NULL,
+	linea_accion NVARCHAR(250) NOT NULL,
+	fk_id_entregable INT NOT NULL,
+	CONSTRAINT FK_p_especial_entregable
+		FOREIGN KEY (fk_id_entregable) REFERENCES dbo.entregable(id_entregable)
+		ON DELETE CASCADE
+);
+
+CREATE TABLE dbo.finanzas (
+	id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	fuente NVARCHAR(250) NOT NULL,
+	monto DECIMAL(18,2) NOT NULL,
+	porcentaje_ubp DECIMAL(10,2) NOT NULL DEFAULT(0),
+	fk_id_entregable INT NOT NULL,
+	CONSTRAINT FK_finanzas_entregable
+		FOREIGN KEY (fk_id_entregable) REFERENCES dbo.entregable(id_entregable)
+		ON DELETE CASCADE
+);
+
+CREATE TABLE dbo.ods (
+	id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	conclusion NVARCHAR(MAX) NOT NULL
+);
+
+CREATE TABLE dbo.compromisos (
+	id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	descripcion NVARCHAR(MAX) NOT NULL
+);
+
+CREATE TABLE dbo.municipios (
+	id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	nombre NVARCHAR(180) NOT NULL UNIQUE
+);
+
+CREATE TABLE dbo.pmp (
+	id_pmp INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	tema NVARCHAR(250) NOT NULL
+);
+
+CREATE TABLE dbo.objetivo_estrategias (
+	id_obj INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	obj_estrategia NVARCHAR(250) NOT NULL,
+	fk_pmp INT NOT NULL,
+	CONSTRAINT FK_objetivo_estrategias_pmp
+		FOREIGN KEY (fk_pmp) REFERENCES dbo.pmp(id_pmp)
+		ON DELETE CASCADE
+);
+
+CREATE TABLE dbo.estrategia_pmp (
+	id_estrategia INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	estrategia_pmp NVARCHAR(250) NOT NULL,
+	fk_obj INT NOT NULL,
+	CONSTRAINT FK_estrategia_pmp_objetivo
+		FOREIGN KEY (fk_obj) REFERENCES dbo.objetivo_estrategias(id_obj)
+		ON DELETE CASCADE
+);
+
+CREATE TABLE dbo.linea_accion_pmp (
+	id_linea_pmp INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	linea_pmp NVARCHAR(250) NOT NULL,
+	fk_estrategia_pmp INT NOT NULL,
+	CONSTRAINT FK_linea_accion_pmp_estrategia
+		FOREIGN KEY (fk_estrategia_pmp) REFERENCES dbo.estrategia_pmp(id_estrategia)
+		ON DELETE CASCADE
+);
+
+CREATE TABLE dbo.eje (
+	id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	eje NVARCHAR(180) NOT NULL
+);
+
+CREATE TABLE dbo.politica_publica (
+	id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	politica_publica NVARCHAR(250) NOT NULL,
+	fk_eje INT NOT NULL,
+	CONSTRAINT FK_politica_publica_eje
+		FOREIGN KEY (fk_eje) REFERENCES dbo.eje(id)
+		ON DELETE CASCADE
+);
+
+CREATE TABLE dbo.objetivo_ped (
+	id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	objetivo NVARCHAR(250) NOT NULL,
+	fk_politica INT NOT NULL,
+	CONSTRAINT FK_objetivo_ped_politica
+		FOREIGN KEY (fk_politica) REFERENCES dbo.politica_publica(id)
+		ON DELETE CASCADE
+);
+
+CREATE TABLE dbo.estrategia_ped (
+	id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	estrategia NVARCHAR(250) NOT NULL,
+	fk_objetivo INT NOT NULL,
+	CONSTRAINT FK_estrategia_ped_objetivo
+		FOREIGN KEY (fk_objetivo) REFERENCES dbo.objetivo_ped(id)
+		ON DELETE CASCADE
+);
+
+CREATE TABLE dbo.lineas_accion_ped (
+	id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	linea_accion NVARCHAR(250) NOT NULL,
+	fk_estrategia INT NOT NULL,
+	CONSTRAINT FK_lineas_accion_ped_estrategia
+		FOREIGN KEY (fk_estrategia) REFERENCES dbo.estrategia_ped(id)
+		ON DELETE CASCADE
+);
+
+CREATE TABLE dbo.alineacion_ped (
+	id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	eje NVARCHAR(180) NOT NULL,
+	politica NVARCHAR(180) NOT NULL,
+	objetivo NVARCHAR(180) NOT NULL,
+	estrategia NVARCHAR(180) NOT NULL,
+	linea NVARCHAR(180) NOT NULL,
+	fk_id_programa INT NOT NULL,
+	CONSTRAINT FK_alineacion_ped_programa
+		FOREIGN KEY (fk_id_programa) REFERENCES dbo.programa(id_programa)
+		ON DELETE CASCADE
+);
+
 CREATE TABLE dbo.avance (
 	id_avance INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
 	mes NVARCHAR(20) NULL,
 	municipio NVARCHAR(180) NULL,
-	avance_entregable NVARCHAR(MAX) NULL,
+	avance_entregable INT NOT NULL,
 	monto DECIMAL(18,2) NULL,
 	proyecto NVARCHAR(250) NULL,
 	descripcion NVARCHAR(MAX) NULL,
@@ -147,22 +287,6 @@ CREATE TABLE dbo.informe (
 		ON DELETE CASCADE
 );
 
-CREATE TABLE dbo.indicadores (
-	id_indicadores INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
-	responsable NVARCHAR(180) NULL,
-	corresponsable NVARCHAR(180) NULL,
-	indicador NVARCHAR(MAX) NULL,
-	[año] INT NULL,
-	en_b DECIMAL(18,2) NULL,
-	en_c DECIMAL(18,2) NULL,
-	feb_b DECIMAL(18,2) NULL,
-	feb_c DECIMAL(18,2) NULL,
-	fk_user INT NOT NULL,
-	CONSTRAINT FK_indicadores_usuario
-		FOREIGN KEY (fk_user) REFERENCES dbo.usuario(usuario_id)
-		ON DELETE CASCADE
-);
-
 CREATE TABLE dbo.programa_presupuestario (
 	id_pp INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
 	pp NVARCHAR(250) NOT NULL
@@ -172,9 +296,70 @@ CREATE TABLE dbo.indicador (
 	id_indicador INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
 	numero NVARCHAR(60) NULL,
 	definicion NVARCHAR(MAX) NULL,
+	formula NVARCHAR(100) NULL,
 	fk_pp INT NULL,
 	CONSTRAINT FK_indicador_pp
 		FOREIGN KEY (fk_pp) REFERENCES dbo.programa_presupuestario(id_pp)
+);
+
+CREATE TABLE dbo.ficha (
+	id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	numero_indicador NVARCHAR(60) NOT NULL,
+	[año] INT NOT NULL,
+	ficha NVARCHAR(255) NOT NULL
+);
+
+CREATE TABLE dbo.indicadores (
+	id_indicadores INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	responsable NVARCHAR(180) NULL,
+	corresponsable NVARCHAR(180) NULL,
+	indicador INT NULL,
+	[año] INT NULL,
+	en_a DECIMAL(18,4) NULL,
+	en_b DECIMAL(18,2) NULL,
+	en_c DECIMAL(18,2) NULL,
+	feb_a DECIMAL(18,4) NULL,
+	feb_b DECIMAL(18,2) NULL,
+	feb_c DECIMAL(18,2) NULL,
+	mar_a DECIMAL(18,4) NULL,
+	mar_b DECIMAL(18,2) NULL,
+	mar_c DECIMAL(18,2) NULL,
+	ab_a DECIMAL(18,4) NULL,
+	ab_b DECIMAL(18,2) NULL,
+	ab_c DECIMAL(18,2) NULL,
+	may_a DECIMAL(18,4) NULL,
+	may_b DECIMAL(18,2) NULL,
+	may_c DECIMAL(18,2) NULL,
+	jun_a DECIMAL(18,4) NULL,
+	jun_b DECIMAL(18,2) NULL,
+	jun_c DECIMAL(18,2) NULL,
+	jul_a DECIMAL(18,4) NULL,
+	jul_b DECIMAL(18,2) NULL,
+	jul_c DECIMAL(18,2) NULL,
+	ago_a DECIMAL(18,4) NULL,
+	ago_b DECIMAL(18,2) NULL,
+	ago_c DECIMAL(18,2) NULL,
+	sep_a DECIMAL(18,4) NULL,
+	sep_b DECIMAL(18,2) NULL,
+	sep_c DECIMAL(18,2) NULL,
+	oct_a DECIMAL(18,4) NULL,
+	oct_b DECIMAL(18,2) NULL,
+	oct_c DECIMAL(18,2) NULL,
+	nov_a DECIMAL(18,4) NULL,
+	nov_b DECIMAL(18,2) NULL,
+	nov_c DECIMAL(18,2) NULL,
+	dic_a DECIMAL(18,4) NULL,
+	dic_b DECIMAL(18,2) NULL,
+	dic_c DECIMAL(18,2) NULL,
+	anual_a DECIMAL(18,4) NULL,
+	anual_b DECIMAL(18,2) NULL,
+	anual_c DECIMAL(18,2) NULL,
+	fk_user INT NOT NULL,
+	CONSTRAINT FK_indicadores_usuario
+		FOREIGN KEY (fk_user) REFERENCES dbo.usuario(usuario_id)
+		ON DELETE CASCADE,
+	CONSTRAINT FK_indicadores_indicador
+		FOREIGN KEY (indicador) REFERENCES dbo.indicador(id_indicador)
 );
 
 CREATE TABLE dbo.var_indicador (
@@ -209,24 +394,4 @@ CREATE TABLE dbo.valor_indicadores (
 	CONSTRAINT FK_valor_indicadores_indicadores
 		FOREIGN KEY (fk_indicadores) REFERENCES dbo.indicadores(id_indicadores)
 		ON DELETE CASCADE
-);
-
-INSERT INTO dbo.dependencias (nombre_dep)
-SELECT N'SEMUJERES'
-WHERE NOT EXISTS (SELECT 1 FROM dbo.dependencias WHERE nombre_dep = N'SEMUJERES');
-
-INSERT INTO dbo.usuario (
-	correo, clave_acceso, nombre_usuario, apellido_usuario, dependencia, unidad_admin, rol, foto_perfil
-)
-SELECT
-	N'admin@semujeres.local',
-	N'$2y$10$0w6UjW6J6XxW7s2m3cA9qezbDq6q8jJ4k8pQ4lNQ5F7Qf9H9r0xQG',
-	N'Admin',
-	N'Sistema',
-	N'SEMUJERES',
-	N'TI',
-	N'Administrador',
-	NULL
-WHERE NOT EXISTS (
-	SELECT 1 FROM dbo.usuario WHERE correo = N'admin@semujeres.local'
 );
