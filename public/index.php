@@ -9,6 +9,9 @@ if (PHP_SAPI === 'cli-server') {
 	$file = __DIR__ . $path;
 	if (is_file($file)) {
 		$contentType = function_exists('mime_content_type') ? mime_content_type($file) : null;
+		if (substr($file, -5) === '.scss') {
+			$contentType = 'text/css';
+		}
 		header('Content-Type: ' . ($contentType ?: 'application/octet-stream'));
 		if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'HEAD') {
 			readfile($file);
@@ -74,8 +77,7 @@ AppFactory::setContainer($container);
 $app = AppFactory::create();
 $basePath = getenv('APP_BASE_PATH') ?: '/semujeres/public';
 if (PHP_SAPI === 'cli-server') {
-	$requestPath = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
-	$basePath = (strpos($requestPath, '/semujeres/public') === 0) ? '/semujeres/public' : '';
+	$basePath = '/semujeres/public';
 }
 $app->setBasePath($basePath);
 $callableResolver = $app->getCallableResolver();

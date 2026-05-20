@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
  
-    <link href="{{base_path()}}/scss/custom.scss" rel="stylesheet">
+    <link href="/scss/custom.scss" rel="stylesheet">
     
     
    
@@ -44,8 +44,7 @@
 <script>
   // Robust script loading with fallback
   function loadMainScript() {
-    //var paths = ['{{base_path()}}/js/main.js', '/js/main.js'];
-    var paths = ['/js/main.js'];
+    var paths = ['{{base_path()}}/js/main.js', '/js/main.js'];
     var currentPath = 0;
     
     function tryLoad() {
