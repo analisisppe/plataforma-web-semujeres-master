@@ -28,7 +28,7 @@
         "monolog/monolog": "^2.2",
         "mpdf/mpdf": "^8.0",
         "php-di/php-di": "^6.3",
-        "phpmailer/phpmailer": "^6.5",
+        "phpmailer/phpmailer": "^7.1",
         "phpoffice/phpspreadsheet": "^1.18",
         "respect/validation": "^2.0",
         "slim/psr7": "^1.3",
