@@ -26,7 +26,7 @@
         "ext-json": "*",
         "illuminate/database": "^7.30",
         "monolog/monolog": "^2.2",
-        "mpdf/mpdf": "^8.0",
+        "mpdf/mpdf": "^8.3",
         "php-di/php-di": "^6.3",
         "phpmailer/phpmailer": "^6.5",
         "phpoffice/phpspreadsheet": "^1.18",
